@@ -1,22 +1,3 @@
----@meta
-
----@class cc.Layer :cc.Node
-local Layer={ }
-cc.Layer=Layer
-
-
-
-
----*  Creates a fullscreen black layer.<br>
----* return An autoreleased Layer object.
----@return self
-function Layer:create () end
----* 
----@return boolean
-function Layer:init () end
----* 
----@return string
-function Layer:getDescription () end
----* 
----@return self
-function Layer:Layer () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:4c2eb0045100b7d70a3abebff416f9fe7c9f281047bbdfa8b4954eeffa058e93
+size 387

@@ -1,27 +1,3 @@
----@meta
-
----@class cc.BezierTo :cc.BezierBy
-local BezierTo={ }
-cc.BezierTo=BezierTo
-
-
-
-
----* param t In seconds.
----@param t float
----@param c cc._ccBezierConfig
----@return boolean
-function BezierTo:initWithDuration (t,c) end
----* 
----@param target cc.Node
----@return self
-function BezierTo:startWithTarget (target) end
----* 
----@return self
-function BezierTo:clone () end
----* 
----@return self
-function BezierTo:reverse () end
----* 
----@return self
-function BezierTo:BezierTo () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:fdd138937c9ca50577751a4a8ec407532deed6df6366a0f7b8167cdf05af68b6
+size 510

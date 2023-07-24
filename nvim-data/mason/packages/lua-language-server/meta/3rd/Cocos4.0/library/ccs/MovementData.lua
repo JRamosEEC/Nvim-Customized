@@ -1,23 +1,3 @@
----@meta
-
----@class ccs.MovementData :cc.Ref
-local MovementData={ }
-ccs.MovementData=MovementData
-
-
-
-
----* 
----@param boneName string
----@return ccs.MovementBoneData
-function MovementData:getMovementBoneData (boneName) end
----* 
----@param movBoneData ccs.MovementBoneData
----@return self
-function MovementData:addMovementBoneData (movBoneData) end
----* 
----@return self
-function MovementData:create () end
----* js ctor
----@return self
-function MovementData:MovementData () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:18d56a91d132f5d64791198fef10fd8ce0c70b517721cec2736ae7a92a4238fd
+size 498

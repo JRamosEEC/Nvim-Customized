@@ -1,24 +1,3 @@
----@meta
-
----@class cc.TransitionFadeUp :cc.TransitionFadeTR
-local TransitionFadeUp={ }
-cc.TransitionFadeUp=TransitionFadeUp
-
-
-
-
----*  Creates a transition with duration and incoming scene.<br>
----* param t Duration time, in seconds.<br>
----* param scene A given scene.<br>
----* return A autoreleased TransitionFadeUp object.
----@param t float
----@param scene cc.Scene
----@return self
-function TransitionFadeUp:create (t,scene) end
----* 
----@param size size_table
----@return cc.ActionInterval
-function TransitionFadeUp:actionWithSize (size) end
----* 
----@return self
-function TransitionFadeUp:TransitionFadeUp () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:8f49a29e44d039b643c5fb93d1c4cf529731a7e373d3ffbde5395949a9f15ba0
+size 639

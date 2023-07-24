@@ -1,11 +1,3 @@
----@meta
-
----@source UnityEngine.AssetBundleModule.dll
----@class UnityEngine.Experimental.AssetBundlePatching.AssetBundleUtility: object
----@source UnityEngine.AssetBundleModule.dll
-CS.UnityEngine.Experimental.AssetBundlePatching.AssetBundleUtility = {}
-
----@source UnityEngine.AssetBundleModule.dll
----@param bundles UnityEngine.AssetBundle[]
----@param filenames string[]
-function CS.UnityEngine.Experimental.AssetBundlePatching.AssetBundleUtility:PatchAssetBundles(bundles, filenames) end
+version https://git-lfs.github.com/spec/v1
+oid sha256:66fb8d974c52aa883a9e4b887556665a5b5e98316abb75dec897ec4f1b8bb680
+size 491

@@ -1,26 +1,3 @@
----@meta
-
----@class cc.ToggleVisibility :cc.ActionInstant
-local ToggleVisibility={ }
-cc.ToggleVisibility=ToggleVisibility
-
-
-
-
----*  Allocates and initializes the action.<br>
----* return An autoreleased ToggleVisibility object.
----@return self
-function ToggleVisibility:create () end
----* 
----@return self
-function ToggleVisibility:clone () end
----* param time In seconds.
----@param time float
----@return self
-function ToggleVisibility:update (time) end
----* 
----@return self
-function ToggleVisibility:reverse () end
----* 
----@return self
-function ToggleVisibility:ToggleVisibility () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:434f806107bb9af1c08352bae967db03b498bd88c2ff1fadac8f969ac0e6969d
+size 612

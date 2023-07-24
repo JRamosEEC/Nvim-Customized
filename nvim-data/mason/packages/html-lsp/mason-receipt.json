@@ -1,1 +1,3 @@
-{"primary_source":{"type":"registry+v1","source":{"package":"vscode-langservers-extracted","version":"4.7.0"},"id":"pkg:npm\/vscode-langservers-extracted@4.7.0"},"links":{"bin":{"vscode-html-language-server.cmd":"node_modules\\.bin\\vscode-html-language-server.cmd"},"opt":{},"share":{"mason-schemas\\lsp\\html-lsp.json":"mason-schemas\\lsp.json"}},"metrics":{"start_time":1689561716197,"completion_time":1689561731975},"schema_version":"1.1","secondary_sources":[],"name":"html-lsp"}
+version https://git-lfs.github.com/spec/v1
+oid sha256:f836033e486dd4eb06fe9d620a1b49988b8ab6221b896db2918f294f8b15a441
+size 484

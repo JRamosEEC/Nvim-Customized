@@ -1,27 +1,3 @@
----@meta
-
----@class cc.EaseElasticInOut :cc.EaseElastic
-local EaseElasticInOut={ }
-cc.EaseElasticInOut=EaseElasticInOut
-
-
-
-
----* 
----@param action cc.ActionInterval
----@param rate float
----@return self
-function EaseElasticInOut:create (action,rate) end
----* 
----@return self
-function EaseElasticInOut:clone () end
----* 
----@param time float
----@return self
-function EaseElasticInOut:update (time) end
----* 
----@return cc.EaseElastic
-function EaseElasticInOut:reverse () end
----* 
----@return self
-function EaseElasticInOut:EaseElasticInOut () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:3aa3901b62958c4ae78214f8f65e41160a3f01193e835996cfdf4ed4f75dc386
+size 571

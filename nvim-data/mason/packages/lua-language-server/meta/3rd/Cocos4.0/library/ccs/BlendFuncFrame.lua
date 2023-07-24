@@ -1,25 +1,3 @@
----@meta
-
----@class ccs.BlendFuncFrame :ccs.Frame
-local BlendFuncFrame={ }
-ccs.BlendFuncFrame=BlendFuncFrame
-
-
-
-
----* 
----@return cc.BlendFunc
-function BlendFuncFrame:getBlendFunc () end
----* 
----@param blendFunc cc.BlendFunc
----@return self
-function BlendFuncFrame:setBlendFunc (blendFunc) end
----* 
----@return self
-function BlendFuncFrame:create () end
----* 
----@return ccs.Frame
-function BlendFuncFrame:clone () end
----* 
----@return self
-function BlendFuncFrame:BlendFuncFrame () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:194737b67b79bee0ae976329cf49c2053dfcd1ecb440810227eb67653aa044bb
+size 510

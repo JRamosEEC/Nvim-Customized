@@ -1,29 +1,3 @@
-local pub   = require 'pub.pub'
-local await = require 'await'
-local util  = require 'utility'
-
-pub.on('log', function (params, brave)
-    log.raw(brave.id, params.level, params.msg, params.src, params.line, params.clock)
-end)
-
-pub.on('mem', function (count, brave)
-    brave.memory = count
-end)
-
-pub.on('proto', function (params)
-    local proto = require 'proto'
-    await.call(function ()
-        if params.method then
-            proto.doMethod(params)
-        else
-            proto.doResponse(params)
-        end
-    end)
-end)
-
-pub.on('protoerror', function (err)
-    log.warn('Load proto error:', err)
-    os.exit(0, true)
-end)
-
-pub.on('wakeup', function () end)
+version https://git-lfs.github.com/spec/v1
+oid sha256:b066290b12b7a45dd468d4ed225445741ac1e0d73f22cde85fa589f56f241ec5
+size 698

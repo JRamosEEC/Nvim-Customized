@@ -1,26 +1,3 @@
----@meta
-
----@class cc.TransitionCrossFade :cc.TransitionScene
-local TransitionCrossFade={ }
-cc.TransitionCrossFade=TransitionCrossFade
-
-
-
-
----*  Creates a transition with duration and incoming scene.<br>
----* param t Duration time, in seconds.<br>
----* param scene A given scene.<br>
----* return A autoreleased TransitionCrossFade object.
----@param t float
----@param scene cc.Scene
----@return self
-function TransitionCrossFade:create (t,scene) end
----* lua NA
----@param renderer cc.Renderer
----@param transform mat4_table
----@param flags unsigned_int
----@return self
-function TransitionCrossFade:draw (renderer,transform,flags) end
----* 
----@return self
-function TransitionCrossFade:TransitionCrossFade () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:dadb8b1db22a2bb9781ea8caccdc09f7c415a4cd844daa9042b70b8ac8ed9fa1
+size 735

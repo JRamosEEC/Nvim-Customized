@@ -1,22 +1,3 @@
----@meta
-
----@class cc.EventListenerPhysicsContactWithBodies :cc.EventListenerPhysicsContact
-local EventListenerPhysicsContactWithBodies={ }
-cc.EventListenerPhysicsContactWithBodies=EventListenerPhysicsContactWithBodies
-
-
-
-
----* 
----@param shapeA cc.PhysicsShape
----@param shapeB cc.PhysicsShape
----@return boolean
-function EventListenerPhysicsContactWithBodies:hitTest (shapeA,shapeB) end
----*  Create the listener. 
----@param bodyA cc.PhysicsBody
----@param bodyB cc.PhysicsBody
----@return self
-function EventListenerPhysicsContactWithBodies:create (bodyA,bodyB) end
----* 
----@return self
-function EventListenerPhysicsContactWithBodies:clone () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:74f9a92ebf35adbd2f5ad24de220848b781c7910cd56f40103a976ba7aeca8ff
+size 670

@@ -1,32 +1,3 @@
-local files  = require 'files'
-local guide  = require 'parser.guide'
-local vm     = require 'vm'
-local lang   = require 'language'
-local await  = require 'await'
-
----@async
-return function (uri, callback)
-    local state = files.getState(uri)
-    if not state then
-        return
-    end
-
-    ---@async
-    guide.eachSourceType(state.ast, 'call', function (source)
-        await.delay()
-        local _, callArgs = vm.countList(source.args)
-
-        local funcNode = vm.compileNode(source.node)
-        local funcArgs = vm.countParamsOfNode(funcNode)
-
-        if callArgs >= funcArgs then
-            return
-        end
-
-        callback {
-            start  = source.start,
-            finish = source.finish,
-            message = lang.script('DIAG_MISS_ARGS', funcArgs, callArgs),
-        }
-    end)
-end
+version https://git-lfs.github.com/spec/v1
+oid sha256:2f2c2bbafe79e7d970a4a5484f8cddf0a37844c27acfeb81636b211cbd8a982d
+size 839

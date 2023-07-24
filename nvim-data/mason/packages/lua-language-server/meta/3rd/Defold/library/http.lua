@@ -1,18 +1,3 @@
----HTTP API documentation
----Functions for performing HTTP and HTTPS requests.
----@class http
-http = {}
----Perform a HTTP/HTTPS request.
---- If no timeout value is passed, the configuration value "network.http_timeout" is used. If that is not set, the timeout value is 0 (which blocks indefinitely).
----@param url string # target url
----@param method string # HTTP/HTTPS method, e.g. "GET", "PUT", "POST" etc.
----@param callback fun(self: object, id: hash, response: table) # response callback function
----@param headers table? # optional table with custom headers
----@param post_data string? # optional data to send
----@param options table? # optional table with request parameters. Supported entries:
-function http.request(url, method, callback, headers, post_data, options) end
-
-
-
-
-return http
+version https://git-lfs.github.com/spec/v1
+oid sha256:f1f469a9d908e9072c58c6de1344d2990a1fedf4f206ea988292f3bddc509cbc
+size 813

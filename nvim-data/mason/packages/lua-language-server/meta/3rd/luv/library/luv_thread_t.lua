@@ -1,20 +1,3 @@
----@meta
-
---- luv_thread_t
----
----@class uv.luv_thread_t : userdata
-local thread
-
---- Returns a boolean indicating whether two threads are the same. This function is
---- equivalent to the `__eq` metamethod.
----
----@param other_thread uv.luv_thread_t
----@return boolean
-function thread:equal(other_thread) end
-
---- Waits for the `thread` to finish executing its entry function.
----
----@return boolean|nil success
----@return uv.error.message|nil err
----@return uv.error.name|nil err_name
-function thread:join() end
+version https://git-lfs.github.com/spec/v1
+oid sha256:f0798a27bafcd2b7fbf58e64221a8dcadfd0ad9103c3867de3669c470d9dc21b
+size 531

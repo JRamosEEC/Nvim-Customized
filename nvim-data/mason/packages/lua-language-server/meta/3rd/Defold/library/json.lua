@@ -1,20 +1,3 @@
----JSON API documentation
----Manipulation of JSON data strings.
----@class json
-json = {}
----Decode a string of JSON data into a Lua table.
----A Lua error is raised for syntax errors.
----@param json string # json data
----@return table # decoded json
-function json.decode(json) end
-
----Encode a lua table to a JSON string.
----A Lua error is raised for syntax errors.
----@param tbl table # lua table to encode
----@return string # encoded json
-function json.encode(tbl) end
-
-
-
-
-return json
+version https://git-lfs.github.com/spec/v1
+oid sha256:272f8b02652346775af82397ad39af01154b09466fe0cca1902edf05e8da904a
+size 504

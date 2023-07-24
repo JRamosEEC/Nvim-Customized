@@ -1,23 +1,3 @@
----@meta
-local resp={}
-
-resp.version = require("resty.core.base").version
-
---- This function adds specified header with corresponding value to the response of current request.
----
---- The `header_value` could be either a string or a table.
----
---- The ngx.resp.add_header works mostly like:
----
----     `ngx.header.HEADER`
----     Nginx's `add_header` directive.
----
---- However, unlike `ngx.header.HEADER`, this method appends new header to the old one instead of overriding it.
----
---- Unlike `add_header` directive, this method will override the builtin header instead of appending it.
----
----@param key   string
----@param value string|string[]
-function resp.add_header(key, value) end
-
-return resp
+version https://git-lfs.github.com/spec/v1
+oid sha256:a881c2893516606e16850465dbf5021bf44cd29dd611a731562d0ee4f349d822
+size 723

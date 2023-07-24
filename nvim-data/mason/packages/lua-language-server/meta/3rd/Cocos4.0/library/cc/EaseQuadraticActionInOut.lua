@@ -1,26 +1,3 @@
----@meta
-
----@class cc.EaseQuadraticActionInOut :cc.ActionEase
-local EaseQuadraticActionInOut={ }
-cc.EaseQuadraticActionInOut=EaseQuadraticActionInOut
-
-
-
-
----* 
----@param action cc.ActionInterval
----@return self
-function EaseQuadraticActionInOut:create (action) end
----* 
----@return self
-function EaseQuadraticActionInOut:clone () end
----* 
----@param time float
----@return self
-function EaseQuadraticActionInOut:update (time) end
----* 
----@return cc.ActionEase
-function EaseQuadraticActionInOut:reverse () end
----* 
----@return self
-function EaseQuadraticActionInOut:EaseQuadraticActionInOut () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:4f8214ef55caf25a0696e90a5de35892d4c4e50b03403c79999f0d5e31cf62cc
+size 622

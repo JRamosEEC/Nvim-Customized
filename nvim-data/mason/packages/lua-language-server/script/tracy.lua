@@ -1,32 +1,3 @@
-local originTracy
-
-local function enable()
-    if not originTracy then
-        local suc = pcall(require, 'luatracy')
-        if suc then
-            originTracy = tracy
-        else
-            originTracy = {
-                ZoneBeginN = function (info) end,
-                ZoneEnd    = function () end,
-            }
-        end
-    end
----@diagnostic disable-next-line: lowercase-global
-    tracy = originTracy
-end
-
-local function disable()
----@diagnostic disable-next-line: lowercase-global
-    tracy = {
-        ZoneBeginN = function (info) end,
-        ZoneEnd    = function () end,
-    }
-end
-
-disable()
-
-return {
-    enable  = enable,
-    disable = disable,
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:e9c164bcae54835c65d1ccc94eaf351cbc0f29636a71354ff01b4ce8c3d792a2
+size 701

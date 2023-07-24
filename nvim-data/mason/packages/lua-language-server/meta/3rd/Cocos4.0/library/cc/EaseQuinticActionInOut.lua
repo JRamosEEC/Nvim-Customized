@@ -1,26 +1,3 @@
----@meta
-
----@class cc.EaseQuinticActionInOut :cc.ActionEase
-local EaseQuinticActionInOut={ }
-cc.EaseQuinticActionInOut=EaseQuinticActionInOut
-
-
-
-
----* 
----@param action cc.ActionInterval
----@return self
-function EaseQuinticActionInOut:create (action) end
----* 
----@return self
-function EaseQuinticActionInOut:clone () end
----* 
----@param time float
----@return self
-function EaseQuinticActionInOut:update (time) end
----* 
----@return cc.ActionEase
-function EaseQuinticActionInOut:reverse () end
----* 
----@return self
-function EaseQuinticActionInOut:EaseQuinticActionInOut () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:eced46719058e58bbcb679771edb3143e03f89532550caa63ae32c9de29d793e
+size 602

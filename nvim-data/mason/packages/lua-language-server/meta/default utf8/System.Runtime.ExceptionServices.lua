@@ -1,30 +1,3 @@
----@meta
-
----@source mscorlib.dll
----@class System.Runtime.ExceptionServices.ExceptionDispatchInfo: object
----@source mscorlib.dll
----@field SourceException System.Exception
----@source mscorlib.dll
-CS.System.Runtime.ExceptionServices.ExceptionDispatchInfo = {}
-
----@source mscorlib.dll
----@param source System.Exception
----@return ExceptionDispatchInfo
-function CS.System.Runtime.ExceptionServices.ExceptionDispatchInfo:Capture(source) end
-
----@source mscorlib.dll
-function CS.System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw() end
-
-
----@source mscorlib.dll
----@class System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs: System.EventArgs
----@source mscorlib.dll
----@field Exception System.Exception
----@source mscorlib.dll
-CS.System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs = {}
-
-
----@source mscorlib.dll
----@class System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute: System.Attribute
----@source mscorlib.dll
-CS.System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute = {}
+version https://git-lfs.github.com/spec/v1
+oid sha256:08f6265ba3d2e21c7ac13f9a603428841b4358545fa9895ae6cf2fc842876460
+size 1063

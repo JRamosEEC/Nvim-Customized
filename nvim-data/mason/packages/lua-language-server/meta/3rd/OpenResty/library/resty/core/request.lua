@@ -1,5 +1,3 @@
----@meta
-local resty_core_request={}
-resty_core_request.version = require("resty.core.base").version
-function resty_core_request.set_req_header(name, value, override) end
-return resty_core_request
+version https://git-lfs.github.com/spec/v1
+oid sha256:e1212b53788c604d549195cc9b14542b1165675eb0310d13d1ffb351e411023a
+size 200

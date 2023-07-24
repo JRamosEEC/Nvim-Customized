@@ -1,26 +1,3 @@
----@meta
-
----@source mscorlib.dll
----@class System.Runtime.DesignerServices.WindowsRuntimeDesignerContext: object
----@source mscorlib.dll
----@field Name string
----@source mscorlib.dll
-CS.System.Runtime.DesignerServices.WindowsRuntimeDesignerContext = {}
-
----@source mscorlib.dll
----@param assemblyName string
----@return Assembly
-function CS.System.Runtime.DesignerServices.WindowsRuntimeDesignerContext.GetAssembly(assemblyName) end
-
----@source mscorlib.dll
----@param typeName string
----@return Type
-function CS.System.Runtime.DesignerServices.WindowsRuntimeDesignerContext.GetType(typeName) end
-
----@source mscorlib.dll
----@param paths System.Collections.Generic.IEnumerable<string>
-function CS.System.Runtime.DesignerServices.WindowsRuntimeDesignerContext:InitializeSharedContext(paths) end
-
----@source mscorlib.dll
----@param context System.Runtime.DesignerServices.WindowsRuntimeDesignerContext
-function CS.System.Runtime.DesignerServices.WindowsRuntimeDesignerContext:SetIterationContext(context) end
+version https://git-lfs.github.com/spec/v1
+oid sha256:4454d8389370d6f29fcfc9fbd1a344d1494e827027cbe2a91ad8e1997b3bfdba
+size 1005

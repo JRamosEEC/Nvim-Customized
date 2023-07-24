@@ -1,26 +1,3 @@
----@meta
-
----@class cc.Hide :cc.ActionInstant
-local Hide={ }
-cc.Hide=Hide
-
-
-
-
----*  Allocates and initializes the action.<br>
----* return An autoreleased Hide object.
----@return self
-function Hide:create () end
----* 
----@return self
-function Hide:clone () end
----* param time In seconds.
----@param time float
----@return self
-function Hide:update (time) end
----* 
----@return cc.ActionInstant
-function Hide:reverse () end
----* 
----@return self
-function Hide:Hide () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:e1ed0b75aa22972f50087182cf455f3ff7357e2a3c5de844bb3cddb1c2bae383
+size 492

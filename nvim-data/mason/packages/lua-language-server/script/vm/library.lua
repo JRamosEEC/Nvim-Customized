@@ -1,15 +1,3 @@
----@class vm
-local vm      = require 'vm.vm'
-
-function vm.getLibraryName(source)
-    if source.special then
-        return source.special
-    end
-    local defs = vm.getDefs(source)
-    for _, def in ipairs(defs) do
-        if def.special then
-            return def.special
-        end
-    end
-    return nil
-end
+version https://git-lfs.github.com/spec/v1
+oid sha256:8aa6064d8c644c909aa0ca07fef73f3ca0b041cc1f8a5141a335e40987ee8424
+size 329

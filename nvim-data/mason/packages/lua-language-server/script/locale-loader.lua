@@ -1,27 +1,3 @@
-local function mergeKey(key, k)
-    if not key then
-        return k
-    end
-    if k:sub(1, 1):match '%w' then
-        return key .. '.' .. k
-    else
-        return key .. k
-    end
-end
-
-local function proxy(results, key)
-    return setmetatable({}, {
-        __index = function (_, k)
-            return proxy(results, mergeKey(key, k))
-        end,
-        __newindex = function (_, k, v)
-            results[mergeKey(key, k)] = v
-        end
-    })
-end
-
-return function (text, path, results)
-    results = results or {}
-    assert(load(text, '@' .. path, "t", proxy(results)))()
-    return results
-end
+version https://git-lfs.github.com/spec/v1
+oid sha256:ee42d2b152a6009b16fe5fb598196a510dbc0b59ce437fac9c9e7a9a5d0c8e68
+size 634

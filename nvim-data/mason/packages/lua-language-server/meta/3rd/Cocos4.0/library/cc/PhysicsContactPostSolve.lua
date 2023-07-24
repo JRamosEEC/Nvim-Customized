@@ -1,18 +1,3 @@
----@meta
-
----@class cc.PhysicsContactPostSolve 
-local PhysicsContactPostSolve={ }
-cc.PhysicsContactPostSolve=PhysicsContactPostSolve
-
-
-
-
----*  Get friction between two bodies.
----@return float
-function PhysicsContactPostSolve:getFriction () end
----*  Get surface velocity between two bodies.
----@return vec2_table
-function PhysicsContactPostSolve:getSurfaceVelocity () end
----*  Get restitution between two bodies.
----@return float
-function PhysicsContactPostSolve:getRestitution () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:58279f82ab84b8e02966345b5b506880652c6fd6dfa5d7208f8fbd0df241b938
+size 503

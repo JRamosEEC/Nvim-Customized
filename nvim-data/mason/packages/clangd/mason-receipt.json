@@ -1,1 +1,3 @@
-{"primary_source":{"type":"registry+v1","source":{"repo":"clangd\/clangd","downloads":[{"download_url":"https:\/\/github.com\/clangd\/clangd\/releases\/download\/16.0.2\/clangd-windows-16.0.2.zip","out_file":"clangd-windows-16.0.2.zip"}],"asset":{"target":"win_x64","file":"clangd-windows-16.0.2.zip","bin":"clangd_16.0.2\/bin\/clangd.exe"}},"id":"pkg:github\/clangd\/clangd@16.0.2"},"links":{"bin":{"clangd.cmd":"clangd_16.0.2\/bin\/clangd.exe"},"opt":{},"share":{"mason-schemas\\lsp\\clangd.json":"mason-schemas\\lsp.json"}},"metrics":{"start_time":1689561716213,"completion_time":1689561723956},"schema_version":"1.1","secondary_sources":[],"name":"clangd"}
+version https://git-lfs.github.com/spec/v1
+oid sha256:a0232edc8c1a7892a1438264e80d1182f5427324ea11d1e1dc1fa1298df34f12
+size 660

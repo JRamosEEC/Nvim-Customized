@@ -1,28 +1,3 @@
-local m = {}
-
-local function tableLenEqual(t, len)
-    for key, value in pairs(t) do
-        len = len - 1
-        if len < 0 then
-            return false
-        end
-    end
-    return true
-end
-
-local function isSingleNode(ast)
-    if type(ast) ~= 'table' then
-        return false
-    end
-    local len = #ast
-    return len == 1 and tableLenEqual(ast, len)
-end
-
-function m.expandSingle(ast)
-    if isSingleNode(ast) then
-        return ast[1]
-    end
-    return ast
-end
-
-return m
+version https://git-lfs.github.com/spec/v1
+oid sha256:33d389322f96d9313ed62b72167cba549d897ae102c198662c19acad8e13a59a
+size 512

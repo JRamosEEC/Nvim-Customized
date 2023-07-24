@@ -1,22 +1,3 @@
----@meta
-
---- Returns `true` when the given Lua table contains neither non-nil array elements nor non-nil key-value pairs, or `false` otherwise.
----
---- This API can be JIT compiled.
---- Usage:
----
---- ```lua
---- local isempty = require "table.isempty"
----
---- print(isempty({}))  -- true
---- print(isempty({nil, dog = nil}))  -- true
---- print(isempty({"a", "b"}))  -- false
---- print(isempty({nil, 3}))  -- false
---- print(isempty({cat = 3}))  -- false
---- ```
----
----@param t table
----@return boolean
-local function isempty(t) end
-
-return isempty
+version https://git-lfs.github.com/spec/v1
+oid sha256:ac96a41e6e2ed3bbfe93df137b1aa6285bf3701d38cfb01a5e87903de7bbf38d
+size 572

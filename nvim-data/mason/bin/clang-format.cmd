@@ -1,10 +1,3 @@
-@ECHO off
-GOTO start
-:find_dp0
-SET dp0=%~dp0
-EXIT /b
-:start
-SETLOCAL
-CALL :find_dp0
-
-endLocal & goto #_undefined_# 2>NUL || title %COMSPEC% & "C:\Users\justi\AppData\Local\nvim-data\mason\packages\clang-format\venv\Scripts\clang-format.exe" %*
+version https://git-lfs.github.com/spec/v1
+oid sha256:75d54b86b77f1a338c13260d14dbd2288175988f427cb3eaa74296b8758c0de9
+size 243

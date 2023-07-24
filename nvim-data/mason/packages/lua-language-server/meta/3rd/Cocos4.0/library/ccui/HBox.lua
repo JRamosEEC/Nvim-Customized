@@ -1,26 +1,3 @@
----@meta
-
----@class ccui.HBox :ccui.Layout
-local HBox={ }
-ccui.HBox=HBox
-
-
-
-
----* 
----@param size size_table
----@return boolean
-function HBox:initWithSize (size) end
----@overload fun(size_table:size_table):self
----@overload fun():self
----@param size size_table
----@return self
-function HBox:create (size) end
----* 
----@return boolean
-function HBox:init () end
----* Default constructor<br>
----* js ctor<br>
----* lua new
----@return self
-function HBox:HBox () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:07c0b05ecdc609c6127267545ee984b41710f52e126d7dfe0a296b1de976cc37
+size 485

@@ -1,18 +1,3 @@
----@meta
-
----@class cc.EventListenerCustom :cc.EventListener
-local EventListenerCustom={ }
-cc.EventListenerCustom=EventListenerCustom
-
-
-
-
----* 
----@return self
-function EventListenerCustom:clone () end
----* / Overrides
----@return boolean
-function EventListenerCustom:checkAvailable () end
----*  Constructor 
----@return self
-function EventListenerCustom:EventListenerCustom () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:0bb72dd3255a3221515cd2e8290663e8244688beaae154f86d4fe419ff3860b6
+size 396

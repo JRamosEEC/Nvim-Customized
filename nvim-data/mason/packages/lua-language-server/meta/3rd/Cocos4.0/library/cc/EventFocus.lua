@@ -1,17 +1,3 @@
----@meta
-
----@class cc.EventFocus :cc.Event
-local EventFocus={ }
-cc.EventFocus=EventFocus
-
-
-
-
----*  Constructor.<br>
----* param widgetLoseFocus The widget which lose focus.<br>
----* param widgetGetFocus The widget which get focus.<br>
----* js ctor
----@param widgetLoseFocus ccui.Widget
----@param widgetGetFocus ccui.Widget
----@return self
-function EventFocus:EventFocus (widgetLoseFocus,widgetGetFocus) end
+version https://git-lfs.github.com/spec/v1
+oid sha256:4129664c942ed4b1d35042ba91bb5a27f24bf76b5375d3c16bc398870a2f9daf
+size 422

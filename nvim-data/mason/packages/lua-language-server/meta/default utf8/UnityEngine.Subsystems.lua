@@ -1,27 +1,3 @@
----@meta
-
----@source UnityEngine.SubsystemsModule.dll
----@class UnityEngine.Subsystems.ExampleSubsystem: UnityEngine.IntegratedSubsystem<UnityEngine.Subsystems.ExampleSubsystemDescriptor>
----@source UnityEngine.SubsystemsModule.dll
-CS.UnityEngine.Subsystems.ExampleSubsystem = {}
-
----@source UnityEngine.SubsystemsModule.dll
-function CS.UnityEngine.Subsystems.ExampleSubsystem.PrintExample() end
-
----@source UnityEngine.SubsystemsModule.dll
----@return Boolean
-function CS.UnityEngine.Subsystems.ExampleSubsystem.GetBool() end
-
-
----@source UnityEngine.SubsystemsModule.dll
----@class UnityEngine.Subsystems.ExampleSubsystemDescriptor: UnityEngine.IntegratedSubsystemDescriptor<UnityEngine.Subsystems.ExampleSubsystem>
----@source UnityEngine.SubsystemsModule.dll
----@field supportsEditorMode bool
----@source UnityEngine.SubsystemsModule.dll
----@field disableBackbufferMSAA bool
----@source UnityEngine.SubsystemsModule.dll
----@field stereoscopicBackbuffer bool
----@source UnityEngine.SubsystemsModule.dll
----@field usePBufferEGL bool
----@source UnityEngine.SubsystemsModule.dll
-CS.UnityEngine.Subsystems.ExampleSubsystemDescriptor = {}
+version https://git-lfs.github.com/spec/v1
+oid sha256:37aad5f5c3b9ed9cfca9a30287c9c9cf4c688a00247ad14220f37f9178f59503
+size 1132

@@ -1,31 +1,3 @@
-local files      = require("files")
-local log        = require("log")
-
-return function(uri, options)
-    local suc, codeFormat = pcall(require, "code_format")
-    if not suc then
-        return
-    end
-    local text = files.getOriginText(uri)
-    local state = files.getState(uri)
-    if not state then
-        return
-    end
-    local status, formattedText = codeFormat.format(uri, text, options)
-
-    if not status then
-        if formattedText ~= nil then
-            log.error(formattedText)
-        end
-
-        return
-    end
-
-    return {
-        {
-            start = state.ast.start,
-            finish = state.ast.finish,
-            text = formattedText,
-        }
-    }
-end
+version https://git-lfs.github.com/spec/v1
+oid sha256:8700aba0681aaa56fd7893805c1b64de0bf838fae253dd5c777b65386250ddbe
+size 718

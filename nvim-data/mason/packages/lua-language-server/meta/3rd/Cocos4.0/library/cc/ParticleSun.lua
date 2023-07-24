@@ -1,30 +1,3 @@
----@meta
-
----@class cc.ParticleSun :cc.ParticleSystemQuad
-local ParticleSun={ }
-cc.ParticleSun=ParticleSun
-
-
-
-
----* 
----@return boolean
-function ParticleSun:init () end
----* 
----@param numberOfParticles int
----@return boolean
-function ParticleSun:initWithTotalParticles (numberOfParticles) end
----*  Create a sun particle system.<br>
----* return An autoreleased ParticleSun object.
----@return self
-function ParticleSun:create () end
----*  Create a sun particle system withe a fixed number of particles.<br>
----* param numberOfParticles A given number of particles.<br>
----* return An autoreleased ParticleSun object.<br>
----* js NA
----@param numberOfParticles int
----@return self
-function ParticleSun:createWithTotalParticles (numberOfParticles) end
----* js ctor
----@return self
-function ParticleSun:ParticleSun () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:73089968ce48db6b65d413479c62f77ceac0aa4fd1e5b8ca5d608976e3cb1ef5
+size 847

@@ -1,30 +1,3 @@
----@meta
-
----@class cc.ParticleFire :cc.ParticleSystemQuad
-local ParticleFire={ }
-cc.ParticleFire=ParticleFire
-
-
-
-
----*  Create a fire particle system.<br>
----* return An autoreleased ParticleFire object.
----@return self
-function ParticleFire:create () end
----*  Create a fire particle system withe a fixed number of particles.<br>
----* param numberOfParticles A given number of particles.<br>
----* return An autoreleased ParticleFire object.<br>
----* js NA
----@param numberOfParticles int
----@return self
-function ParticleFire:createWithTotalParticles (numberOfParticles) end
----* 
----@return boolean
-function ParticleFire:init () end
----* 
----@param numberOfParticles int
----@return boolean
-function ParticleFire:initWithTotalParticles (numberOfParticles) end
----* js ctor
----@return self
-function ParticleFire:ParticleFire () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:98990fd9c832a70f38dfdfcc49bfe49329cc85c5fad1d1ea5f722fc61e0a50df
+size 861

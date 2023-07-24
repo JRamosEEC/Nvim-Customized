@@ -1,26 +1,3 @@
----@meta
-
----@class cc.CardinalSplineBy :cc.CardinalSplineTo
-local CardinalSplineBy={ }
-cc.CardinalSplineBy=CardinalSplineBy
-
-
-
-
----* 
----@param target cc.Node
----@return self
-function CardinalSplineBy:startWithTarget (target) end
----* 
----@return self
-function CardinalSplineBy:clone () end
----* 
----@param newPos vec2_table
----@return self
-function CardinalSplineBy:updatePosition (newPos) end
----* 
----@return self
-function CardinalSplineBy:reverse () end
----* 
----@return self
-function CardinalSplineBy:CardinalSplineBy () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:5d6ce8aca9e8201cc6186fbbb49e6fb031f538d649ba328d1231d411eabc9c9c
+size 555

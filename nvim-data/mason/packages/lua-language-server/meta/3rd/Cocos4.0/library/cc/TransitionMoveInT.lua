@@ -1,20 +1,3 @@
----@meta
-
----@class cc.TransitionMoveInT :cc.TransitionMoveInL
-local TransitionMoveInT={ }
-cc.TransitionMoveInT=TransitionMoveInT
-
-
-
-
----*  Creates a transition with duration and incoming scene.<br>
----* param t Duration time, in seconds.<br>
----* param scene A given scene.<br>
----* return A autoreleased TransitionMoveInT object.
----@param t float
----@param scene cc.Scene
----@return self
-function TransitionMoveInT:create (t,scene) end
----* 
----@return self
-function TransitionMoveInT:TransitionMoveInT () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:9269230155a038b193510ffddf2cefe7d7cb148a2c1a9d681f2747ed74ef23f8
+size 531

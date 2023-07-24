@@ -1,30 +1,3 @@
----@meta
-
----@class cc.ParticleExplosion :cc.ParticleSystemQuad
-local ParticleExplosion={ }
-cc.ParticleExplosion=ParticleExplosion
-
-
-
-
----* 
----@return boolean
-function ParticleExplosion:init () end
----* 
----@param numberOfParticles int
----@return boolean
-function ParticleExplosion:initWithTotalParticles (numberOfParticles) end
----*  Create a explosion particle system.<br>
----* return An autoreleased ParticleExplosion object.
----@return self
-function ParticleExplosion:create () end
----*  Create a explosion particle system withe a fixed number of particles.<br>
----* param numberOfParticles A given number of particles.<br>
----* return An autoreleased ParticleExplosion object.<br>
----* js NA
----@param numberOfParticles int
----@return self
-function ParticleExplosion:createWithTotalParticles (numberOfParticles) end
----* js ctor
----@return self
-function ParticleExplosion:ParticleExplosion () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:cc4a3becbdc92b87da2962bd37cc3c40767ae4e713178d8363ca1f0badd4dcdd
+size 931

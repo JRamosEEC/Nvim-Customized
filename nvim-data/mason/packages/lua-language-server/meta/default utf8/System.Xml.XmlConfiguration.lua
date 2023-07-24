@@ -1,18 +1,3 @@
----@meta
-
----@source System.Xml.dll
----@class System.Xml.XmlConfiguration.XmlReaderSection: System.Configuration.ConfigurationSection
----@source System.Xml.dll
----@field CollapseWhiteSpaceIntoEmptyStringString string
----@source System.Xml.dll
----@field ProhibitDefaultResolverString string
----@source System.Xml.dll
-CS.System.Xml.XmlConfiguration.XmlReaderSection = {}
-
-
----@source System.Xml.dll
----@class System.Xml.XmlConfiguration.XsltConfigSection: System.Configuration.ConfigurationSection
----@source System.Xml.dll
----@field ProhibitDefaultResolverString string
----@source System.Xml.dll
-CS.System.Xml.XmlConfiguration.XsltConfigSection = {}
+version https://git-lfs.github.com/spec/v1
+oid sha256:d9694577c8d825af2048b8515ce87b382764db8fec4ecce31b58fb7d2f831b27
+size 649

@@ -1,24 +1,3 @@
-local files   = require 'files'
-local lang    = require 'language'
-
-return function (uri, callback)
-    local state = files.getState(uri)
-    if not state then
-        return
-    end
-
-    if not state.ast.docs then
-        return
-    end
-
-    for _, doc in ipairs(state.ast.docs) do
-        if doc.type == 'doc.param'
-        and not doc.bindSource then
-            callback {
-                start   = doc.param.start,
-                finish  = doc.param.finish,
-                message = lang.script('DIAG_UNDEFINED_DOC_PARAM', doc.param[1])
-            }
-        end
-    end
-end
+version https://git-lfs.github.com/spec/v1
+oid sha256:50f9a78fb4d7fd86a989dbf80f9410c7dedbeea89eb7470fff4067ea1c868ad3
+size 606

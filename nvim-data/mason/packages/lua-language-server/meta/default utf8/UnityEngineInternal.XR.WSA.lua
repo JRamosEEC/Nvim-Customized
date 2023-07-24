@@ -1,13 +1,3 @@
----@meta
-
----@source UnityEngine.VRModule.dll
----@class UnityEngineInternal.XR.WSA.RemoteSpeechAccess: object
----@source UnityEngine.VRModule.dll
-CS.UnityEngineInternal.XR.WSA.RemoteSpeechAccess = {}
-
----@source UnityEngine.VRModule.dll
----@param version UnityEngine.XR.WSA.RemoteDeviceVersion
-function CS.UnityEngineInternal.XR.WSA.RemoteSpeechAccess:EnableRemoteSpeech(version) end
-
----@source UnityEngine.VRModule.dll
-function CS.UnityEngineInternal.XR.WSA.RemoteSpeechAccess:DisableRemoteSpeech() end
+version https://git-lfs.github.com/spec/v1
+oid sha256:f52897c68159ba7044f8e9822bdb2029f52f85a618fecd796d2290a72ede0eb0
+size 505

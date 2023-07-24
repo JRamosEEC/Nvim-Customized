@@ -1,17 +1,3 @@
----@meta
-
----@class cc.PhysicsShapeEdgePolygon :cc.PhysicsShape
-local PhysicsShapeEdgePolygon={ }
-cc.PhysicsShapeEdgePolygon=PhysicsShapeEdgePolygon
-
-
-
-
----* Get this polygon's points array count.<br>
----* return An integer number.
----@return int
-function PhysicsShapeEdgePolygon:getPointsCount () end
----* Get this polygon's center position.<br>
----* return A Vec2 object.
----@return vec2_table
-function PhysicsShapeEdgePolygon:getCenter () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:0ffba853b73f5eed404bc8d2975b9b2ff56c3f156c51ba71b34bdcbd3ed0275b
+size 461

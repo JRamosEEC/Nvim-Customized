@@ -1,26 +1,3 @@
----@meta
-
----@class ccs.TextureData :cc.Ref
-local TextureData={ }
-ccs.TextureData=TextureData
-
-
-
-
----* 
----@param index int
----@return ccs.ContourData
-function TextureData:getContourData (index) end
----* 
----@return boolean
-function TextureData:init () end
----* 
----@param contourData ccs.ContourData
----@return self
-function TextureData:addContourData (contourData) end
----* 
----@return self
-function TextureData:create () end
----* js ctor
----@return self
-function TextureData:TextureData () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:7e5f10a1a7bf1cec78bf0c7b78e6114d14e2c2012e7de6fb22407a54a38f928c
+size 521

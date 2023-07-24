@@ -1,6 +1,3 @@
----@meta
-resty_upstream_healthcheck={}
-function resty_upstream_healthcheck.status_page() end
-resty_upstream_healthcheck._VERSION="0.05"
-function resty_upstream_healthcheck.spawn_checker(opts) end
-return resty_upstream_healthcheck
+version https://git-lfs.github.com/spec/v1
+oid sha256:59b62a0fa19a8ea4c527d9c1e1ac274273e795fa81048bf38e686e48bb35b901
+size 234

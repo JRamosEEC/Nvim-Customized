@@ -1,4 +1,3 @@
----@meta
-local resty_core_ndk={}
-resty_core_ndk.version = require("resty.core.base").version
-return resty_core_ndk
+version https://git-lfs.github.com/spec/v1
+oid sha256:29819591ae00bdb097aac07675f648bbd1490a13373de9d510ea54417bf4a6e7
+size 117

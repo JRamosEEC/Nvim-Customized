@@ -1,20 +1,3 @@
----@meta
-
----@class cc.TransitionJumpZoom :cc.TransitionScene
-local TransitionJumpZoom={ }
-cc.TransitionJumpZoom=TransitionJumpZoom
-
-
-
-
----*  Creates a transition with duration and incoming scene.<br>
----* param t Duration time, in seconds.<br>
----* param scene A given scene.<br>
----* return A autoreleased TransitionJumpZoom object.
----@param t float
----@param scene cc.Scene
----@return self
-function TransitionJumpZoom:create (t,scene) end
----* 
----@return self
-function TransitionJumpZoom:TransitionJumpZoom () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:a28f8b5cc1921a472df6c5d327bf1d1f4c49c6f7bdc014509cbc96e6cbdfd533
+size 537

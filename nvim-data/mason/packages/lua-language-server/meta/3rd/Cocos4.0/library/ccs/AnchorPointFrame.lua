@@ -1,25 +1,3 @@
----@meta
-
----@class ccs.AnchorPointFrame :ccs.Frame
-local AnchorPointFrame={ }
-ccs.AnchorPointFrame=AnchorPointFrame
-
-
-
-
----* 
----@param point vec2_table
----@return self
-function AnchorPointFrame:setAnchorPoint (point) end
----* 
----@return vec2_table
-function AnchorPointFrame:getAnchorPoint () end
----* 
----@return self
-function AnchorPointFrame:create () end
----* 
----@return ccs.Frame
-function AnchorPointFrame:clone () end
----* 
----@return self
-function AnchorPointFrame:AnchorPointFrame () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:401fd596df99f1502c273d729ecebf2c5cce25ab5255f42ca2681d21ac3a5a00
+size 522

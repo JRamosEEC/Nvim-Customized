@@ -1,9 +1,3 @@
----@meta
-resty_limit_req={}
-function resty_limit_req.set_rate(self, rate) end
-function resty_limit_req.uncommit(self, key) end
-function resty_limit_req.set_burst(self, burst) end
-function resty_limit_req.new(dict_name, rate, burst) end
-function resty_limit_req.incoming(self, key, commit) end
-resty_limit_req._VERSION="0.06"
-return resty_limit_req
+version https://git-lfs.github.com/spec/v1
+oid sha256:5d13a6d87a1f7d6116c0433c6fdb11adff1ad7f45ca9e5ab91bbe19f3b388668
+size 355

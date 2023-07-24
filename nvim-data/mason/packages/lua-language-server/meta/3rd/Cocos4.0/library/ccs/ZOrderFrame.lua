@@ -1,25 +1,3 @@
----@meta
-
----@class ccs.ZOrderFrame :ccs.Frame
-local ZOrderFrame={ }
-ccs.ZOrderFrame=ZOrderFrame
-
-
-
-
----* 
----@return int
-function ZOrderFrame:getZOrder () end
----* 
----@param zorder int
----@return self
-function ZOrderFrame:setZOrder (zorder) end
----* 
----@return self
-function ZOrderFrame:create () end
----* 
----@return ccs.Frame
-function ZOrderFrame:clone () end
----* 
----@return self
-function ZOrderFrame:ZOrderFrame () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:e5e96095f797cd65c70f998c501be75baf60516379499cef6e62e6cf6ac99b1f
+size 450

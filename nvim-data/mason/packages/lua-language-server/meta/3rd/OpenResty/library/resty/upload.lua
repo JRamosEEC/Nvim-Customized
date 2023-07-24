@@ -1,7 +1,3 @@
----@meta
-resty_upload={}
-function resty_upload.read(self) end
-function resty_upload.set_timeout(self, timeout) end
-resty_upload._VERSION="0.10"
-function resty_upload.new(self, chunk_size, max_line_size) end
-return resty_upload
+version https://git-lfs.github.com/spec/v1
+oid sha256:4a6b88cd5212436947f7a9de6004b3b6f70baf9c718d7a696a8c7a4431546baa
+size 232

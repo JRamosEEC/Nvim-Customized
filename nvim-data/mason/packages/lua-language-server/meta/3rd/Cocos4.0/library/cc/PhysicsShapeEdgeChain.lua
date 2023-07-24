@@ -1,17 +1,3 @@
----@meta
-
----@class cc.PhysicsShapeEdgeChain :cc.PhysicsShape
-local PhysicsShapeEdgeChain={ }
-cc.PhysicsShapeEdgeChain=PhysicsShapeEdgeChain
-
-
-
-
----* Get this chain's points array count.<br>
----* return An integer number.
----@return int
-function PhysicsShapeEdgeChain:getPointsCount () end
----* Get this chain's center position.<br>
----* return A Vec2 object.
----@return vec2_table
-function PhysicsShapeEdgeChain:getCenter () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:5ab151a06920d10b037d89aca653c65a86a8ffcd3effa4f829dbd37cf062ae4a
+size 445

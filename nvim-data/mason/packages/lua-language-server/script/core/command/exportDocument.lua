@@ -1,16 +1,3 @@
-local doc    = require 'cli.doc'
-local client = require 'client'
-local furi   = require 'file-uri'
-local lang   = require 'language'
-local ws     = require 'workspace'
-local files  = require 'files'
-
----@async
-return function (args)
-    local outputPath = args[1] and furi.decode(args[1]) or LOGPATH
-    local docPath, mdPath = doc.makeDoc(outputPath)
-    client.showMessage('Info', lang.script('CLI_DOC_DONE'
-        , ('[%s](%s)'):format(files.normalize(docPath), furi.encode(docPath))
-        , ('[%s](%s)'):format(files.normalize(mdPath),  furi.encode(mdPath))
-    ))
-end
+version https://git-lfs.github.com/spec/v1
+oid sha256:2b1f2da9378ceb48786b56914a7933a5820a897da8375d96af7b193b970dd8b9
+size 592

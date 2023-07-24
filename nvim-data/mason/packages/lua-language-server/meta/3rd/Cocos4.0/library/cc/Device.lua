@@ -1,34 +1,3 @@
----@meta
-
----@class cc.Device 
-local Device={ }
-cc.Device=Device
-
-
-
-
----* To enable or disable accelerometer.
----@param isEnabled boolean
----@return self
-function Device:setAccelerometerEnabled (isEnabled) end
----* Sets the interval of accelerometer.
----@param interval float
----@return self
-function Device:setAccelerometerInterval (interval) end
----* Controls whether the screen should remain on.<br>
----* param keepScreenOn One flag indicating that the screen should remain on.
----@param keepScreenOn boolean
----@return self
-function Device:setKeepScreenOn (keepScreenOn) end
----* Vibrate for the specified amount of time.<br>
----* If vibrate is not supported, then invoking this method has no effect.<br>
----* Some platforms limit to a maximum duration of 5 seconds.<br>
----* Duration is ignored on iOS due to API limitations.<br>
----* param duration The duration in seconds.
----@param duration float
----@return self
-function Device:vibrate (duration) end
----* Gets the DPI of device<br>
----* return The DPI of device.
----@return int
-function Device:getDPI () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:320ed70a739b628ed6c1ae9cea38f61d7d3a3128d3c422414e988348349b5125
+size 1100

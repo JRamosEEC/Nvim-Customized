@@ -1,16 +1,3 @@
-/*===---- builtins.h - Standard header for extra builtins -----------------===*\
- *
- * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
- * See https://llvm.org/LICENSE.txt for license information.
- * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
- *
-\*===----------------------------------------------------------------------===*/
-
-/// Some legacy compilers have builtin definitions in a file named builtins.h.
-/// This header file has been added to allow compatibility with code that was
-/// written for those compilers. Code may have an include line for this file
-/// and to avoid an error an empty file with this name is provided.
-#ifndef __BUILTINS_H
-#define __BUILTINS_H
-
-#endif /* __BUILTINS_H */
+version https://git-lfs.github.com/spec/v1
+oid sha256:8c3afade56784ae040e314e02ca66ae7fc051f8946f6a70d946bdf72992da068
+size 757

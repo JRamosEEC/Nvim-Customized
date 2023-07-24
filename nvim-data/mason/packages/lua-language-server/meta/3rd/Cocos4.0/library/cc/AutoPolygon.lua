@@ -1,16 +1,3 @@
----@meta
-
----@class cc.AutoPolygon 
-local AutoPolygon={ }
-cc.AutoPolygon=AutoPolygon
-
-
-
-
----* create an AutoPolygon and initialize it with an image file<br>
----* the image must be a 32bit PNG for current version 3.7<br>
----* param   filename    a path to image file, e.g., "scene1/monster.png".<br>
----* return  an AutoPolygon object;
----@param filename string
----@return self
-function AutoPolygon:AutoPolygon (filename) end
+version https://git-lfs.github.com/spec/v1
+oid sha256:ca1a61b7dbca05c8f3d9c0575240cc3a97f822e72a2532959f429914b4382a66
+size 439

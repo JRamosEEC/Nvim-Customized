@@ -1,16 +1,3 @@
----@meta
-
----@class ccb.TextureCubemapBackend :ccb.TextureBackend
-local TextureCubemapBackend={ }
-ccb.TextureCubemapBackend=TextureCubemapBackend
-
-
-
-
----* Update texutre cube data in give slice side.<br>
----* param side Specifies which slice texture of cube to be update.<br>
----* param data Specifies a pointer to the image data in memory.
----@param side int
----@param data void
----@return cc.backend.TextureCubemapBackend
-function TextureCubemapBackend:updateFaceData (side,data) end
+version https://git-lfs.github.com/spec/v1
+oid sha256:7517c8fa4752e15dfcacd81c8faf3e726bd10dd80c23ad9c5c9c45901c6e1016
+size 500

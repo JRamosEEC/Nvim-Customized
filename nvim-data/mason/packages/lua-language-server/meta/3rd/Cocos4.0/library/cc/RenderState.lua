@@ -1,18 +1,3 @@
----@meta
-
----@class cc.RenderState :cc.Ref
-local RenderState={ }
-cc.RenderState=RenderState
-
-
-
-
----* 
----@return string
-function RenderState:getName () end
----* Binds the render state for this RenderState and any of its parents, top-down,<br>
----* for the given pass.
----@param pass cc.Pass
----@param d cc.MeshComman
----@return self
-function RenderState:bindPass (pass,d) end
+version https://git-lfs.github.com/spec/v1
+oid sha256:d80ebef6a60c1fbc2a6f906e8b04bf67166503f55465435bcd37dba932ac2d94
+size 392

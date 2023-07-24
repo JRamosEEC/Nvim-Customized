@@ -1,10 +1,3 @@
----@meta
-
----@class resty.sha244 : resty.string.checksum
-local sha224={}
-
---- Create a new sha244 checksum object.
----@return resty.sha244
-function sha224:new() end
-
-return sha224
+version https://git-lfs.github.com/spec/v1
+oid sha256:f84d8aa78f021a73544a77ca08c385257b282e7fef2ecd511a89275fca0e48a1
+size 188

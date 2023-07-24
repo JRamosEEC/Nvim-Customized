@@ -1,10 +1,3 @@
-@ECHO off
-GOTO start
-:find_dp0
-SET dp0=%~dp0
-EXIT /b
-:start
-SETLOCAL
-CALL :find_dp0
-
-endLocal & goto #_undefined_# 2>NUL || title %COMSPEC% & "C:\Users\justi\AppData\Local\nvim-data\mason\packages\prettier\node_modules\.bin\prettier.cmd" %*
+version https://git-lfs.github.com/spec/v1
+oid sha256:0a2415a5441acc01eb4436f1d76710afcb04e8c1ebf2d0ec73a405f3e0d15dc2
+size 240

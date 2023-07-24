@@ -1,25 +1,3 @@
----@meta
-
----@class ccs.PlayableFrame :ccs.Frame
-local PlayableFrame={ }
-ccs.PlayableFrame=PlayableFrame
-
-
-
-
----* 
----@param playact string
----@return self
-function PlayableFrame:setPlayableAct (playact) end
----* 
----@return string
-function PlayableFrame:getPlayableAct () end
----* 
----@return self
-function PlayableFrame:create () end
----* 
----@return ccs.Frame
-function PlayableFrame:clone () end
----* 
----@return self
-function PlayableFrame:PlayableFrame () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:b4a9d08cbe0eeef9e3829815193d7049f7951df60c7d756fdcc8bf27bdf0e44c
+size 488

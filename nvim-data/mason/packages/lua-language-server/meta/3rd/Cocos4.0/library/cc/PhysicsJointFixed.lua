@@ -1,22 +1,3 @@
----@meta
-
----@class cc.PhysicsJointFixed :cc.PhysicsJoint
-local PhysicsJointFixed={ }
-cc.PhysicsJointFixed=PhysicsJointFixed
-
-
-
-
----* 
----@return boolean
-function PhysicsJointFixed:createConstraints () end
----*  Create a fixed joint.<br>
----* param a A is the body to connect.<br>
----* param b B is the body to connect.<br>
----* param anchr It's the pivot position.<br>
----* return A object pointer.
----@param a cc.PhysicsBody
----@param b cc.PhysicsBody
----@param anchr vec2_table
----@return self
-function PhysicsJointFixed:construct (a,b,anchr) end
+version https://git-lfs.github.com/spec/v1
+oid sha256:500142255cadd7677d97af44d7da87c08868726aa2f08b2fe77b314dba27b84e
+size 570

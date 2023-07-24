@@ -1,23 +1,3 @@
----@meta
-
---- Returns `true` when the given Lua table is a pure array-like Lua table, or
---- `false` otherwise.
----
---- Empty Lua tables are treated as arrays.
----
---- This API can be JIT compiled.
----
---- Usage:
----
---- ```lua
---- local isarray = require "table.isarray"
----
---- print(isarray{"a", true, 3.14})  -- true
---- print(isarray{dog = 3})  -- false
---- print(isarray{})  -- true
---- ```
----@param t table
----@return boolean
-local function isarray(t) end
-
-return isarray
+version https://git-lfs.github.com/spec/v1
+oid sha256:749628fd9bf0f15624d0ba86458004d6a4cd306f57d38b70fc24aa6e0f970fb3
+size 503

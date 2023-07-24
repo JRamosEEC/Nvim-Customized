@@ -1,10 +1,3 @@
-@ECHO off
-GOTO start
-:find_dp0
-SET dp0=%~dp0
-EXIT /b
-:start
-SETLOCAL
-CALL :find_dp0
-
-endLocal & goto #_undefined_# 2>NUL || title %COMSPEC% & "C:\Users\justi\AppData\Local\nvim-data\mason\packages\deno\deno.exe" %*
+version https://git-lfs.github.com/spec/v1
+oid sha256:fb21c2706e31a9f79cd192fef3cd992f9af32b38d54e799d0c51dd155f5924f6
+size 214

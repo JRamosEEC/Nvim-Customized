@@ -1,4 +1,3 @@
-{
-    "name" : "luaecs",
-    "words" : [ "ecs%.world()" ]
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:7161d418a1cb41cc21c533e3130957f2f3ce78ef2580d557cda35c9c7a2b4d61
+size 64

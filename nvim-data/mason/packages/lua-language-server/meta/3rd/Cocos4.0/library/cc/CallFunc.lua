@@ -1,25 +1,3 @@
----@meta
-
----@class cc.CallFunc :cc.ActionInstant
-local CallFunc={ }
-cc.CallFunc=CallFunc
-
-
-
-
----*  Executes the callback.
----@return self
-function CallFunc:execute () end
----* 
----@return self
-function CallFunc:clone () end
----* param time In seconds.
----@param time float
----@return self
-function CallFunc:update (time) end
----* 
----@return self
-function CallFunc:reverse () end
----* 
----@return self
-function CallFunc:CallFunc () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:16e8a04779c6f8038c0aec4a16618f6dd11372ff839b6beb78048612e0bfe0a9
+size 460

@@ -1,16 +1,3 @@
----@meta
-
----@class cc.TMXTilesetInfo :cc.Ref
-local TMXTilesetInfo={ }
-cc.TMXTilesetInfo=TMXTilesetInfo
-
-
-
-
----* 
----@param gid unsigned_int
----@return rect_table
-function TMXTilesetInfo:getRectForGID (gid) end
----* js ctor
----@return self
-function TMXTilesetInfo:TMXTilesetInfo () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:65a515e351bff1b6d4867782522ad8fd4df68dfdab368ad0b9d790e6a6f93610
+size 300

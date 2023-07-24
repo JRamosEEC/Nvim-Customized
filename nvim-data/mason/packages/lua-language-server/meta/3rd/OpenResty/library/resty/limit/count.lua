@@ -1,7 +1,3 @@
----@meta
-resty_limit_count={}
-function resty_limit_count.uncommit(self, key) end
-function resty_limit_count.incoming(self, key, commit) end
-resty_limit_count._VERSION="0.06"
-function resty_limit_count.new(dict_name, limit, window) end
-return resty_limit_count
+version https://git-lfs.github.com/spec/v1
+oid sha256:f8f3c9cc8563dc1182bda7113c619242cf31c9f02f1db5f24464710f0e5283c7
+size 265

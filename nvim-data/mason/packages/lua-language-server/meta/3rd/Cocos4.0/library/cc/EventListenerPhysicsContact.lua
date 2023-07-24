@@ -1,19 +1,3 @@
----@meta
-
----@class cc.EventListenerPhysicsContact :cc.EventListenerCustom
-local EventListenerPhysicsContact={ }
-cc.EventListenerPhysicsContact=EventListenerPhysicsContact
-
-
-
-
----*  Create the listener. 
----@return self
-function EventListenerPhysicsContact:create () end
----*  Clone an object from this listener.
----@return self
-function EventListenerPhysicsContact:clone () end
----*  Check the listener is available.<br>
----* return True if there's one available callback function at least, false if there's no one.
----@return boolean
-function EventListenerPhysicsContact:checkAvailable () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:f7866c1f865de5eb7382b6c590d5057e5a803c6e65fd86050858cb54246e9896
+size 612

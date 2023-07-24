@@ -1,29 +1,3 @@
----@meta
-
---- Check handles will run the given callback once per loop iteration, right after
---- polling for I/O.
----
---- ```lua
---- local check = uv.new_check()
---- check:start(function()
----   print("After I/O polling")
---- end)
---- ```
----
----@class uv.uv_check_t : uv.uv_handle_t
-local check
-
---- Start the handle with the given callback.
----
----@param  callback   function
----@return 0|nil      success
----@return uv.error.message|nil err
----@return uv.error.name|nil err_name
-function check:start(callback) end
-
---- Stop the handle, the callback will no longer be called.
----
----@return 0|nil      success
----@return uv.error.message|nil err
----@return uv.error.name|nil err_name
-function check:stop() end
+version https://git-lfs.github.com/spec/v1
+oid sha256:2c6d9abb1dacc09404d1c6b85fedbf3517db3cdbd34e2cef64cf7f46aaad701f
+size 739

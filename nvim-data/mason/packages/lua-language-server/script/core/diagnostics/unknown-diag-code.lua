@@ -1,31 +1,3 @@
-local files   = require 'files'
-local lang    = require 'language'
-local diag    = require 'proto.diagnostic'
-
-return function (uri, callback)
-    local state = files.getState(uri)
-    if not state then
-        return
-    end
-
-    if not state.ast.docs then
-        return
-    end
-
-    for _, doc in ipairs(state.ast.docs) do
-        if doc.type == 'doc.diagnostic' then
-            if doc.names then
-                for _, nameUnit in ipairs(doc.names) do
-                    local code = nameUnit[1]
-                    if not diag.getDiagAndErrNameMap()[code] then
-                        callback {
-                            start   = nameUnit.start,
-                            finish  = nameUnit.finish,
-                            message = lang.script('DIAG_UNKNOWN_DIAG_CODE', code),
-                        }
-                    end
-                end
-            end
-        end
-    end
-end
+version https://git-lfs.github.com/spec/v1
+oid sha256:bf887d72f73605edeb9f8b408f69e81e821265d3d78a3c04f05dc5d2633ece1f
+size 936

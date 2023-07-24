@@ -1,20 +1,3 @@
----Image API documentation
----Functions for creating image objects.
----@class image
-image = {}
----luminance image type
-image.TYPE_LUMINANCE = nil
----RGB image type
-image.TYPE_RGB = nil
----RGBA image type
-image.TYPE_RGBA = nil
----Load image (PNG or JPEG) from buffer.
----@param buffer string # image data buffer
----@param premult boolean? # optional flag if alpha should be premultiplied. Defaults to false
----@return table # object or nil if loading fails. The object is a table with the following fields:
-function image.load(buffer, premult) end
-
-
-
-
-return image
+version https://git-lfs.github.com/spec/v1
+oid sha256:9b66439f7b6fbeaa143724add5bb491157aeb8d38229b6b2a21dcb4d7cf0ea2e
+size 582

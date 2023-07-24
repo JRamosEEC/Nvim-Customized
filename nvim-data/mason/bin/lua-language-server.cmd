@@ -1,10 +1,3 @@
-@ECHO off
-GOTO start
-:find_dp0
-SET dp0=%~dp0
-EXIT /b
-:start
-SETLOCAL
-CALL :find_dp0
-
-endLocal & goto #_undefined_# 2>NUL || title %COMSPEC% & "C:\Users\justi\AppData\Local\nvim-data\mason\packages\lua-language-server\bin/lua-language-server.exe" %*
+version https://git-lfs.github.com/spec/v1
+oid sha256:f16efe1de7de9d40cf8cd551f75b1515e80e901ed1ac3cce1b21ed6ad5a42efd
+size 248

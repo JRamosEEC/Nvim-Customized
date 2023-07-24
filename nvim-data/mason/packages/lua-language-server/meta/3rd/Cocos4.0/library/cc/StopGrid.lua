@@ -1,26 +1,3 @@
----@meta
-
----@class cc.StopGrid :cc.ActionInstant
-local StopGrid={ }
-cc.StopGrid=StopGrid
-
-
-
-
----* brief Create a StopGrid Action.<br>
----* return Return a pointer of StopGrid. When the creation failed, return nil.
----@return self
-function StopGrid:create () end
----* 
----@param target cc.Node
----@return self
-function StopGrid:startWithTarget (target) end
----* 
----@return self
-function StopGrid:clone () end
----* 
----@return self
-function StopGrid:reverse () end
----* 
----@return self
-function StopGrid:StopGrid () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:af29dc3401ce08e96ba9154ac01ae5727d8e1d42c67e2ef2304af6f5f23f64cb
+size 545

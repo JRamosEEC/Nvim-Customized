@@ -1,29 +1,3 @@
----@meta
-
---
---A raw data representation of a screenshot.
---
----@source UnityEngine.CoreModule.dll
----@class UnityEngine.Profiling.Experimental.DebugScreenCapture: System.ValueType
---
---A non-owning reference to the image data.
---
----@source UnityEngine.CoreModule.dll
----@field rawImageDataReference Unity.Collections.NativeArray<byte>
---
---The format in which the image was captured.
---
----@source UnityEngine.CoreModule.dll
----@field imageFormat UnityEngine.TextureFormat
---
---Width of the image.
---
----@source UnityEngine.CoreModule.dll
----@field width int
---
---Height of the image.
---
----@source UnityEngine.CoreModule.dll
----@field height int
----@source UnityEngine.CoreModule.dll
-CS.UnityEngine.Profiling.Experimental.DebugScreenCapture = {}
+version https://git-lfs.github.com/spec/v1
+oid sha256:9ebfdfeb6ad39800b25b2d7fae22ce1bf8a5b2bf711ff243d8b72201ae2da5b5
+size 749

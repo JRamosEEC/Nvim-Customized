@@ -1,13 +1,3 @@
----@meta
-
----@class cc.AudioProfile 
-local AudioProfile={ }
-cc.AudioProfile=AudioProfile
-
-
-
-
----* Default constructor<br>
----* lua new
----@return self
-function AudioProfile:AudioProfile () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:ce12ce32bdc0925f58cdfd3345a40a1723bd78424b6f2b48396d78a0d9a9816a
+size 204

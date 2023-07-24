@@ -1,26 +1,3 @@
----@meta
-
----@class cc.EaseCircleActionOut :cc.ActionEase
-local EaseCircleActionOut={ }
-cc.EaseCircleActionOut=EaseCircleActionOut
-
-
-
-
----* 
----@param action cc.ActionInterval
----@return self
-function EaseCircleActionOut:create (action) end
----* 
----@return self
-function EaseCircleActionOut:clone () end
----* 
----@param time float
----@return self
-function EaseCircleActionOut:update (time) end
----* 
----@return cc.ActionEase
-function EaseCircleActionOut:reverse () end
----* 
----@return self
-function EaseCircleActionOut:EaseCircleActionOut () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:0a1be0a2c64afd3f81e857df4e8f25a0debca4ef0c0c312fbf78e4b5c64f8d81
+size 572

@@ -1,8 +1,3 @@
----@meta
-
---- Similar to `thread.exdata` but for a 2nd separate user data as a pointer value.
----@param data? any
----@return any? data
-local function exdata2(data) end
-
-return exdata2
+version https://git-lfs.github.com/spec/v1
+oid sha256:dcea3a840f1d23f956c8c879ae4e320b1d03c8d7aeaf9285311ebba652f8ecb4
+size 192

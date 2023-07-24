@@ -1,17 +1,3 @@
-/*===--- x86gprintrin.h - Implementation of X86 GPR intrinsics on PowerPC --===
- *
- * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
- * See https://llvm.org/LICENSE.txt for license information.
- * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
- *
- *===-----------------------------------------------------------------------===
- */
-
-#ifndef X86GPRINTRIN_H_
-#define X86GPRINTRIN_H_
-
-#include <bmiintrin.h>
-
-#include <bmi2intrin.h>
-
-#endif /* X86GPRINTRIN_H_ */
+version https://git-lfs.github.com/spec/v1
+oid sha256:41ab65058e0629dd348a51395a7bdfad662ed78c99f56bb0601b0c2a261a1f92
+size 516

@@ -1,28 +1,3 @@
-local suc, codeFormat = pcall(require, 'code_format')
-if not suc then
-    return
-end
-
-local config = require 'config'
-
-local m = {}
-
-m.loaded = false
-
-function m.nameStyleCheck(uri, text)
-    if not m.loaded then
-        local value = config.get(nil, "Lua.nameStyle.config")
-        codeFormat.update_name_style_config(value)
-        m.loaded = true
-    end
-
-    return codeFormat.name_style_analysis(uri, text)
-end
-
-config.watch(function (uri, key, value)
-    if key == "Lua.nameStyle.config" then
-        codeFormat.update_name_style_config(value)
-    end
-end)
-
-return m
+version https://git-lfs.github.com/spec/v1
+oid sha256:6949d191b99326447653b7bd1670a78a38c38fa4e0694cf8b9c2ed8fceed6690
+size 601

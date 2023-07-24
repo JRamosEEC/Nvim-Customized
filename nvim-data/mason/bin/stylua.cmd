@@ -1,10 +1,3 @@
-@ECHO off
-GOTO start
-:find_dp0
-SET dp0=%~dp0
-EXIT /b
-:start
-SETLOCAL
-CALL :find_dp0
-
-endLocal & goto #_undefined_# 2>NUL || title %COMSPEC% & "C:\Users\justi\AppData\Local\nvim-data\mason\packages\stylua\stylua.exe" %*
+version https://git-lfs.github.com/spec/v1
+oid sha256:fa0bc890d1620944e6cbe7e2472d645c52274d8c42d5031819868ad9b20a27c2
+size 218

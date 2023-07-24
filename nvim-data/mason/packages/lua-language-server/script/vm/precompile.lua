@@ -1,20 +1,3 @@
-local files    = require 'files'
-local global   = require 'vm.global'
-local variable = require 'vm.variable'
-
----@async
-files.watch(function (ev, uri)
-    if ev == 'update' then
-        global.dropUri(uri)
-    end
-    if ev == 'remove' then
-        global.dropUri(uri)
-    end
-    if ev == 'compile' then
-        local state = files.getLastState(uri)
-        if state then
-            global.compileAst(state.ast)
-            variable.compileAst(state.ast)
-        end
-    end
-end)
+version https://git-lfs.github.com/spec/v1
+oid sha256:3f20652d99e8153e6fa22fc45d021662ec759d0c025ba19e2b239f4168d14f6a
+size 502

@@ -1,1 +1,3 @@
-{"primary_source":{"type":"registry+v1","source":{"repo":"johnnymorganz\/stylua","downloads":[{"download_url":"https:\/\/github.com\/johnnymorganz\/stylua\/releases\/download\/v0.18.1\/stylua-win64.zip","out_file":"stylua-win64.zip"}],"asset":{"target":"win_x64","file":"stylua-win64.zip","bin":"stylua.exe"}},"id":"pkg:github\/johnnymorganz\/stylua@v0.18.1"},"links":{"bin":{"stylua.cmd":"stylua.exe"},"opt":{},"share":{}},"metrics":{"start_time":1689561716044,"completion_time":1689561718260},"schema_version":"1.1","secondary_sources":[],"name":"stylua"}
+version https://git-lfs.github.com/spec/v1
+oid sha256:f312289982b7bcbbf3155594b5edecbd754d20a407102a303d924a26bbbbdd44
+size 557

@@ -1,19 +1,3 @@
----@meta jit.profile
-
-local profile = {}
-
----@param mode string
----@param func fun(L: thread, samples: integer, vmst: string)
-function profile.start(mode, func)
-end
-
-function profile.stop()
-end
-
----@overload fun(th: thread, fmt: string, depth: integer)
----@param fmt string
----@param depth integer
-function profile.dumpstack(fmt, depth)
-end
-
-return profile
+version https://git-lfs.github.com/spec/v1
+oid sha256:028afab18e18b898b21280f5e128cd6c4906d12af80681263dd4393550e85c43
+size 356

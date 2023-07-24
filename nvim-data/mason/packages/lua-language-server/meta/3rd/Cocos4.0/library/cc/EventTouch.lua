@@ -1,22 +1,3 @@
----@meta
-
----@class cc.EventTouch :cc.Event
-local EventTouch={ }
-cc.EventTouch=EventTouch
-
-
-
-
----*  Get event code.<br>
----* return The code of the event.
----@return int
-function EventTouch:getEventCode () end
----*  Set the event code.<br>
----* param eventCode A given EventCode.
----@param eventCode int
----@return self
-function EventTouch:setEventCode (eventCode) end
----* Constructor.<br>
----* js NA
----@return self
-function EventTouch:EventTouch () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:3f9df8813e845431fd66c286a553c3a7c21cf358c8d6d3027131888e2e130329
+size 476

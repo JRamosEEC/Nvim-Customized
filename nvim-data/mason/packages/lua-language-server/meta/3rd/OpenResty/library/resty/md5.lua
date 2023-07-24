@@ -1,16 +1,3 @@
----@meta
-
----@class resty.md5 : resty.string.checksum
-local md5={}
-
---- Create a new md5 checksum object.
----@return resty.md5
-function md5:new() end
-
---- Add a string to the md5 checksum data
----@param  s       string
----@param  len?    number Optional length (defaults to the length of `s`)
----@return boolean ok
-function md5:update(s, len) end
-
-return md5
+version https://git-lfs.github.com/spec/v1
+oid sha256:3094d52dbb6fc7eb8ec5cade1e2419ffb3c1cf2e031352e26b6d3d592539dc67
+size 373

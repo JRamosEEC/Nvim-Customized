@@ -1,18 +1,3 @@
----@meta table.new
-
----@version JIT
----
----This creates a pre-sized table, just like the C API equivalent `lua_createtable()`. This is useful for big tables if the final table size is known and automatic table resizing is too expensive. `narray` parameter specifies the number of array-like items, and `nhash` parameter specifies the number of hash-like items. The function needs to be required before use.
----```lua
----    require("table.new")
----```
----
----
----[View documents](http://www.lua.org/manual/5.4/manual.html#pdf-table.new)
----
----@param narray integer
----@param nhash integer
----@return table
-local function new(narray, nhash) end
-
-return new
+version https://git-lfs.github.com/spec/v1
+oid sha256:37c26e271a68bf14f154d310b14595d512d72385cacff8425d06e5a248b0475a
+size 657

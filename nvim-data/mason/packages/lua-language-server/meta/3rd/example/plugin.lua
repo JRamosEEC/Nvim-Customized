@@ -1,16 +1,3 @@
--- if this file exists, then change setting `Lua.runtime.plugin`
--- see https://github.com/LuaLS/lua-language-server/wiki/Plugins
-
-function OnSetText(uri, text)
-    local diffs = {}
-
-    for start, finish in text:gmatch '()pairs()' do
-        diffs[#diffs+1] = {
-            start  = start,
-            finish = finish - 1,
-            text   = 'safepairs'
-        }
-    end
-
-    return diffs
-end
+version https://git-lfs.github.com/spec/v1
+oid sha256:c96b4d6f6eb61220b67717dc5730c23235f2e12dcd55fcfb080dee0e5f3d96a1
+size 413

@@ -1,23 +1,3 @@
----@meta
-
----@source UnityEngine.CoreModule.dll
----@class UnityEngine.Internal.DefaultValueAttribute: System.Attribute
----@source UnityEngine.CoreModule.dll
----@field Value object
----@source UnityEngine.CoreModule.dll
-CS.UnityEngine.Internal.DefaultValueAttribute = {}
-
----@source UnityEngine.CoreModule.dll
----@param obj object
----@return Boolean
-function CS.UnityEngine.Internal.DefaultValueAttribute.Equals(obj) end
-
----@source UnityEngine.CoreModule.dll
----@return Int32
-function CS.UnityEngine.Internal.DefaultValueAttribute.GetHashCode() end
-
-
----@source UnityEngine.CoreModule.dll
----@class UnityEngine.Internal.ExcludeFromDocsAttribute: System.Attribute
----@source UnityEngine.CoreModule.dll
-CS.UnityEngine.Internal.ExcludeFromDocsAttribute = {}
+version https://git-lfs.github.com/spec/v1
+oid sha256:3df87fbf726b86391933171dee33571cd713701975b3da41d9e771c799f4eca3
+size 754

@@ -1,20 +1,3 @@
----@meta
-
----@class cc.TransitionProgressOutIn :cc.TransitionProgress
-local TransitionProgressOutIn={ }
-cc.TransitionProgressOutIn=TransitionProgressOutIn
-
-
-
-
----*  Creates a transition with duration and incoming scene.<br>
----* param t Duration time, in seconds.<br>
----* param scene A given scene.<br>
----* return An autoreleased TransitionProgressOutIn object.
----@param t float
----@param scene cc.Scene
----@return self
-function TransitionProgressOutIn:create (t,scene) end
----* js ctor
----@return self
-function TransitionProgressOutIn:TransitionProgressOutIn () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:01f581fbf1cd8aee5de61f7dfd119129eaf357469af5ab4d30a41169d2563ce1
+size 588

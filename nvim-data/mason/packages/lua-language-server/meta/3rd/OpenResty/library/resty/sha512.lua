@@ -1,10 +1,3 @@
----@meta
-
----@class resty.sha512 : resty.string.checksum
-local sha512={}
-
---- Create a new sha512 checksum object.
----@return resty.sha512
-function sha512:new() end
-
-return sha512
+version https://git-lfs.github.com/spec/v1
+oid sha256:042480f82aa98d4dd85ad6fb2a6f8fcf70c613dacaf44340b7275ae3914a16ef
+size 188

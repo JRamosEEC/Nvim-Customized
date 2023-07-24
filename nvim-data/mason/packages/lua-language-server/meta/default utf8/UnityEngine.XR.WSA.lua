@@ -1,15 +1,3 @@
----@meta
-
----@source UnityEngine.VRModule.dll
----@class UnityEngine.XR.WSA.RemoteDeviceVersion: System.Enum
----@source UnityEngine.VRModule.dll
----@field V1 UnityEngine.XR.WSA.RemoteDeviceVersion
----@source UnityEngine.VRModule.dll
----@field V2 UnityEngine.XR.WSA.RemoteDeviceVersion
----@source UnityEngine.VRModule.dll
-CS.UnityEngine.XR.WSA.RemoteDeviceVersion = {}
-
----@source 
----@param value any
----@return UnityEngine.XR.WSA.RemoteDeviceVersion
-function CS.UnityEngine.XR.WSA.RemoteDeviceVersion:__CastFrom(value) end
+version https://git-lfs.github.com/spec/v1
+oid sha256:a53937ca5c4574aeee323264945231077660a6919e0573fc7ee8eb6bf078bd58
+size 523

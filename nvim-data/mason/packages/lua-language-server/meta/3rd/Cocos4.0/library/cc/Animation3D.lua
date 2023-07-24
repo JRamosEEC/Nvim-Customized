@@ -1,29 +1,3 @@
----@meta
-
----@class cc.Animation3D :cc.Ref
-local Animation3D={ }
-cc.Animation3D=Animation3D
-
-
-
-
----* init Animation3D with file name and animation name
----@param filename string
----@param animationName string
----@return boolean
-function Animation3D:initWithFile (filename,animationName) end
----* init Animation3D from bundle data
----@param data cc.Animation3DData
----@return boolean
-function Animation3D:init (data) end
----* get duration
----@return float
-function Animation3D:getDuration () end
----* read all animation or only the animation with given animationName? animationName == "" read the first.
----@param filename string
----@param animationName string
----@return self
-function Animation3D:create (filename,animationName) end
----* 
----@return self
-function Animation3D:Animation3D () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:843dee291494019ba6908bbcff79dc53563d821a59c784fb715366d02e517966
+size 822

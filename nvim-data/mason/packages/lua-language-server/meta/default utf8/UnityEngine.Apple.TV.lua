@@ -1,14 +1,3 @@
----@meta
-
----@source UnityEngine.CoreModule.dll
----@class UnityEngine.Apple.TV.Remote: object
----@source UnityEngine.CoreModule.dll
----@field allowExitToHome bool
----@source UnityEngine.CoreModule.dll
----@field allowRemoteRotation bool
----@source UnityEngine.CoreModule.dll
----@field reportAbsoluteDpadValues bool
----@source UnityEngine.CoreModule.dll
----@field touchesEnabled bool
----@source UnityEngine.CoreModule.dll
-CS.UnityEngine.Apple.TV.Remote = {}
+version https://git-lfs.github.com/spec/v1
+oid sha256:07ab32681b7b6cbf132a29387e035bcacd73053ba56a7d5f22387d5f7f2d75f8
+size 456

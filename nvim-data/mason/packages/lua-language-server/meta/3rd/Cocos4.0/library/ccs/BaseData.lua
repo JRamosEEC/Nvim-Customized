@@ -1,22 +1,3 @@
----@meta
-
----@class ccs.BaseData :cc.Ref
-local BaseData={ }
-ccs.BaseData=BaseData
-
-
-
-
----* 
----@return color4b_table
-function BaseData:getColor () end
----* 
----@param color color4b_table
----@return self
-function BaseData:setColor (color) end
----* 
----@return self
-function BaseData:create () end
----* js ctor
----@return self
-function BaseData:BaseData () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:a1010c87f6248dd9885e3397aaef845a2bfc80e87d2c91c69e8ff27d49cde2dc
+size 379

@@ -1,25 +1,3 @@
-local vm = require 'vm.vm'
-
----@alias vm.object parser.object | vm.generic
-
-require 'vm.compiler'
-require 'vm.value'
-require 'vm.node'
-require 'vm.def'
-require 'vm.ref'
-require 'vm.field'
-require 'vm.doc'
-require 'vm.type'
-require 'vm.library'
-require 'vm.tracer'
-require 'vm.infer'
-require 'vm.generic'
-require 'vm.sign'
-require 'vm.variable'
-require 'vm.global'
-require 'vm.function'
-require 'vm.operator'
-require 'vm.visible'
-require 'vm.precompile'
-
-return vm
+version https://git-lfs.github.com/spec/v1
+oid sha256:55086166cc20b312b83b66ccdfc84c9166250e5c08a5dc626196f31df4257773
+size 489

@@ -1,27 +1,3 @@
----@meta
-
----@class ccs.ActionTintFrame :ccs.ActionFrame
-local ActionTintFrame={ }
-ccs.ActionTintFrame=ActionTintFrame
-
-
-
-
----* Gets the tint action color.<br>
----* return the tint action color.
----@return color3b_table
-function ActionTintFrame:getColor () end
----* Gets the ActionInterval of ActionFrame.<br>
----* param duration   the duration time of ActionFrame<br>
----* return ActionInterval
----@param duration float
----@return cc.ActionInterval
-function ActionTintFrame:getAction (duration) end
----* Changes the tint action color.<br>
----* param ccolor the tint action color
----@param ccolor color3b_table
----@return self
-function ActionTintFrame:setColor (ccolor) end
----* Default constructor
----@return self
-function ActionTintFrame:ActionTintFrame () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:c122b62fd618a40654b7725acfdf299b96bcbd44751114e252354ecd946faeee
+size 788

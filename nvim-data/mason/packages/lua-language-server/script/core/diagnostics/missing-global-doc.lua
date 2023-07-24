@@ -1,27 +1,3 @@
-local files   = require 'files'
-local guide   = require "parser.guide"
-local await   = require 'await'
-local helper  = require 'core.diagnostics.helper.missing-doc-helper'
-
----@async
-return function (uri, callback)
-    local state = files.getState(uri)
-    if not state then
-        return
-    end
-
-    if not state.ast then
-        return
-    end
-
-    ---@async
-    guide.eachSourceType(state.ast, 'function', function (source)
-        await.delay()
-
-        if source.parent.type ~= 'setglobal' then
-            return
-        end
-
-        helper.CheckFunction(source, callback, 'DIAG_MISSING_GLOBAL_DOC_COMMENT', 'DIAG_MISSING_GLOBAL_DOC_PARAM', 'DIAG_MISSING_GLOBAL_DOC_RETURN')
-    end)
-end
+version https://git-lfs.github.com/spec/v1
+oid sha256:04f3a96850f31c80c2625bc6529c4c1a4c1029802c96296e0b309266df3a3833
+size 723

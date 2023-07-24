@@ -1,34 +1,3 @@
----@meta
-
----@class cc.MenuItemImage :cc.MenuItemSprite
-local MenuItemImage={ }
-cc.MenuItemImage=MenuItemImage
-
-
-
-
----*  Sets the sprite frame for the disabled image. 
----@param frame cc.SpriteFrame
----@return self
-function MenuItemImage:setDisabledSpriteFrame (frame) end
----*  Sets the sprite frame for the selected image. 
----@param frame cc.SpriteFrame
----@return self
-function MenuItemImage:setSelectedSpriteFrame (frame) end
----*  Sets the sprite frame for the normal image. 
----@param frame cc.SpriteFrame
----@return self
-function MenuItemImage:setNormalSpriteFrame (frame) end
----* 
----@return boolean
-function MenuItemImage:init () end
----*  Initializes a menu item with a normal, selected and disabled image with a callable object. 
----@param normalImage string
----@param selectedImage string
----@param disabledImage string
----@param callback function
----@return boolean
-function MenuItemImage:initWithNormalImage (normalImage,selectedImage,disabledImage,callback) end
----* js ctor
----@return self
-function MenuItemImage:MenuItemImage () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:f0cab5b4d8f4f729f3a8d516fe1af612acee80ba28ae565aeba8bf3afaf7a1ce
+size 1084

@@ -1,26 +1,3 @@
----@meta
-
----@class ccs.BoneData :ccs.BaseData
-local BoneData={ }
-ccs.BoneData=BoneData
-
-
-
-
----* 
----@param index int
----@return ccs.DisplayData
-function BoneData:getDisplayData (index) end
----* 
----@return boolean
-function BoneData:init () end
----* 
----@param displayData ccs.DisplayData
----@return self
-function BoneData:addDisplayData (displayData) end
----* 
----@return self
-function BoneData:create () end
----* js ctor
----@return self
-function BoneData:BoneData () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:18554f805686032ffffddd952c1e4a9ce97836d23adcb8d69ef88feb144846b3
+size 497

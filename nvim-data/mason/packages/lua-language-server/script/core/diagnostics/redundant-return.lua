@@ -1,27 +1,3 @@
-local files   = require 'files'
-local guide   = require 'parser.guide'
-local lang    = require 'language'
-local define  = require 'proto.define'
-
--- reports 'return' without any return values at the end of functions
-return function (uri, callback)
-    local ast = files.getState(uri)
-    if not ast then
-        return
-    end
-
-    guide.eachSourceType(ast.ast, 'return', function (source)
-        if not source.parent or source.parent.type ~= "function" then
-            return
-        end
-        if #source > 0 then
-            return
-        end
-        callback {
-            start   = source.start,
-            finish  = source.finish,
-            tags    = { define.DiagnosticTag.Unnecessary },
-            message = lang.script.DIAG_REDUNDANT_RETURN,
-        }
-    end)
-end
+version https://git-lfs.github.com/spec/v1
+oid sha256:fc126bc6529dce2d8423a21b0e948e1ee494a0e70e426bb79cbe039067fbe1c4
+size 809

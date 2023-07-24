@@ -1,26 +1,3 @@
----@meta
-
----@class cc.EaseExponentialOut :cc.ActionEase
-local EaseExponentialOut={ }
-cc.EaseExponentialOut=EaseExponentialOut
-
-
-
-
----* 
----@param action cc.ActionInterval
----@return self
-function EaseExponentialOut:create (action) end
----* 
----@return self
-function EaseExponentialOut:clone () end
----* 
----@param time float
----@return self
-function EaseExponentialOut:update (time) end
----* 
----@return cc.ActionEase
-function EaseExponentialOut:reverse () end
----* 
----@return self
-function EaseExponentialOut:EaseExponentialOut () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:86e1aa8b0ebd30e1525a6b2d8dc44007ce48158e22b63eb0b1347557485075a3
+size 562

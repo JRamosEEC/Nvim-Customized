@@ -1,22 +1,3 @@
----@meta
-
----@source mscorlib.dll
----@class System.Diagnostics.Contracts.Internal.ContractHelper: object
----@source mscorlib.dll
-CS.System.Diagnostics.Contracts.Internal.ContractHelper = {}
-
----@source mscorlib.dll
----@param failureKind System.Diagnostics.Contracts.ContractFailureKind
----@param userMessage string
----@param conditionText string
----@param innerException System.Exception
----@return String
-function CS.System.Diagnostics.Contracts.Internal.ContractHelper:RaiseContractFailedEvent(failureKind, userMessage, conditionText, innerException) end
-
----@source mscorlib.dll
----@param kind System.Diagnostics.Contracts.ContractFailureKind
----@param displayMessage string
----@param userMessage string
----@param conditionText string
----@param innerException System.Exception
-function CS.System.Diagnostics.Contracts.Internal.ContractHelper:TriggerFailure(kind, displayMessage, userMessage, conditionText, innerException) end
+version https://git-lfs.github.com/spec/v1
+oid sha256:fa3ac7da24bd86303cb7ad8ac0dd564b724a6855c5b39e9a954d48b864104485
+size 930

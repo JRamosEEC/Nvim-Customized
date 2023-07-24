@@ -1,16 +1,3 @@
----@meta
-
----@class luassert.array
-local array = {}
-
-
----Assert that an array has holes in it
----@param length? integer The expected length of the array
----@return integer|nil holeIndex The index of the first found hole or `nil` if there was no hole.
-function array.holes(length) end
-
-array.has = array
-
-array.no = array
-
-return array
+version https://git-lfs.github.com/spec/v1
+oid sha256:66ef4b09529e3f21770ea0265071ca728e6b475864043b60e755a1b35a9027f8
+size 351

@@ -1,33 +1,3 @@
----@meta
-
----@class ccs.BatchNode :cc.Node
-local BatchNode={ }
-ccs.BatchNode=BatchNode
-
-
-
-
----* 
----@return self
-function BatchNode:create () end
----@overload fun(cc.Node:cc.Node,int:int,int2:string):self
----@overload fun(cc.Node:cc.Node,int:int,int:int):self
----@param pChild cc.Node
----@param zOrder int
----@param tag int
----@return self
-function BatchNode:addChild (pChild,zOrder,tag) end
----* js NA
----@return boolean
-function BatchNode:init () end
----* 
----@param renderer cc.Renderer
----@param transform mat4_table
----@param flags unsigned_int
----@return self
-function BatchNode:draw (renderer,transform,flags) end
----* 
----@param child cc.Node
----@param cleanup boolean
----@return self
-function BatchNode:removeChild (child,cleanup) end
+version https://git-lfs.github.com/spec/v1
+oid sha256:81988a191335927143ced1db56e87af93e706e9418c757309ef9cb24becc66b1
+size 775

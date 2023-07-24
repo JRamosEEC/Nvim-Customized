@@ -1,6 +1,3 @@
----@meta
-local resty_core_misc={}
-function resty_core_misc.register_ngx_magic_key_getter() end
-function resty_core_misc.register_ngx_magic_key_setter() end
-resty_core_misc._VERSION = require("resty.core.base").version
-return resty_core_misc
+version https://git-lfs.github.com/spec/v1
+oid sha256:cf077142373ac9952762db5778512af88282a7f00b63b3e47fc107fe29137222
+size 245

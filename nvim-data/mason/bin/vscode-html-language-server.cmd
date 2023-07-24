@@ -1,10 +1,3 @@
-@ECHO off
-GOTO start
-:find_dp0
-SET dp0=%~dp0
-EXIT /b
-:start
-SETLOCAL
-CALL :find_dp0
-
-endLocal & goto #_undefined_# 2>NUL || title %COMSPEC% & "C:\Users\justi\AppData\Local\nvim-data\mason\packages\html-lsp\node_modules\.bin\vscode-html-language-server.cmd" %*
+version https://git-lfs.github.com/spec/v1
+oid sha256:8d05dd465b07eaafe83ac51da8bbf0e570946398d136f895301df32e7a9cdd19
+size 259

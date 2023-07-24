@@ -1,22 +1,3 @@
----@meta
-
----@class cc.CatmullRomBy :cc.CardinalSplineBy
-local CatmullRomBy={ }
-cc.CatmullRomBy=CatmullRomBy
-
-
-
-
----*  Initializes the action with a duration and an array of points.<br>
----* param dt In seconds.<br>
----* param points An PointArray.
----@param dt float
----@param points point_table
----@return boolean
-function CatmullRomBy:initWithDuration (dt,points) end
----* 
----@return self
-function CatmullRomBy:clone () end
----* 
----@return self
-function CatmullRomBy:reverse () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:eb61c58bdb722e9908829b4811aa147b9b5fa462aa279d73be67142709da5805
+size 507

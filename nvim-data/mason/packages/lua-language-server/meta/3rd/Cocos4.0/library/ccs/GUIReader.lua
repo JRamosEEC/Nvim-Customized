@@ -1,34 +1,3 @@
----@meta
-
----@class ccs.GUIReader :cc.Ref
-local GUIReader={ }
-ccs.GUIReader=GUIReader
-
-
-
-
----* 
----@param strFilePath string
----@return self
-function GUIReader:setFilePath (strFilePath) end
----* 
----@param fileName char
----@return ccui.Widget
-function GUIReader:widgetFromJsonFile (fileName) end
----* 
----@return string
-function GUIReader:getFilePath () end
----* 
----@param fileName char
----@return ccui.Widget
-function GUIReader:widgetFromBinaryFile (fileName) end
----* 
----@param str char
----@return int
-function GUIReader:getVersionInteger (str) end
----* 
----@return self
-function GUIReader:destroyInstance () end
----* 
----@return self
-function GUIReader:getInstance () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:faaaa2e31970a6f2536c357e9ab0d9b08506b57717db81a3b050a911d638f8cb
+size 709

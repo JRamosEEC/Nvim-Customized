@@ -1,30 +1,3 @@
----@meta
-
----@class cc.ParticleSmoke :cc.ParticleSystemQuad
-local ParticleSmoke={ }
-cc.ParticleSmoke=ParticleSmoke
-
-
-
-
----* 
----@return boolean
-function ParticleSmoke:init () end
----* 
----@param numberOfParticles int
----@return boolean
-function ParticleSmoke:initWithTotalParticles (numberOfParticles) end
----*  Create a smoke particle system.<br>
----* return An autoreleased ParticleSmoke object.
----@return self
-function ParticleSmoke:create () end
----*  Create a smoke particle system withe a fixed number of particles.<br>
----* param numberOfParticles A given number of particles.<br>
----* return An autoreleased ParticleSmoke object.<br>
----* js NA
----@param numberOfParticles int
----@return self
-function ParticleSmoke:createWithTotalParticles (numberOfParticles) end
----* js ctor
----@return self
-function ParticleSmoke:ParticleSmoke () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:857701d4c7dc93f2ae53d1acd7dc7152c8f338062d5c64dabaa1efac361df8fc
+size 875

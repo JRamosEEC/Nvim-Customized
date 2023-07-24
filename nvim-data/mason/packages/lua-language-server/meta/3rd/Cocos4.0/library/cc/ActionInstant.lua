@@ -1,30 +1,3 @@
----@meta
-
----@class cc.ActionInstant :cc.FiniteTimeAction
-local ActionInstant={ }
-cc.ActionInstant=ActionInstant
-
-
-
-
----* 
----@param target cc.Node
----@return self
-function ActionInstant:startWithTarget (target) end
----* 
----@return self
-function ActionInstant:reverse () end
----* 
----@return self
-function ActionInstant:clone () end
----* param time In seconds.
----@param time float
----@return self
-function ActionInstant:update (time) end
----* param dt In seconds.
----@param dt float
----@return self
-function ActionInstant:step (dt) end
----* 
----@return boolean
-function ActionInstant:isDone () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:db87c6b59556f1ea9620d385f3123f26e2597b724e6f721f19119395c6c66509
+size 628

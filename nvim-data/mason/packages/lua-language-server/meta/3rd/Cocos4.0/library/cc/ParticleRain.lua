@@ -1,30 +1,3 @@
----@meta
-
----@class cc.ParticleRain :cc.ParticleSystemQuad
-local ParticleRain={ }
-cc.ParticleRain=ParticleRain
-
-
-
-
----* 
----@return boolean
-function ParticleRain:init () end
----* 
----@param numberOfParticles int
----@return boolean
-function ParticleRain:initWithTotalParticles (numberOfParticles) end
----*  Create a rain particle system.<br>
----* return An autoreleased ParticleRain object.
----@return self
-function ParticleRain:create () end
----*  Create a rain particle system withe a fixed number of particles.<br>
----* param numberOfParticles A given number of particles.<br>
----* return An autoreleased ParticleRain object.<br>
----* js NA
----@param numberOfParticles int
----@return self
-function ParticleRain:createWithTotalParticles (numberOfParticles) end
----* js ctor
----@return self
-function ParticleRain:ParticleRain () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:7faecbbb08f2491e97bc81e9e0a64f0a8941c0ab273a5967e81b33160483a175
+size 861

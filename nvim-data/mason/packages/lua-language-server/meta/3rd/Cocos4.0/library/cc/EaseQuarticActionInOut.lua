@@ -1,26 +1,3 @@
----@meta
-
----@class cc.EaseQuarticActionInOut :cc.ActionEase
-local EaseQuarticActionInOut={ }
-cc.EaseQuarticActionInOut=EaseQuarticActionInOut
-
-
-
-
----* 
----@param action cc.ActionInterval
----@return self
-function EaseQuarticActionInOut:create (action) end
----* 
----@return self
-function EaseQuarticActionInOut:clone () end
----* 
----@param time float
----@return self
-function EaseQuarticActionInOut:update (time) end
----* 
----@return cc.ActionEase
-function EaseQuarticActionInOut:reverse () end
----* 
----@return self
-function EaseQuarticActionInOut:EaseQuarticActionInOut () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:d97d9ed411f81a43c8a227dce531ef83dc1a904e2490a484da4afece4bef4465
+size 602

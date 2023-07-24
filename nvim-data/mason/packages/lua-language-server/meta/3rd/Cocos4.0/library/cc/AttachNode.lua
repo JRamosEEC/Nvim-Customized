@@ -1,32 +1,3 @@
----@meta
-
----@class cc.AttachNode :cc.Node
-local AttachNode={ }
-cc.AttachNode=AttachNode
-
-
-
-
----* creates an AttachNode<br>
----* param attachBone The bone to which the AttachNode is going to attach, the attacheBone must be a bone of the AttachNode's parent
----@param attachBone cc.Bone3D
----@return self
-function AttachNode:create (attachBone) end
----* 
----@param renderer cc.Renderer
----@param parentTransform mat4_table
----@param parentFlags unsigned_int
----@return self
-function AttachNode:visit (renderer,parentTransform,parentFlags) end
----* 
----@return mat4_table
-function AttachNode:getWorldToNodeTransform () end
----* 
----@return mat4_table
-function AttachNode:getNodeToWorldTransform () end
----* 
----@return mat4_table
-function AttachNode:getNodeToParentTransform () end
----* 
----@return self
-function AttachNode:AttachNode () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:c62bad074929edfeff2f74ea1bd932dc9c01b8afa6b9f0c1c223518999e1a89d
+size 870

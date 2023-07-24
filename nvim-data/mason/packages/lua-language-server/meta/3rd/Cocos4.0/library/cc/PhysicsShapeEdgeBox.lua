@@ -1,25 +1,3 @@
----@meta
-
----@class cc.PhysicsShapeEdgeBox :cc.PhysicsShapeEdgePolygon
-local PhysicsShapeEdgeBox={ }
-cc.PhysicsShapeEdgeBox=PhysicsShapeEdgeBox
-
-
-
-
----* Creates a PhysicsShapeEdgeBox with specified value.<br>
----* param   size Size contains this box's width and height.<br>
----* param   material A PhysicsMaterial object, the default value is PHYSICSSHAPE_MATERIAL_DEFAULT.<br>
----* param   border It's a edge's border width.<br>
----* param   offset A Vec2 object, it is the offset from the body's center of gravity in body local coordinates.<br>
----* return  An autoreleased PhysicsShapeEdgeBox object pointer.
----@param size size_table
----@param material cc.PhysicsMaterial
----@param border float
----@param offset vec2_table
----@return self
-function PhysicsShapeEdgeBox:create (size,material,border,offset) end
----* Get this box's position offset.<br>
----* return A Vec2 object.
----@return vec2_table
-function PhysicsShapeEdgeBox:getOffset () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:5050b1220538d4a8cda53f0e1f0ff2ef5bf3a2328ab3cd0637ba0b6387c1f3fc
+size 972

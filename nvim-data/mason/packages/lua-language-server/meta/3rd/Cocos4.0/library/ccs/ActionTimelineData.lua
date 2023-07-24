@@ -1,27 +1,3 @@
----@meta
-
----@class ccs.ActionTimelineData :cc.Ref
-local ActionTimelineData={ }
-ccs.ActionTimelineData=ActionTimelineData
-
-
-
-
----* 
----@param actionTag int
----@return self
-function ActionTimelineData:setActionTag (actionTag) end
----* 
----@param actionTag int
----@return boolean
-function ActionTimelineData:init (actionTag) end
----* 
----@return int
-function ActionTimelineData:getActionTag () end
----* 
----@param actionTag int
----@return self
-function ActionTimelineData:create (actionTag) end
----* 
----@return self
-function ActionTimelineData:ActionTimelineData () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:723a706601da17cf25eca76ca0f56cb7ed4b39f3cd15d5b8524069186b08a536
+size 594

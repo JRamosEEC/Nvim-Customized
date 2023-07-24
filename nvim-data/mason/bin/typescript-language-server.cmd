@@ -1,10 +1,3 @@
-@ECHO off
-GOTO start
-:find_dp0
-SET dp0=%~dp0
-EXIT /b
-:start
-SETLOCAL
-CALL :find_dp0
-
-endLocal & goto #_undefined_# 2>NUL || title %COMSPEC% & "C:\Users\justi\AppData\Local\nvim-data\mason\packages\typescript-language-server\node_modules\.bin\typescript-language-server.cmd" %*
+version https://git-lfs.github.com/spec/v1
+oid sha256:ce90466b291e8bbfd0e78499696b71a1302a1992d0e54d23f58d3842c6f7246e
+size 276

@@ -1,11 +1,3 @@
----#if not JIT then DISABLE() end
----@meta table.new
-
----@version JIT
----#DES 'table.new'
----@param narray integer
----@param nhash integer
----@return table
-local function new(narray, nhash) end
-
-return new
+version https://git-lfs.github.com/spec/v1
+oid sha256:fb6282583913cd9887322310f32ba2078a59d4e71a826e5e52c11462e9e35a1d
+size 217

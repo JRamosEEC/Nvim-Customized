@@ -1,21 +1,3 @@
----@meta
-
----@class cc.EventListenerMouse :cc.EventListener
-local EventListenerMouse={ }
-cc.EventListenerMouse=EventListenerMouse
-
-
-
-
----* 
----@return boolean
-function EventListenerMouse:init () end
----* / Overrides
----@return self
-function EventListenerMouse:clone () end
----* 
----@return boolean
-function EventListenerMouse:checkAvailable () end
----* 
----@return self
-function EventListenerMouse:EventListenerMouse () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:688a5347b98d5a950ee631f59f735b6b9aaf819c69afde3a373fc372633bf14a
+size 443

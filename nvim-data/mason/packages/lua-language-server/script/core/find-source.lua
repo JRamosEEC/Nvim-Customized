@@ -1,30 +1,3 @@
-local guide     = require 'parser.guide'
-
-local function isValidFunctionPos(source, offset)
-    for i = 1, #source.keyword // 2 do
-        local start  = source.keyword[i * 2 - 1]
-        local finish = source.keyword[i * 2]
-        if offset >= start and offset <= finish then
-            return true
-        end
-    end
-    return false
-end
-
-return function (state, position, accept)
-    local len = math.huge
-    local result
-    guide.eachSourceContain(state.ast, position, function (source)
-        if source.type == 'function' then
-            if not isValidFunctionPos(source, position) then
-                return
-            end
-        end
-        local start, finish = guide.getStartFinish(source)
-        if finish - start <= len and accept[source.type] then
-            result = source
-            len = finish - start
-        end
-    end)
-    return result
-end
+version https://git-lfs.github.com/spec/v1
+oid sha256:135f7b2d141fb5809fe46caeedd5c5021da69a33ca1eb415010f849ef149f4d0
+size 905

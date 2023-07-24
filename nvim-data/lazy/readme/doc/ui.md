@@ -1,15 +1,3 @@
-# NvChad's UI plugin
-Lightweight &amp; performant ui plugin for nvchad providing the following : 
-- Statusline with 4 themes 
-- Tabufline ( manages buffers per tab ) 
-- NvDash ( dashboard ) 
-- NvCheatsheet ( auto-generates cheatsheet based on default & user mappings in nice grid (Masonry layout) / column layout )
-- basic Lsp signature 
-- Lsp renamer window
-
-# Default config 
-
-- Refer [NvChad docs](https://nvchad.com/docs/config/nvchad_ui) for detailed info
-- Or check the `core/default_config.lua` file in your nvchad config for quick info.
-
-<!-- vim: set ft=markdown: -->
+version https://git-lfs.github.com/spec/v1
+oid sha256:27ac1ced7cedf7f57f5c296341ae29e9c03a5cb69fc6a5a8100f8239bbe582d9
+size 590

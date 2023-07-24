@@ -1,17 +1,3 @@
----@meta
-
---- luv_work_ctx_t
----
----@class uv.luv_work_ctx_t : userdata
-local work_ctx
-
---- Queues a work request which will run `work_callback` in a new Lua state in a
---- thread from the threadpool with any additional arguments from `...`. Values
---- returned from `work_callback` are passed to `after_work_callback`, which is
---- called in the main loop thread.
----
----@param  ...         uv.threadargs
----@return boolean|nil success
----@return uv.error.message|nil err
----@return uv.error.name|nil err_name
-function work_ctx:queue(...) end
+version https://git-lfs.github.com/spec/v1
+oid sha256:8942b32a6d7d1bf80f4274ce41472765d6b2e4964dcd8826bfb3d5f1711de79b
+size 559

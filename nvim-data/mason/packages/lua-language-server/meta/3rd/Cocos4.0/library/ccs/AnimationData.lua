@@ -1,26 +1,3 @@
----@meta
-
----@class ccs.AnimationData :cc.Ref
-local AnimationData={ }
-ccs.AnimationData=AnimationData
-
-
-
-
----* 
----@param movementName string
----@return ccs.MovementData
-function AnimationData:getMovement (movementName) end
----* 
----@return int
-function AnimationData:getMovementCount () end
----* 
----@param movData ccs.MovementData
----@return self
-function AnimationData:addMovement (movData) end
----* 
----@return self
-function AnimationData:create () end
----* js ctor
----@return self
-function AnimationData:AnimationData () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:d56bf97b8a042eb6e696f3d05096b64af2fe9baf2a48eefe6822074e25cc9ec7
+size 554

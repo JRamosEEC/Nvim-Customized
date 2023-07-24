@@ -1,26 +1,3 @@
----@meta
-
----@class cc.EaseBounceInOut :cc.ActionEase
-local EaseBounceInOut={ }
-cc.EaseBounceInOut=EaseBounceInOut
-
-
-
-
----* 
----@param action cc.ActionInterval
----@return self
-function EaseBounceInOut:create (action) end
----* 
----@return self
-function EaseBounceInOut:clone () end
----* 
----@param time float
----@return self
-function EaseBounceInOut:update (time) end
----* 
----@return cc.ActionEase
-function EaseBounceInOut:reverse () end
----* 
----@return self
-function EaseBounceInOut:EaseBounceInOut () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:0692aff3bbc2d3c816c3a99b4817da9ce23ed8338083afb79bf9f955de8aad63
+size 532

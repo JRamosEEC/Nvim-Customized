@@ -1,19 +1,3 @@
----@meta
-
----@class cc.Grid3DAction :cc.GridAction
-local Grid3DAction={ }
-cc.Grid3DAction=Grid3DAction
-
-
-
-
----* brief Get the effect grid rect.<br>
----* return Return the effect grid rect.
----@return rect_table
-function Grid3DAction:getGridRect () end
----* 
----@return self
-function Grid3DAction:clone () end
----* 
----@return cc.GridBase
-function Grid3DAction:getGrid () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:90c642d9ebfd2561244a6b4267a340bc9c9258b0ca06d9dc55972b35330ade02
+size 392

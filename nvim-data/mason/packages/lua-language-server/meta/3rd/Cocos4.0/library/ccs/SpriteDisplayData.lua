@@ -1,19 +1,3 @@
----@meta
-
----@class ccs.SpriteDisplayData :ccs.DisplayData
-local SpriteDisplayData={ }
-ccs.SpriteDisplayData=SpriteDisplayData
-
-
-
-
----* 
----@param displayData ccs.DisplayData
----@return self
-function SpriteDisplayData:copy (displayData) end
----* 
----@return self
-function SpriteDisplayData:create () end
----* js ctor
----@return self
-function SpriteDisplayData:SpriteDisplayData () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:b00e3e7d613233a9d66a342adff976d94fe0838e4c546482fb541f253473b394
+size 402

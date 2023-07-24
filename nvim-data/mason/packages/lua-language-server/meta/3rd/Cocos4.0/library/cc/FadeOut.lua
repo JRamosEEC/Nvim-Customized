@@ -1,31 +1,3 @@
----@meta
-
----@class cc.FadeOut :cc.FadeTo
-local FadeOut={ }
-cc.FadeOut=FadeOut
-
-
-
-
----* js NA
----@param ac cc.FadeTo
----@return self
-function FadeOut:setReverseAction (ac) end
----* Creates the action.<br>
----* param d Duration time, in seconds.
----@param d float
----@return self
-function FadeOut:create (d) end
----* 
----@param target cc.Node
----@return self
-function FadeOut:startWithTarget (target) end
----* 
----@return self
-function FadeOut:clone () end
----* 
----@return cc.FadeTo
-function FadeOut:reverse () end
----* 
----@return self
-function FadeOut:FadeOut () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:3aa7ba12897ab2f6ee937769b6f46d1ef3cb2ce063d90514d00e30405aed7735
+size 598

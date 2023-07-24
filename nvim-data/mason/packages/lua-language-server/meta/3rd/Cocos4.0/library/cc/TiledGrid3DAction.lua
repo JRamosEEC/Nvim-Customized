@@ -1,15 +1,3 @@
----@meta
-
----@class cc.TiledGrid3DAction :cc.GridAction
-local TiledGrid3DAction={ }
-cc.TiledGrid3DAction=TiledGrid3DAction
-
-
-
-
----* 
----@return self
-function TiledGrid3DAction:clone () end
----*  returns the grid 
----@return cc.GridBase
-function TiledGrid3DAction:getGrid () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:096a30c5fe3993f83c835e56d5a26d796d1ae8762ca65d06efb751a7ab531589
+size 291

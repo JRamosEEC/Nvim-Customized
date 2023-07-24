@@ -1,9 +1,3 @@
----@meta
-local resty_core_ctx={}
-resty_core_ctx._VERSION = require("resty.core.base").version
-
----@param ctx? table
----@return table
-function resty_core_ctx.get_ctx_table(ctx) end
-
-return resty_core_ctx
+version https://git-lfs.github.com/spec/v1
+oid sha256:26784055360a6e0df1084ea7210b2e5802ffaec080ba94b149b83838252a3e27
+size 210

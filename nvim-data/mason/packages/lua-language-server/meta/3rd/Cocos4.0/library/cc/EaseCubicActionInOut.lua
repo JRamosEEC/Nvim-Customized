@@ -1,26 +1,3 @@
----@meta
-
----@class cc.EaseCubicActionInOut :cc.ActionEase
-local EaseCubicActionInOut={ }
-cc.EaseCubicActionInOut=EaseCubicActionInOut
-
-
-
-
----* 
----@param action cc.ActionInterval
----@return self
-function EaseCubicActionInOut:create (action) end
----* 
----@return self
-function EaseCubicActionInOut:clone () end
----* 
----@param time float
----@return self
-function EaseCubicActionInOut:update (time) end
----* 
----@return cc.ActionEase
-function EaseCubicActionInOut:reverse () end
----* 
----@return self
-function EaseCubicActionInOut:EaseCubicActionInOut () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:38934d52d153aa69ab3cdd8020edf223fa74332eed9477fb3515ef64ace3f106
+size 582

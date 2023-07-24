@@ -1,18 +1,3 @@
-[INFO  7/16/2023 10:41:55 PM] ...m-data/lazy/mason.nvim/lua/mason-core/installer/init.lua:184: Executing installer for Package(name=lua-language-server) {}
-[INFO  7/16/2023 10:41:55 PM] ...m-data/lazy/mason.nvim/lua/mason-core/installer/init.lua:184: Executing installer for Package(name=stylua) {}
-[INFO  7/16/2023 10:41:55 PM] ...m-data/lazy/mason.nvim/lua/mason-core/installer/init.lua:184: Executing installer for Package(name=css-lsp) {}
-[INFO  7/16/2023 10:41:55 PM] ...m-data/lazy/mason.nvim/lua/mason-core/installer/init.lua:184: Executing installer for Package(name=html-lsp) {}
-[INFO  7/16/2023 10:41:55 PM] ...m-data/lazy/mason.nvim/lua/mason-core/installer/init.lua:184: Executing installer for Package(name=typescript-language-server) {}
-[INFO  7/16/2023 10:41:55 PM] ...m-data/lazy/mason.nvim/lua/mason-core/installer/init.lua:184: Executing installer for Package(name=deno) {}
-[INFO  7/16/2023 10:41:55 PM] ...m-data/lazy/mason.nvim/lua/mason-core/installer/init.lua:184: Executing installer for Package(name=prettier) {}
-[INFO  7/16/2023 10:41:55 PM] ...m-data/lazy/mason.nvim/lua/mason-core/installer/init.lua:184: Executing installer for Package(name=clangd) {}
-[INFO  7/16/2023 10:41:55 PM] ...m-data/lazy/mason.nvim/lua/mason-core/installer/init.lua:184: Executing installer for Package(name=clang-format) {}
-[INFO  7/16/2023 10:41:58 PM] ...m-data/lazy/mason.nvim/lua/mason-core/installer/init.lua:245: Installation succeeded for Package(name=stylua)
-[INFO  7/16/2023 10:42:02 PM] ...m-data/lazy/mason.nvim/lua/mason-core/installer/init.lua:245: Installation succeeded for Package(name=lua-language-server)
-[INFO  7/16/2023 10:42:03 PM] ...m-data/lazy/mason.nvim/lua/mason-core/installer/init.lua:245: Installation succeeded for Package(name=deno)
-[INFO  7/16/2023 10:42:03 PM] ...m-data/lazy/mason.nvim/lua/mason-core/installer/init.lua:245: Installation succeeded for Package(name=clangd)
-[INFO  7/16/2023 10:42:06 PM] ...m-data/lazy/mason.nvim/lua/mason-core/installer/init.lua:245: Installation succeeded for Package(name=prettier)
-[INFO  7/16/2023 10:42:07 PM] ...m-data/lazy/mason.nvim/lua/mason-core/installer/init.lua:245: Installation succeeded for Package(name=typescript-language-server)
-[INFO  7/16/2023 10:42:11 PM] ...m-data/lazy/mason.nvim/lua/mason-core/installer/init.lua:245: Installation succeeded for Package(name=html-lsp)
-[INFO  7/16/2023 10:42:11 PM] ...m-data/lazy/mason.nvim/lua/mason-core/installer/init.lua:245: Installation succeeded for Package(name=css-lsp)
-[INFO  7/16/2023 10:42:13 PM] ...m-data/lazy/mason.nvim/lua/mason-core/installer/init.lua:245: Installation succeeded for Package(name=clang-format)
+version https://git-lfs.github.com/spec/v1
+oid sha256:410aab40ce7dcf261de45d704054cf345829c9d45976291c3cc7f62b8ee0215f
+size 2676

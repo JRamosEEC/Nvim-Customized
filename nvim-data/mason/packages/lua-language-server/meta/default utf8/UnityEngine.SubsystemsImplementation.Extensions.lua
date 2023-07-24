@@ -1,20 +1,3 @@
----@meta
-
----@source UnityEngine.SubsystemsModule.dll
----@class UnityEngine.SubsystemsImplementation.Extensions.SubsystemDescriptorExtensions: object
----@source UnityEngine.SubsystemsModule.dll
-CS.UnityEngine.SubsystemsImplementation.Extensions.SubsystemDescriptorExtensions = {}
-
----@source UnityEngine.SubsystemsModule.dll
----@return SubsystemProxy
-function CS.UnityEngine.SubsystemsImplementation.Extensions.SubsystemDescriptorExtensions.CreateProxy() end
-
-
----@source UnityEngine.SubsystemsModule.dll
----@class UnityEngine.SubsystemsImplementation.Extensions.SubsystemExtensions: object
----@source UnityEngine.SubsystemsModule.dll
-CS.UnityEngine.SubsystemsImplementation.Extensions.SubsystemExtensions = {}
-
----@source UnityEngine.SubsystemsModule.dll
----@return TProvider
-function CS.UnityEngine.SubsystemsImplementation.Extensions.SubsystemExtensions.GetProvider() end
+version https://git-lfs.github.com/spec/v1
+oid sha256:33036cf01b37a52790231ef0e9938cb63cb0ebb4ef105dd3cc1097a3efa46493
+size 875

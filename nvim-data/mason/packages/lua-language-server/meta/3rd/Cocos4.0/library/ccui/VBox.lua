@@ -1,26 +1,3 @@
----@meta
-
----@class ccui.VBox :ccui.Layout
-local VBox={ }
-ccui.VBox=VBox
-
-
-
-
----* 
----@param size size_table
----@return boolean
-function VBox:initWithSize (size) end
----@overload fun(size_table:size_table):self
----@overload fun():self
----@param size size_table
----@return self
-function VBox:create (size) end
----* 
----@return boolean
-function VBox:init () end
----* Default constructor<br>
----* js ctor<br>
----* lua new
----@return self
-function VBox:VBox () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:5c52d1be145e1f22b80faebb49c46f324f64a5edf0433752129c6ecaddcaefb1
+size 485

@@ -1,30 +1,3 @@
-local files = require 'files'
-local guide = require 'parser.guide'
-local vm    = require 'vm'
-local lang  = require 'language'
-local await = require 'await'
-
----@async
-return function (uri, callback)
-    local state = files.getState(uri)
-    if not state then
-        return
-    end
-
-    ---@async
-    guide.eachSourceType(state.ast, 'call', function (source)
-        local currentFunc = guide.getParentFunction(source)
-        if currentFunc and vm.isAsync(currentFunc, false) then
-            return
-        end
-        await.delay()
-        if vm.isAsyncCall(source) then
-            callback {
-                start   = source.node.start,
-                finish  = source.node.finish,
-                message = lang.script('DIAG_AWAIT_IN_SYNC'),
-            }
-            return
-        end
-    end)
-end
+version https://git-lfs.github.com/spec/v1
+oid sha256:5cfcf8218de600ab38bfa70b3341e74242a1f6da8c74b5854267226fe9c7e06d
+size 838

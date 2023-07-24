@@ -1,7 +1,3 @@
-{
-	"settings": {
-		"Lua.workspace.library": [
-			"${3rd}/luassert/library"
-		]
-	}
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:50dd8a0d685617a53d830817004764e0f03c607516669be618a97d50d79408e4
+size 91

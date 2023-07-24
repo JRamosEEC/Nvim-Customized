@@ -1,11 +1,3 @@
----@meta
-
---
---This attribute provides a way to declaratively define a Lumin privilege requirement that is automatically added to the manifest at build time.
---
----@source UnityEngine.CoreModule.dll
----@class UnityEngine.Lumin.UsesLuminPrivilegeAttribute: System.Attribute
----@source UnityEngine.CoreModule.dll
----@field privilege string
----@source UnityEngine.CoreModule.dll
-CS.UnityEngine.Lumin.UsesLuminPrivilegeAttribute = {}
+version https://git-lfs.github.com/spec/v1
+oid sha256:5bbed503935f4340ab1599a50f0f307c689e50695529e27d68d4e5cd33bcafb7
+size 430

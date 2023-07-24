@@ -1,29 +1,3 @@
-local files = require 'files'
-local guide = require 'parser.guide'
-local vm    = require 'vm'
-local await = require 'await'
-local lang  = require 'language'
-
----@async
-return function (uri, callback)
-    local state = files.getState(uri)
-    if not state then
-        return
-    end
-    ---@async
-    guide.eachSourceType(state.ast, 'call', function (source)
-        local parent = source.parent
-        if  parent.type ~= 'function'
-        and parent.type ~= 'main' then
-            return
-        end
-        await.delay()
-        if vm.isNoDiscard(source.node, true) then
-            callback {
-                start   = source.start,
-                finish  = source.finish,
-                message = lang.script('DIAG_DISCARD_RETURNS'),
-            }
-        end
-    end)
-end
+version https://git-lfs.github.com/spec/v1
+oid sha256:9de08098825f4c1ac62d4410b8ca228b480997dc7f55f5d7f80648cb53db91fa
+size 811

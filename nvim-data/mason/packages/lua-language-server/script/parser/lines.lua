@@ -1,25 +1,3 @@
-local sfind = string.find
-local ssub  = string.sub
-
----@param text string
-return function (text)
-    local current = 1
-    local lines = {}
-    lines[0] = 1
-    lines.size = #text
-    local i = 0
-    while true do
-        local pos = sfind(text,'[\r\n]', current)
-        if not pos then
-            break
-        end
-        i = i + 1
-        if ssub(text, pos, pos + 1) == '\r\n' then
-            current = pos + 2
-        else
-            current = pos + 1
-        end
-        lines[i] = current
-    end
-    return lines
-end
+version https://git-lfs.github.com/spec/v1
+oid sha256:7079ecfb15ba6cef4f1d0185160a6067731d27e46dad99116bddd8b6ce2fe3c9
+size 553

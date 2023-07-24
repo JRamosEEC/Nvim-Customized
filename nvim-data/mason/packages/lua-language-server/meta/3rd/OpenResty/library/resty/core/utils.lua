@@ -1,10 +1,3 @@
----@meta
-local resty_core_utils={}
-
----@param str string
----@param find string
----@param replace string
----@return string
-function resty_core_utils.str_replace_char(str, find, replace) end
-resty_core_utils.version = require("resty.core.base").version
-return resty_core_utils
+version https://git-lfs.github.com/spec/v1
+oid sha256:6879f0f7dfa41ea8a627551fd97e6a6e021536b7e47d59a36404bca6de40a7ed
+size 283

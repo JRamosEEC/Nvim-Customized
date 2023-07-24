@@ -1,28 +1,3 @@
-# cmp-nvim-lua
-
-nvim-cmp source for neovim Lua API.
-
-# Setup
-
-```lua
-require'cmp'.setup {
-  sources = {
-    { name = 'nvim_lua' }
-  }
-}
-```
-
-# Options
-
-### `include_deprecated` (boolean: default false)
-
-Specify should includes deprecated things or not.
-
-
-# What is this source?
-
-This source will complete neovim's Lua runtime API such `vim.lsp.*`.
-
-You can get the `vim.lsp.util.*` API with this source.
-
-<!-- vim: set ft=markdown: -->
+version https://git-lfs.github.com/spec/v1
+oid sha256:fe01b7faf67d6a877b6ec0741f4f868f01d2baf510b00189af5460674c54901c
+size 462

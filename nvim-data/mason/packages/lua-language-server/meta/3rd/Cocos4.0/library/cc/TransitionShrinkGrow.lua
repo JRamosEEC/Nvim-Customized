@@ -1,24 +1,3 @@
----@meta
-
----@class cc.TransitionShrinkGrow :cc.TransitionScene@all parent class: TransitionScene,TransitionEaseScene
-local TransitionShrinkGrow={ }
-cc.TransitionShrinkGrow=TransitionShrinkGrow
-
-
-
-
----* 
----@param action cc.ActionInterval
----@return cc.ActionInterval
-function TransitionShrinkGrow:easeActionWithAction (action) end
----*  Creates a transition with duration and incoming scene.<br>
----* param t Duration time, in seconds.<br>
----* param scene A given scene.<br>
----* return A autoreleased TransitionShrinkGrow object.
----@param t float
----@param scene cc.Scene
----@return self
-function TransitionShrinkGrow:create (t,scene) end
----* 
----@return self
-function TransitionShrinkGrow:TransitionShrinkGrow () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:eb377c8ef8e009c8c12e59d3033ac75971f71a777f2d6c06a6fa11878ceedd25
+size 745

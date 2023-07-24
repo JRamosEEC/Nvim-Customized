@@ -1,20 +1,3 @@
----@meta
-
----@class cc.TransitionProgressVertical :cc.TransitionProgress
-local TransitionProgressVertical={ }
-cc.TransitionProgressVertical=TransitionProgressVertical
-
-
-
-
----*  Creates a transition with duration and incoming scene.<br>
----* param t Duration time, in seconds.<br>
----* param scene A given scene.<br>
----* return An autoreleased TransitionProgressVertical object.
----@param t float
----@param scene cc.Scene
----@return self
-function TransitionProgressVertical:create (t,scene) end
----* js ctor
----@return self
-function TransitionProgressVertical:TransitionProgressVertical () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:fc19760d2a7bd7b43593bf6d5b0c3f33ad125838d3aa26ff42365c84a7af8820
+size 612

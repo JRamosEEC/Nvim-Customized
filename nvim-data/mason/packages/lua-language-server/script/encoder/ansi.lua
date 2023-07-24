@@ -1,24 +1,3 @@
-local platform = require 'bee.platform'
-local unicode
-
-if platform.OS == 'Windows' then
-    unicode = require 'bee.unicode'
-end
-
-local m = {}
-
-function m.toutf8(text)
-    if not unicode then
-        return text
-    end
-    return unicode.a2u(text)
-end
-
-function m.fromutf8(text)
-    if not unicode then
-        return text
-    end
-    return unicode.u2a(text)
-end
-
-return m
+version https://git-lfs.github.com/spec/v1
+oid sha256:778fa797964c38368728b4047fc0eff010c0951e000698b463e16d9e3195cc18
+size 398

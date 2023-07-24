@@ -1,25 +1,3 @@
----@meta
-
----@class cc.TableViewCell :cc.Node
-local TableViewCell={ }
-cc.TableViewCell=TableViewCell
-
-
-
-
----* Cleans up any resources linked to this cell and resets <code>idx</code> property.
----@return self
-function TableViewCell:reset () end
----* The index used internally by SWTableView and its subclasses
----@return int
-function TableViewCell:getIdx () end
----* 
----@param uIdx int
----@return self
-function TableViewCell:setIdx (uIdx) end
----* 
----@return self
-function TableViewCell:create () end
----* 
----@return self
-function TableViewCell:TableViewCell () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:8392e8b19d3f11584e5b287a019a1880bd99764a3d0f4f7dcec2d662b8c11cdc
+size 591

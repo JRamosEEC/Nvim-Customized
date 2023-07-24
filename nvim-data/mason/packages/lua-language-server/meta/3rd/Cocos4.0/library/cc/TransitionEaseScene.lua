@@ -1,16 +1,3 @@
----@meta
-
----@class cc.TransitionEaseScene 
-local TransitionEaseScene={ }
-cc.TransitionEaseScene=TransitionEaseScene
-
-
-
-
----*  Returns the Ease action that will be performed on a linear action.<br>
----* since v0.8.2<br>
----* param action A given interval action.<br>
----* return The Ease action that will be performed on a linear action.
----@param action cc.ActionInterval
----@return cc.ActionInterval
-function TransitionEaseScene:easeActionWithAction (action) end
+version https://git-lfs.github.com/spec/v1
+oid sha256:17f81cafc6e58bed880211d4730fd73d2018525efeeb5dd3d361a28d89eb4da2
+size 479

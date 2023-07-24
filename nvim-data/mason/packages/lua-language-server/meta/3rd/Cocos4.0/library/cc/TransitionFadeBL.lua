@@ -1,24 +1,3 @@
----@meta
-
----@class cc.TransitionFadeBL :cc.TransitionFadeTR
-local TransitionFadeBL={ }
-cc.TransitionFadeBL=TransitionFadeBL
-
-
-
-
----*  Creates a transition with duration and incoming scene.<br>
----* param t Duration time, in seconds.<br>
----* param scene A given scene.<br>
----* return A autoreleased TransitionFadeBL object.
----@param t float
----@param scene cc.Scene
----@return self
-function TransitionFadeBL:create (t,scene) end
----* 
----@param size size_table
----@return cc.ActionInterval
-function TransitionFadeBL:actionWithSize (size) end
----* 
----@return self
-function TransitionFadeBL:TransitionFadeBL () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:1cc697c5587254cad0a407fba668a0ee89c76abe7a03f8c6069e61d64fd643ea
+size 639

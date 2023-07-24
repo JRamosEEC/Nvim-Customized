@@ -1,16 +1,3 @@
----@meta
-
---
---Provides timing and other statistics from XR subsystems.
---
----@source UnityEngine.XRModule.dll
----@class UnityEngine.XR.Provider.XRStats: object
----@source UnityEngine.XRModule.dll
-CS.UnityEngine.XR.Provider.XRStats = {}
-
----@source UnityEngine.XRModule.dll
----@param xrSubsystem UnityEngine.IntegratedSubsystem
----@param tag string
----@param value float
----@return Boolean
-function CS.UnityEngine.XR.Provider.XRStats:TryGetStat(xrSubsystem, tag, value) end
+version https://git-lfs.github.com/spec/v1
+oid sha256:8c40437e462c7ba07f442c6d2bd4046700d6d4a20e5466ce0fa829de9435c645
+size 474

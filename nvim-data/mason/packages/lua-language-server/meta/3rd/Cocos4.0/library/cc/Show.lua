@@ -1,26 +1,3 @@
----@meta
-
----@class cc.Show :cc.ActionInstant
-local Show={ }
-cc.Show=Show
-
-
-
-
----*  Allocates and initializes the action.<br>
----* return  An autoreleased Show object.
----@return self
-function Show:create () end
----* 
----@return self
-function Show:clone () end
----* param time In seconds.
----@param time float
----@return self
-function Show:update (time) end
----* 
----@return cc.ActionInstant
-function Show:reverse () end
----* 
----@return self
-function Show:Show () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:fa6f964b55b5a6efb0c385737240cad417970aff0fb551fce05d017bb95ce6f6
+size 493

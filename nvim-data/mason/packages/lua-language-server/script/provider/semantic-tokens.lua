@@ -1,29 +1,3 @@
-local proto          = require 'proto'
-local client         = require 'client'
-local json           = require "json"
-local config         = require 'config'
-
-local function refresh()
-    if not client.isReady() then
-        return
-    end
-    if not client.getAbility 'workspace.semanticTokens.refreshSupport' then
-        return
-    end
-    log.debug('Refresh semantic tokens.')
-    proto.request('workspace/semanticTokens/refresh', json.null)
-end
-
-config.watch(function (uri, key, value, oldValue)
-    if key == '' then
-        refresh()
-    end
-    if key:find '^Lua.runtime'
-    or key:find '^Lua.workspace'
-    or key:find '^Lua.semantic'
-    or key:find '^files' then
-        refresh()
-    end
-end)
-
-return {}
+version https://git-lfs.github.com/spec/v1
+oid sha256:d0716baf91e09002182bb8aa1391b993b828e5f24b605ed463d19c435372fb41
+size 745

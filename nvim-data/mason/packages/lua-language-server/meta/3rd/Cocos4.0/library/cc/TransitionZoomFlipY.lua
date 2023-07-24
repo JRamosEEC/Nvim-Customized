@@ -1,19 +1,3 @@
----@meta
-
----@class cc.TransitionZoomFlipY :cc.TransitionSceneOriented
-local TransitionZoomFlipY={ }
-cc.TransitionZoomFlipY=TransitionZoomFlipY
-
-
-
-
----@overload fun(float:float,cc.Scene:cc.Scene):self
----@overload fun(float:float,cc.Scene:cc.Scene,int:int):self
----@param t float
----@param s cc.Scene
----@param o int
----@return self
-function TransitionZoomFlipY:create (t,s,o) end
----* 
----@return self
-function TransitionZoomFlipY:TransitionZoomFlipY () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:4ffd9a8871e3f9103579c08b8a6f2b94a35e67f5ec5112421062cef27a16b331
+size 476

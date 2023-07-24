@@ -1,27 +1,3 @@
----@meta
-
----@class cc.EaseIn :cc.EaseRateAction
-local EaseIn={ }
-cc.EaseIn=EaseIn
-
-
-
-
----* 
----@param action cc.ActionInterval
----@param rate float
----@return self
-function EaseIn:create (action,rate) end
----* 
----@return self
-function EaseIn:clone () end
----* 
----@param time float
----@return self
-function EaseIn:update (time) end
----* 
----@return cc.EaseRateAction
-function EaseIn:reverse () end
----* 
----@return self
-function EaseIn:EaseIn () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:b4e56e24837deb787aee06606969b61f33e010d81494c1169c222c39fa9b41b0
+size 477

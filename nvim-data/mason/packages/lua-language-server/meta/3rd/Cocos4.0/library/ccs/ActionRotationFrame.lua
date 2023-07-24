@@ -1,27 +1,3 @@
----@meta
-
----@class ccs.ActionRotationFrame :ccs.ActionFrame
-local ActionRotationFrame={ }
-ccs.ActionRotationFrame=ActionRotationFrame
-
-
-
-
----* Changes rotate action rotation.<br>
----* param rotation rotate action rotation.
----@param rotation float
----@return self
-function ActionRotationFrame:setRotation (rotation) end
----@overload fun(float:float,ccs.ActionFrame:ccs.ActionFrame):cc.ActionInterval
----@overload fun(float:float):cc.ActionInterval
----@param duration float
----@param srcFrame ccs.ActionFrame
----@return cc.ActionInterval
-function ActionRotationFrame:getAction (duration,srcFrame) end
----* Gets the rotate action rotation.<br>
----* return the rotate action rotation.
----@return float
-function ActionRotationFrame:getRotation () end
----* Default constructor
----@return self
-function ActionRotationFrame:ActionRotationFrame () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:40c78e549e03104dfc020015d3b10ae78f8777348dca2f4459ca33c4cdbd2842
+size 870

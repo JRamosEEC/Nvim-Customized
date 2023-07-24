@@ -1,25 +1,3 @@
----@meta
-
----@class ccs.ColorFrame :ccs.Frame
-local ColorFrame={ }
-ccs.ColorFrame=ColorFrame
-
-
-
-
----* 
----@return color3b_table
-function ColorFrame:getColor () end
----* 
----@param color color3b_table
----@return self
-function ColorFrame:setColor (color) end
----* 
----@return self
-function ColorFrame:create () end
----* 
----@return ccs.Frame
-function ColorFrame:clone () end
----* 
----@return self
-function ColorFrame:ColorFrame () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:daaaed20b0e288af67b30683729d43b630d38a5f37e0ca08dcb4f9c87de470f8
+size 456

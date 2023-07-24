@@ -1,19 +1,3 @@
----@meta
-
----@class cc.TransitionFlipX :cc.TransitionSceneOriented
-local TransitionFlipX={ }
-cc.TransitionFlipX=TransitionFlipX
-
-
-
-
----@overload fun(float:float,cc.Scene:cc.Scene):self
----@overload fun(float:float,cc.Scene:cc.Scene,int:int):self
----@param t float
----@param s cc.Scene
----@param o int
----@return self
-function TransitionFlipX:create (t,s,o) end
----* 
----@return self
-function TransitionFlipX:TransitionFlipX () end
+version https://git-lfs.github.com/spec/v1
+oid sha256:658c628d5b0f9afe62db9d9b20c8311341dcde5b1a1e1c38f8ed3eefcdb117dc
+size 448
