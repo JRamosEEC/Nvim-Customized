@@ -1,10 +1,11 @@
 #Removed for custom origin
-#plugin
-#custom
-#spell
-#ftplugin
-#syntax
-#coc-settings.json
-#.luarc.json
-#lazy-lock.json
-#after
+plugin
+custom
+spell
+ftplugin
+syntax
+coc-settings.json
+.luarc.json
+lazy-lock.json
+after
+**/.DS_Store
