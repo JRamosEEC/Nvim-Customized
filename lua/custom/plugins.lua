@@ -98,7 +98,7 @@ local plugins = {
         "rcarriga/nvim-dap-ui",
         keys = {
           { "<leader>du", function() require("dapui").toggle({}) end, desc = "Dap UI Toggler" },
-          { "<leader>dn", function() vim.cmd("NvimTreeClose") require("dapui").open() vim.cmd("wincmd h") vim.cmd("vertical resize 75") end, desc = "Dap UI Normalize Sizing" }, --A bit ghetto but works (Find cleaner/safer way like requiring nvim-tree)
+          { "<leader>dn", function() vim.cmd("NvimTreeClose") require("dapui").open() vim.cmd("wincmd h") vim.cmd("vertical resize 60") end, desc = "Dap UI Normalize Sizing" }, --A bit ghetto but works (Find cleaner/safer way like requiring nvim-tree)
           { "<leader>de", function() require("dapui").eval() end, desc = "Eval", mode = {"n", "v"} },
         },
         opts = {
@@ -115,18 +115,18 @@ local plugins = {
           layouts = {
             {
               elements = {
-                { id = "scopes", size = 0.50 },
+                { id = "scopes", size = 0.55 },
                 { id = "breakpoints", size = 0.20 },
-                { id = "watches", size = 0.20 },
-                { id = "stacks", size = 0.10 },
+                { id = "stacks", size = 0.25 },
               },
-              size = 75,
+              size = 60,
               position = "left",
             },
             {
               elements = {
+                "watches", --Moved watches to bottom in place of console to conserver space and movement { id = "watches", size = 0.20 }
                 "repl",
-                "console",
+                --"console", --Remove the console for now I'm really not sure what it's use cases are
               },
               size = 0.25,
               position = "bottom",
