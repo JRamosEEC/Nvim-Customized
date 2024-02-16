@@ -1,0 +1,75 @@
+let SessionLoad = 1
+let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-1 siso=-1
+let v:this_session=expand("<sfile>:p")
+silent only
+silent tabonly
+cd ~/devSys/sandbox/dev/zf2
+if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
+  let s:wipebuf = bufnr('%')
+endif
+let s:shortmess_save = &shortmess
+if &shortmess =~ 'A'
+  set shortmess=aoOA
+else
+  set shortmess=aoO
+endif
+badd +82 module/CmAppInternal/src/Controller/OffersController.php
+badd +2 module/CmModel/src/Shared/Acl/Role.php
+badd +52 module/CmMvc/src/Permissions/Acl/Acl.php
+badd +32 module/CmModel/src/Shared/Acl/Roles/PermittedLocale.php
+badd +119 module/CmAppExternal/tests/CmAppInternalTest/Controller/OffersControllerTest.php
+badd +133 module/CmAppInternal/view/cm-app-internal/offers/index.phtml
+badd +123 module/CmAppInternal/view/cm-app-internal/offers/form/edit.phtml
+badd +111 module/CmModel/src/Shared/Languages.php
+badd +23 module/CmAppInternal/view/cm-app-internal/offers/published.phtml
+badd +265 module/CmModel/src/Shared/Offers/Offers.php
+badd +215 public/js/internal/offers/edit.js
+badd +15 public/js/internal/offers/form.js
+badd +225 module/CmAppInternal/src/Form/Offers/EditForm.php
+badd +7 public/js/angular/offers/resources.js
+badd +450 module/CmTranslate/src/Translator/Translator.php
+badd +8 module/CmAppExternal/tests/CmModel/Shared/Fmd/ModelsTest.php
+badd +643 module/CmModel/src/Shared/Users.php
+badd +14 module/CmModel/src/Shared/Acl/Table/RoleTable.php
+badd +58 module/CmModel/src/Shared/Table/UsersTable.php
+badd +582 module/CmModel/src/Db/AbstractTable.php
+badd +102 module/CmAppInternal/config/routes/offers.php
+argglobal
+%argdel
+$argadd ~/devSys/sandbox/dev/zf2/
+edit module/CmAppInternal/src/Controller/OffersController.php
+argglobal
+balt module/CmAppInternal/config/routes/offers.php
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 272 - ((36 * winheight(0) + 26) / 52)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 272
+normal! 048|
+tabnext 1
+if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
+  silent exe 'bwipe ' . s:wipebuf
+endif
+unlet! s:wipebuf
+set winheight=1 winwidth=20
+let &shortmess = s:shortmess_save
+let s:sx = expand("<sfile>:p:r")."x.vim"
+if filereadable(s:sx)
+  exe "source " . fnameescape(s:sx)
+endif
+let &g:so = s:so_save | let &g:siso = s:siso_save
+set hlsearch
+nohlsearch
+doautoall SessionLoadPost
+unlet SessionLoad
+" vim: set ft=vim :
