@@ -197,6 +197,12 @@ local plugins = {
     dependencies = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"}
   },
 
+  -- Custom Lsp Colors
+  --{
+  --  "folke/lsp-colors.nvim",
+  --  lazy = false,
+  --}
+
   -- To make a plugin not be loaded
   -- {
   --   "NvChad/nvim-colorizer.lua",

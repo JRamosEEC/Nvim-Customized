@@ -25,6 +25,15 @@ require "plugins"
 -- Relative Line Number By Default
 vim.opt.relativenumber = true
 
+-- Setup LSP Colors
+--require("lsp-colors").setup({
+--    Error = "#999999",
+--    Warning = "#999999",
+--    Information = "#999999",
+--    Hint = "#999999",
+--    Hint = "#999999",
+--})
+
 -- Setup Telescope
 local telescope = require("telescope")
 local telescope_actions = require("telescope.actions")
@@ -41,21 +50,25 @@ vim.keymap.set('n', '<leader>tt', '<cmd>Telescope<CR>', { desc = "Telescope", no
 vim.keymap.set('n', '<leader>fl', builtin.quickfix, { desc = "Find Last Search", noremap = true }) --Keybind to open Telescope quick fix (The last saved search)
 vim.keymap.set('n', '<leader>fh', builtin.quickfixhistory, { desc = "Find Search History", noremap = true }) --Keybind to open Telescope quick fix (The last saved search)
 
+vim.keymap.set('n', '<leader>fb', function() -- Set default find buffer funcitonality to sort by last used and to ignore current
+    builtin.buffers({ sort_mru = true, ignore_current_buffer = true}) --, sorter = require'telescope.sorters'.get_substr_matcher() })
+end, {desc = "Find buffers (Sort Last-Used)", noremap = true})
+
 -- ## LSP - (Two PHP LSP's for combined features e.g. completion snippets and deprecation messages)
 -- LSP PHP Actor (Primary LSP)
 require('lspconfig').phpactor.setup({
   filetype = { "php", "phtml" },
   init_options = {
-    --["language_serer_worse_reflection.inlay_hints.enable"] = true,
-    --["language_serer_worse_reflection.inlay_hints.params"] = true,
-    --["language_serer_worse_reflection.inlay_hints.types"] = true,
-    --["language_server_configuration.auto_config"] = false,
     --["language_server_psalm.enabled"] = false,
+    ["language_server_worse_reflection.inlay_hints.enable"] = true,
+    ["language_server_worse_reflection.inlay_hints.params"] = true,
+    ["language_server_worse_reflection.inlay_hints.types"] = true,
+    ["language_server_configuration.auto_config"] = false,
     ["code_transform.import_globals"] = true,
     ["language_server_phpstan.enabled"] = true,
-    ["language_server_phpstan.level"] = 7,
+    ["language_server_phpstan.level"] = 9,
     ["language_server_phpstan.bin"] = "phpstan",
-  }
+  },
 })
 -- LSP Intelephense (Alternative LSP)
 require('lspconfig').intelephense.setup({
@@ -126,6 +139,10 @@ vim.keymap.set('n', '<F12>', function() require('dap').step_out() end)
 -- File Browser & Find In Directory (Removing this until I add fd file searching to it way to slow without it)
 --vim.api.nvim_set_keymap('n', '<space>fd', ":Telescope file_browser<CR>", { desc = "Find Directories", noremap = true })
 
+
+-- TODO : Add away around get ignore for find in files and grepping. If I can find in files vendor that would be enough so not every grep is searching everything
+
+
 -- ###Experimental Changes
 -- Telescope Find In Folder Function For Fuzzy Finder (Slow With Large File Trees Like Ours)
 local ts_select_dir_for_grep = function(prompt_bufnr)
@@ -138,6 +155,7 @@ local ts_select_dir_for_grep = function(prompt_bufnr)
     fb.file_browser({
         files = false, --Disable to only use custom browse_folers function without predefined browse_files
         depth = 1,
+        hidden = false,
         use_fd = true, -- Kind of a necessity it's fast as hell
         attach_mappings = function(prompt_bufnr)
             require("telescope.actions").select_default:replace(function()
@@ -154,7 +172,7 @@ local ts_select_dir_for_grep = function(prompt_bufnr)
             local entry_maker = opts.entry_maker { cwd = cwd }
             return async_oneshot_finder {
                 fn_command = function()
-                    return { command = "fd", args = { "--type", "directory", "--absolute-path", "--maxdepth", 1 } }
+                    return { command = "fd", args = { "--type", "directory", "--absolute-path", "--unrestricted", "--maxdepth", 1 } }
                 end,
                 entry_maker = entry_maker,
                 results = { entry_maker(Path:new(opts.path):parent():absolute()) }, --Parent Path To Include Parent Dir
