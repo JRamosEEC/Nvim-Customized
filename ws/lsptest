@@ -13,31 +13,14 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +1 ~/devSys/sandbox/dev/zf2
-badd +34 module/CmApi/src/Controller/LicenseController.php
+badd +60 module/CmAppExternal/src/Controller/Conference/MyController.php
+badd +15 module/CmAppExternal/src/Controller/Conference/ConferenceUtilityController.php
+badd +214 module/CmMvc/src/Controller/ActionController.php
 argglobal
 %argdel
-$argadd ~/devSys/sandbox/dev/zf2
-edit module/CmApi/src/Controller/LicenseController.php
-let s:save_splitbelow = &splitbelow
-let s:save_splitright = &splitright
-set splitbelow splitright
-wincmd _ | wincmd |
-split
-1wincmd k
-wincmd w
-let &splitbelow = s:save_splitbelow
-let &splitright = s:save_splitright
-wincmd t
-let s:save_winminheight = &winminheight
-let s:save_winminwidth = &winminwidth
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-exe '1resize ' . ((&lines * 49 + 28) / 56)
-exe '2resize ' . ((&lines * 3 + 28) / 56)
+edit module/CmAppExternal/src/Controller/Conference/MyController.php
 argglobal
+balt module/CmAppExternal/src/Controller/Conference/ConferenceUtilityController.php
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -48,27 +31,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 34 - ((30 * winheight(0) + 24) / 49)
+let s:l = 60 - ((39 * winheight(0) + 26) / 53)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 34
-normal! 08|
-wincmd w
-argglobal
-enew
-balt module/CmApi/src/Controller/LicenseController.php
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-wincmd w
-exe '1resize ' . ((&lines * 49 + 28) / 56)
-exe '2resize ' . ((&lines * 3 + 28) / 56)
+keepjumps 60
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -76,14 +44,13 @@ endif
 unlet! s:wipebuf
 set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
-let &winminheight = s:save_winminheight
-let &winminwidth = s:save_winminwidth
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

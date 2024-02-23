@@ -13,13 +13,13 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +1 ~/devSys/sandbox/dev/zf2/module/CmModel/src/Shared/Ems/Conference/Conference.php
+badd +1294 ~/devSys/sandbox/dev/zf2/module/CmModel/src/Shared/Ems/Conference/Conference.php
 badd +2489 ~/devSys/sandbox/dev/zf2/module/CmModel/src/Shared/Ems/Event.php
 badd +1027 ~/devSys/sandbox/dev/zf2/module/CmAppInternal/src/Controller/Ems/Conference/AjaxController.php
 badd +334 ~/devSys/sandbox/dev/zf2/module/CmAppInternal/src/Controller/Ems/Conference/IndexController.php
-badd +943 ~/devSys/sandbox/dev/zf2/module/CmAppExternal/src/Controller/Conference/MyController.php
-badd +942 ~/devSys/sandbox/dev/zf2/config/autoload/global.php
-badd +52 ~/devSys/sandbox/dev/zf2/module/CmAppExternal/view/application/conference/presentations/presentations.phtml
+badd +339 ~/devSys/sandbox/dev/zf2/module/CmAppExternal/src/Controller/Conference/MyController.php
+badd +938 ~/devSys/sandbox/dev/zf2/config/autoload/global.php
+badd +46 ~/devSys/sandbox/dev/zf2/module/CmAppExternal/view/application/conference/presentations/presentations.phtml
 badd +1380 ~/devSys/sandbox/dev/zf2/module/CmAppExternal/src/Controller/Conference/ConferenceController.php
 badd +393 ~/devSys/sandbox/dev/zf2/module/CmAppInternal/view/cm-app-internal/ems/conference/partials/nav.phtml
 badd +955 ~/devSys/sandbox/dev/zf2/public/js/angular/ems/conference/common.js
@@ -27,20 +27,31 @@ badd +24 ~/devSys/sandbox/dev/zf2/module/CmAppInternal/view/cm-app-internal/ems/
 badd +4 ~/devSys/sandbox/dev/zf2/public/js/angular/ems/conference/sessions.js
 badd +267 ~/devSys/sandbox/dev/zf2/module/CmModel/src/TwoWayReplication/Conference/Conference.php
 badd +210 ~/devSys/sandbox/dev/zf2/module/CmAppExternal/src/Form/Conference/PaymentForm.php
-badd +96 ~/devSys/sandbox/dev/zf2/module/CmAppExternal/src/Controller/Conference/ConferenceUtilityController.php
+badd +75 ~/devSys/sandbox/dev/zf2/module/CmAppExternal/src/Controller/Conference/ConferenceUtilityController.php
 badd +74 ~/devSys/sandbox/dev/zf2/module/CmAppExternal/view/application/conference/locations/florence.phtml
-badd +33 ~/devSys/sandbox/dev/zf2/module/CmAppExternal/config/routes/conference.php
-badd +2 ~/devSys/sandbox/dev/zf2/config/autoload/local.php
+badd +146 ~/devSys/sandbox/dev/zf2/module/CmAppExternal/config/routes/conference.php
+badd +5 ~/devSys/sandbox/dev/zf2/config/autoload/local.php
 badd +58 ~/devSys/sandbox/dev/zf2/public/js/conference/index.js
 badd +13 ~/devSys/sandbox/dev/zf2/module/CmAppExternal/view/application/conference/partials/location-list.phtml
 badd +24 ~/devSys/sandbox/dev/zf2/module/CmAppExternal/view/application/conference/partials/pricing.phtml
-badd +28 ~/devSys/sandbox/dev/zf2/module/CmAppExternal/view/application/conference/index.phtml
+badd +54 ~/devSys/sandbox/dev/zf2/module/CmAppExternal/view/application/conference/index.phtml
+badd +6 ~/devSys/sandbox/dev/zf2/module/CmAppExternal/view/application/conference/my-conference/index.phtml
+badd +224 ~/devSys/sandbox/dev/zf2/public/js/angular/conference/front.js
+badd +1847 ~/devSys/sandbox/dev/zf2/module/CmAppInternal/config/routes/ems.php
+badd +92 ~/devSys/sandbox/dev/zf2/module/CmAppInternal/src/Controller/Ems/IndexController.php
+badd +506 ~/devSys/sandbox/dev/zf2/module/CmAppInternal/src/Controller/Ems/AttendeeController.php
+badd +658 ~/devSys/sandbox/dev/zf2/module/CmModel/src/Shared/Ems/Attendee.php
+badd +153 ~/devSys/sandbox/dev/zf2/module/CmAppInternal/view/cm-app-internal/ems/partials/tabs/attendee.phtml
+badd +252 ~/devSys/sandbox/dev/zf2/public/js/angular/ems/attendees.js
+badd +539 ~/devSys/sandbox/dev/zf2/public/js/angular/ems/common.js
+badd +1184 ~/devSys/sandbox/dev/zf2/module/CmModel/src/TwoWayReplication/Access/Users.php
+badd +183 ~/devSys/sandbox/dev/zf2/module/CmModel/src/TwoWayReplication/Access/Table/UsersTable.php
+badd +84 ~/devSys/sandbox/dev/zf2/module/CmAppExternal/tests/CmAppInternalTest/Controller/Ems/EventLeadTest.php
 argglobal
 %argdel
 $argadd ~/devSys/sandbox/dev/zf2
-edit ~/devSys/sandbox/dev/zf2/module/CmAppExternal/view/application/conference/partials/pricing.phtml
+edit ~/devSys/sandbox/dev/zf2/module/CmAppExternal/tests/CmAppInternalTest/Controller/Ems/EventLeadTest.php
 argglobal
-balt ~/devSys/sandbox/dev/zf2/module/CmAppExternal/view/application/conference/partials/location-list.phtml
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -51,12 +62,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 24 - ((22 * winheight(0) + 26) / 52)
+let s:l = 114 - ((25 * winheight(0) + 26) / 52)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 24
-normal! 028|
+keepjumps 114
+normal! 05|
 lcd ~/devSys/sandbox/dev/zf2
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
@@ -71,6 +82,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

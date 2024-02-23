@@ -20,25 +20,25 @@ badd +2 module/CmAppExternal/view/application/videos/video.phtml
 badd +22 module/CmAppExternal/view/application/videos/partials/standard-video.phtml
 badd +1 module/CmModel/src/Video/VideoManager/Watchlist.php
 badd +245 module/CmModel/src/Video/Video.php
-badd +244 module/CmTextWrangler/src/ViewHelper/MediaPlayer/MediaPlayer.php
-badd +1 module/CmTextWrangler/src/ViewHelper/MediaPlayer/Interfaces/PlayerInterface.php
+badd +496 module/CmTextWrangler/src/ViewHelper/MediaPlayer/MediaPlayer.php
+badd +24 module/CmTextWrangler/src/ViewHelper/MediaPlayer/Interfaces/PlayerInterface.php
 badd +1 module/CmTextWrangler/src/ViewHelper/MediaPlayer/Traits/PlayerJsManagerTrait.php
 badd +1 module/CmTextWrangler/src/ViewHelper/MediaPlayer/Interfaces/PlayerJsManagerInterface.php
-badd +199 module/CmTextWrangler/src/ViewHelper/MediaPlayer/PlayerImplementations/WistiaPlayer.php
+badd +201 module/CmTextWrangler/src/ViewHelper/MediaPlayer/PlayerImplementations/WistiaPlayer.php
 badd +35 module/CmTextWrangler/src/ViewHelper/MediaPlayer/PlayerImplementations/PolyPlayer.php
 badd +1 module/CmModel/src/Video/VideoManager/PostTranslation.php
 badd +1 migrations/video/seeds/VmPostTranslationTableSeed.php
 badd +1 migrations/video/seeds/VmPostTranslationMediaTableSeed.php
 badd +1 migrations/video/seeds/VideoPermissionTableSeed.php
-badd +162 module/CmAppExternal/tests/CmAppExternal/Controller/General/VideosControllerTest.php
+badd +246 module/CmAppExternal/tests/CmAppExternal/Controller/General/VideosControllerTest.php
 badd +95 module/CmTextWrangler/config/module.config.php
-badd +4 module/CmTextWrangler/src/ViewHelper/MediaPlayer/Interfaces/PlayerManagerInterface.php
-badd +24 module/CmTextWrangler/src/ViewHelper/VideoByVideoManId.php
+badd +26 module/CmTextWrangler/src/ViewHelper/VideoByVideoManId.php
+badd +131 module/CmAppExternal/tests/CmTextWrangler/ViewHelper/MediaPlayer/MediaPlayerTest.php
 argglobal
 %argdel
-edit module/CmTextWrangler/src/ViewHelper/MediaPlayer/PlayerImplementations/WistiaPlayer.php
+edit module/CmTextWrangler/src/ViewHelper/MediaPlayer/MediaPlayer.php
 argglobal
-balt module/CmTextWrangler/src/ViewHelper/MediaPlayer/Interfaces/PlayerJsManagerInterface.php
+balt module/CmAppExternal/tests/CmTextWrangler/ViewHelper/MediaPlayer/MediaPlayerTest.php
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -49,12 +49,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 201 - ((26 * winheight(0) + 26) / 52)
+let s:l = 226 - ((26 * winheight(0) + 26) / 53)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 201
-normal! 0
+keepjumps 226
+normal! 024|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
