@@ -197,7 +197,7 @@ local plugins = {
     dependencies = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"}
   },
 
-  -- Custom Lsp Colors
+  -- Custom Lsp Colors (In testing they weren't really working for the diagnostics)
   --{
   --  "folke/lsp-colors.nvim",
   --  lazy = false,

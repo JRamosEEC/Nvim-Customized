@@ -79,73 +79,87 @@ end, {desc = "Find buffers (Sort Last-Used)", noremap = true})
 
 
 -- ## LSP - (Two PHP LSP's for combined features e.g. completion snippets and deprecation messages)
+local lspconfig = require('lspconfig')
+local cmp_lsp = require('cmp_nvim_lsp')
+local capabilities = cmp_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
+local window = require('lspconfig.ui.windows')
+
+vim.keymap.set('n', '<leader>lo', vim.diagnostic.open_float, { desc = "Open Diagnostic Floating Window", noremap = true })
+vim.keymap.set('n', '<leader>lp', vim.diagnostic.goto_prev, { desc = "Go To Previous Diagnostic", noremap = true })
+vim.keymap.set('n', '<leader>ln', vim.diagnostic.goto_next, { desc = "Go To Next Diagnostic", noremap = true })
+vim.keymap.set('n', '<leader>ll', '<cmd>Telescope diagnositcs<cr>', { desc = "Open Diagnostic List", noremap = true })
+vim.keymap.set('n', '<leader>ld', vim.lsp.buf.definition, { desc = "Go To Definition", noremap = true })
+vim.keymap.set('n', '<leader>lD', vim.lsp.buf.definition, { desc = "Go To Declaration (The interface)", noremap = true })
+vim.keymap.set('n', '<leader>lr', vim.lsp.buf.references, { desc = "Display References", noremap = true })
+vim.keymap.set('n', '<leader>lh', vim.lsp.buf.hover, { desc = "Show Var Information", noremap = true })
+
+-- Removes the virtual text in-favor for opening the diagnostic floating window (Applies to all lsp's that attach unless overridden) -Note:I'm feeling out if I enjoy this
+window.default_options.border = 'single'
+vim.diagnostic.config {float = {border = 'single'}}
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+    vim.lsp.handlers.hover, {
+        border = "single",
+        focusable = false,
+        title = "Details",
+    }
+)
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+        virtual_text = false,
+        underline = true,
+        float = {border = 'single'},
+    }
+)
+--Wondering if maybe I can make a corner window or something that's out of the way but will open seperately
+--vim.o.updatetime = 250
+--vim.api.nvim_command('autocmd CursorHold * lua vim.diagnostic.open_float()') --It messes up the vim.lsp.buf.hover (Also Idk it might get in the way auto popping up)
+
 -- LSP PHP Actor (Primary LSP)
-require('lspconfig').phpactor.setup({
+lspconfig.phpactor.setup({
   filetype = { "php", "phtml" },
-    --The options are working and you can disable the completor
   init_options = {
+    --["language_server_completion.trim_leading_dollar"] = true,
     ["completion_worse.completor.constant.enabled"] = true, --Default is false I don't see why
     ["completion_worse.experimantal"] = true, --Default is false
     ["language_server_configuration.auto_config"] = false,
     ["language_server_worse_reflection.diagnostics.enable"] = true, --This stop all the error logging only when the language servers are also disabled
     ["language_server_worse_reflection.inlay_hints.enable"] = true, --Default false
     ["language_server_worse_reflection.inlay_hints.types"] = true, --Default false
-    --Phpstan is now installed globally, but desperately need some configuration to work with autloader
-    --["language_server_psalm.enabled"] = true,
-    --["language_server_psalm.error_level"] = 1, --Lower is stricter
-    ------["language_server_phpstan.enabled"] = true,
-    ------["language_server_phpstan.level"] = 9, --Higher is stricter
-    ------["language_server_phpstan.bin"] = "/home/jramos/.config/composer/vendor/phpstan/phpstan/phpstan",
+    --Right now I'm utilizing diagnostics without a specified Language Server - Try determining if phpactor or psalm is worth it
     --Extra Extensions Added Below
-    --["language_server_php_cs_fixer.enabled"] = true, --PSR standards
-    --["php_code_sniffer.enabled"] = true, --Code standards
+    ["language_server_php_cs_fixer.enabled"] = true, --PSR standards
+    ["php_code_sniffer.enabled"] = true, --Code standards
+    ["prophecy.enabled"] = true, --Propechy is a mocking extension
+    ["symfony.enabled"] = true,
+    ["phpunit.enabled"] = true,
     --Errors --["blackfire.enabled"] = true, --Blackfire is performance monitoring
-    --["prophecy.enabled"] = true, --Propechy is a mocking extension
     --["behat.enabled"] = false, --Goto definition and completion support in fiels
-    --["symfony.enabled"] = true,
-    --["phpunit.enabled"] = true,
   },
+  handlers = {
+    ["textDocument/hover"] = function() end, -- Override the vim.lsp.handler to remove the hover information from phpActor
+  },
+  capabilities = capabilities,
 })
 --LSP Intelephense (Alternative LSP)
-require('lspconfig').intelephense.setup({
-  on_attach = function(client, bufnr)
-    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-
-    --client.server_capabilities.documentFormattingProvider = false
-    --client.server_capabilities.documentRangeFormattingProvider = false
-    --client.server_capabilities.declaration = false
-    --client.server_capabilities.executeCommand = false
-    --client.server_capabilities.hover = false
-    --client.server_capabilities.references = false
-    --client.server_capabilities.signatureHelp = false
-    --client.server_capabilities.typeDefinition = false
-    --client.server_capabilities.workspaceSymbol = false
-    --
-    --vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    --  vim.lsp.diagnostic.on_publish_diagnostics, {
-    --    virtual_text = {
-    --      prefix = 'x',
-    --      spacing = 0,
-    --    },
-    --    signs = true,
-    --    underline= true,
-    --  }
-    --)
-  end,
+lspconfig.intelephense.setup({
+  settings = {
+    intelephense = {
+      diagnostics = {
+        deprecated = false,
+        undefinedVariables = false,
+        undefinedMethods = false,
+        duplicateSymbols = false,
+      },
+    },
+  },
   debounce_text_changes = 150,
+  capabilities = capabilities,
 })
---The kind of ghetto way of setting Lsp options
-vim.keymap.set('n', '<leader>lc', function() -- Lsp Configure (The temp way of setting lsp options for now) (If i have to do a temp way I'd like to put it in on_attach)
-  local client = vim.lsp.get_active_clients({name = 'intelephense'})[1]
-  local ns = vim.lsp.diagnostic.get_namespace(client.id)
-  vim.diagnostic.disable(nil, ns)
-end, {desc = "LSP Apply Configuration (Temp Intelephense Configuration)", noremap = true})
 
 -- Dap (Setup in Plugins & Loaded With PHP Debugger Adapter Here)
 local dap = require('dap')
 require('dap').set_log_level('trace')
-require('telescope').load_extension('dap')
+telescope.load_extension('dap')
 dap.adapters.php = {
   type = "executable",
   command = "node",
@@ -206,7 +220,7 @@ vim.keymap.set('n', '<F12>', function() require('dap').step_out() end)
 -- Telescope Find In Folder Function For Fuzzy Finder (Slow With Large File Trees Like Ours)
 local ts_select_dir_for_grep = function(prompt_bufnr)
     local action_state = require("telescope.actions.state")
-    local fb = require("telescope").extensions.file_browser
+    local fb = telescope.extensions.file_browser
     local live_grep = require("telescope.builtin").live_grep
     local current_line = action_state.get_current_line()
     local async_oneshot_finder = require "telescope.finders.async_oneshot_finder" --For Custom browse_folders Function
