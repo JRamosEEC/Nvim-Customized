@@ -3,7 +3,7 @@ local M = {}
 
 M.general = {
   n = {
-    [";"] = { ":", "enter command mode", opts = { nowait = true } },
+    --[";"] = { ":", "enter command mode", opts = { nowait = true } }, --Custom edit, couldn't rebind ';' so remove this definition
   },
   v = {
     [">"] = { ">gv", "indent"},

@@ -85,6 +85,7 @@ local capabilities = cmp_lsp.default_capabilities(vim.lsp.protocol.make_client_c
 local window = require('lspconfig.ui.windows')
 
 vim.keymap.set('n', '<leader>lo', vim.diagnostic.open_float, { desc = "Open Diagnostic Floating Window", noremap = true })
+vim.keymap.set('n', ';', vim.diagnostic.open_float, { desc = "Open Diagnostic Floating Window", noremap = true }) --Giving this one an easy access keybind but keep both
 vim.keymap.set('n', '<leader>lp', vim.diagnostic.goto_prev, { desc = "Go To Previous Diagnostic", noremap = true })
 vim.keymap.set('n', '<leader>ln', vim.diagnostic.goto_next, { desc = "Go To Next Diagnostic", noremap = true })
 vim.keymap.set('n', '<leader>ll', '<cmd>Telescope diagnositcs<cr>', { desc = "Open Diagnostic List", noremap = true })
@@ -160,6 +161,18 @@ lspconfig.intelephense.setup({
 local dap = require('dap')
 require('dap').set_log_level('trace')
 telescope.load_extension('dap')
+local getPathMap = function() -- Get current path & convert to PathMap (Current path without first 3 /home/jramos/devSys)
+    local skipped = 0
+    local pathMap = ''
+    for part in string.gmatch(vim.fn.getcwd(), "[^/]+") do
+        if skipped >= 3 then
+            pathMap = pathMap .. '/' .. part
+        else
+            skipped = skipped + 1
+        end
+    end
+    return pathMap
+end
 dap.adapters.php = {
   type = "executable",
   command = "node",
@@ -173,7 +186,7 @@ dap.configurations.php = {
     port = 9003,
     log = true,
     pathMappings = {
-      ['/home/justin/sandbox/dev/zf2'] = "${workspaceFolder}",
+      ["/home/justin" .. getPathMap()] = "${workspaceFolder}", --['/home/justin/sandbox/dev/zf2'] = "${workspaceFolder}",
     },
     stopOnEntry = false,
     xdebugSettings = {
@@ -181,6 +194,27 @@ dap.configurations.php = {
     }
   }
 }
+-- Change PathMap on the fly & auto restart dap (Leave PathMap command example/override, autocmd should be automatically run on DirChanged)
+local restartDap = function()
+  require('dap').disconnect()
+  require('dap').close()
+  require('dap').continue()
+end
+vim.api.nvim_create_user_command("PathMap", function(args)
+    if (args['args']) then
+      dap.configurations.php[1].pathMappings = { ["/home/justin/sandbox/dev" .. string.lower(args['args'])] = "${workspaceFolder}" }
+      restartDap()
+    end
+end, {nargs='*'})
+vim.api.nvim_create_autocmd('DirChanged', {
+    callback = function()
+      dap.configurations.php[1].pathMappings = { ["/home/justin" .. getPathMap()] = "${workspaceFolder}" }
+      require('dap').disconnect()
+      require('dap').close()
+      --restartDap() --Quirky bug right now if changing with another buffer like telescope it tries to run a dap for that buffer
+    end,
+})
+
 -- Dap Virtual Text Inline Info (I don't think this is fully funcitonal yet)
 require("nvim-dap-virtual-text").setup({
   enabled = true,
