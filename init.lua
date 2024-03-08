@@ -25,15 +25,6 @@ require "plugins"
 -- Relative Line Number By Default
 vim.opt.relativenumber = true
 
--- Setup LSP Colors
---require("lsp-colors").setup({
---    Error = "#999999",
---    Warning = "#999999",
---    Information = "#999999",
---    Hint = "#999999",
---    Hint = "#999999",
---})
-
 -- Setup Telescope
 local telescope = require("telescope")
 local telescope_actions = require("telescope.actions")
@@ -41,8 +32,19 @@ local builtin = require("telescope.builtin")
 telescope.setup({
     defaults = {
         mappings = { --If this keybind ever doesn't work or similarly <C-s> good terminal flow control and remove it on the terminal
-            n = { ["<C-q>"] = telescope_actions.send_to_qflist},-- + builtin.quickfixhistory()},
-            i = { ["<C-q>"] = telescope_actions.send_to_qflist},-- + builtin.quickfixhistory},
+            n = {
+                ["<C-q>"] = telescope_actions.send_to_qflist, -- + builtin.quickfixhistory()},
+                ["<C-c>"] = telescope_actions.close,
+                ["<C-n>"] = function() vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('a<C-n>', true, false, true), "i", false) end,
+                ["<C-p>"] = function() vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('a<C-p>', true, false, true), "i", false) end,
+                ["p"] = function() vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('a<C-r>"<C-c>', true, false, true), "i", false) end,
+                ["P"] = function() vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('i<C-r>"<C-c>', true, false, true), "i", false) end,
+            },
+            i = {
+                ["<C-q>"] = telescope_actions.send_to_qflist, -- + builtin.quickfixhistory},
+                ["<esc>"] = telescope_actions.close,
+                ["<C-c>"] = function() vim.cmd("stopinsert") end,
+            },
         },
     },
 })
@@ -53,30 +55,6 @@ vim.keymap.set('n', '<leader>fh', builtin.quickfixhistory, { desc = "Find Search
 vim.keymap.set('n', '<leader>fb', function() -- Set default find buffer funcitonality to sort by last used and to ignore current
     builtin.buffers({ sort_mru = true, ignore_current_buffer = true}) --, sorter = require'telescope.sorters'.get_substr_matcher() })
 end, {desc = "Find buffers (Sort Last-Used)", noremap = true})
-
--- Background Searching Proccess (WIP) I'd prefer to get the first method working
---vim.keymap.set('n', '<leader>fx', function()
---    builtin.resume()
---    local prompt_bufnr = vim.api.nvim_get_current_buf()
---    vim.api.nvim_create_autocmd('User TelescopeResumePost', {
---        buffer = prompt_bufnr,
---        once = true,
---        callback = function ()
---            print("It works")
---        end,
---    })
---end, {desc = "Find Execute (As a background process)", noremap = true})
-
---vim.keymap.set('n', '<leader>fx', function()
---    builtin.live_grep({
---        on_complete = function(prompt_bufnr)
---            telescope_actions.select_default(prompt_bufnr)
---            require('telescope.actions.state').get_selected_entry(prompt_bufnr)
---            telescope_actions.close(prompt_bufnr)
---        end
---    })
---end, {desc = "Find Execute (As a background process)", noremap = true})
-
 
 -- ## LSP - (Two PHP LSP's for combined features e.g. completion snippets and deprecation messages)
 local lspconfig = require('lspconfig')
@@ -90,7 +68,7 @@ vim.keymap.set('n', '<leader>lp', vim.diagnostic.goto_prev, { desc = "Go To Prev
 vim.keymap.set('n', '<leader>ln', vim.diagnostic.goto_next, { desc = "Go To Next Diagnostic", noremap = true })
 vim.keymap.set('n', '<leader>ll', '<cmd>Telescope diagnositcs<cr>', { desc = "Open Diagnostic List", noremap = true })
 vim.keymap.set('n', '<leader>ld', vim.lsp.buf.definition, { desc = "Go To Definition", noremap = true })
-vim.keymap.set('n', '<leader>lD', vim.lsp.buf.definition, { desc = "Go To Declaration (The interface)", noremap = true })
+vim.keymap.set('n', '<leader>lD', vim.lsp.buf.declaration, { desc = "Go To Declaration (The interface)", noremap = true })
 vim.keymap.set('n', '<leader>lr', vim.lsp.buf.references, { desc = "Display References", noremap = true })
 vim.keymap.set('n', '<leader>lh', vim.lsp.buf.hover, { desc = "Show Var Information", noremap = true })
 
@@ -158,9 +136,6 @@ lspconfig.intelephense.setup({
 })
 
 -- Dap (Setup in Plugins & Loaded With PHP Debugger Adapter Here)
-local dap = require('dap')
-require('dap').set_log_level('trace')
-telescope.load_extension('dap')
 local getPathMap = function() -- Get current path & convert to PathMap (Current path without first 3 /home/jramos/devSys)
     local skipped = 0
     local pathMap = ''
@@ -173,6 +148,9 @@ local getPathMap = function() -- Get current path & convert to PathMap (Current 
     end
     return pathMap
 end
+local dap = require('dap')
+require('dap').set_log_level('trace')
+telescope.load_extension('dap')
 dap.adapters.php = {
   type = "executable",
   command = "node",
@@ -247,18 +225,14 @@ vim.keymap.set('n', '<F10>', function() require('dap').step_over() end)
 vim.keymap.set('n', '<F11>', function() require('dap').step_into() end)
 vim.keymap.set('n', '<F12>', function() require('dap').step_out() end)
 
--- File Browser & Find In Directory (Removing this until I add fd file searching to it way to slow without it)
---vim.api.nvim_set_keymap('n', '<space>fd', ":Telescope file_browser<CR>", { desc = "Find Directories", noremap = true })
-
--- ###Experimental Changes
--- Telescope Find In Folder Function For Fuzzy Finder (Slow With Large File Trees Like Ours)
+-- File Browser & Find In Directory - For Fuzzy Finder (Slow With Large File Trees Like Ours)
 local ts_select_dir_for_grep = function(prompt_bufnr)
     local action_state = require("telescope.actions.state")
     local fb = telescope.extensions.file_browser
     local live_grep = require("telescope.builtin").live_grep
     local current_line = action_state.get_current_line()
-    local async_oneshot_finder = require "telescope.finders.async_oneshot_finder" --For Custom browse_folders Function
-    local Path = require "plenary.path" --For Custom browse_folders Function
+    local async_oneshot_finder = require "telescope.finders.async_oneshot_finder"
+    local Path = require "plenary.path"
     fb.file_browser({
         files = false, --Disable to only use custom browse_folers function without predefined browse_files
         depth = 1,
@@ -288,6 +262,30 @@ local ts_select_dir_for_grep = function(prompt_bufnr)
         end,
     })
 end
+vim.keymap.set('n', '<leader>fd', ts_select_dir_for_grep, { desc = "Find Directories", noremap = true })
+
+-- Background Searching Proccess (WIP) I'd prefer to get the first method working
+--vim.keymap.set('n', '<leader>fx', function()
+--    builtin.resume()
+--    local prompt_bufnr = vim.api.nvim_get_current_buf()
+--    vim.api.nvim_create_autocmd('User TelescopeResumePost', {
+--        buffer = prompt_bufnr,
+--        once = true,
+--        callback = function ()
+--            print("It works")
+--        end,
+--    })
+--end, {desc = "Find Execute (As a background process)", noremap = true})
+
+--vim.keymap.set('n', '<leader>fx', function()
+--    builtin.live_grep({
+--        on_complete = function(prompt_bufnr)
+--            telescope_actions.select_default(prompt_bufnr)
+--            require('telescope.actions.state').get_selected_entry(prompt_bufnr)
+--            telescope_actions.close(prompt_bufnr)
+--        end
+--    })
+--end, {desc = "Find Execute (As a background process)", noremap = true})
 
 local fb_actions = require "telescope._extensions.file_browser.actions" --For Custom File Browswer Mappings
 telescope.setup({
@@ -308,3 +306,159 @@ telescope.setup({
         },
     },
 })
+
+-- This Will Be Alot
+local finders = require("telescope.finders") --Going to need these if I rewrite live_grep function
+local make_entry = require("telescope.make_entry") --Going to need these if I rewrite live_grep function
+local pickers = require("telescope.pickers") --Going to need these if I rewrite live_grep function
+local sorters = require("telescope.sorters") --Going to need these if I rewrite live_grep function
+local actions = require("telescope.actions") --Going to need these if I rewrite live_grep function
+local conf = require("telescope.config").values
+local Path = require "plenary.path"
+local flatten = vim.tbl_flatten
+local filter = vim.tbl_filter
+
+local get_open_filelist = function(grep_open_files, cwd)
+  if not grep_open_files then
+    return nil
+  end
+
+  local bufnrs = filter(function(b)
+    if 1 ~= vim.fn.buflisted(b) then
+      return false
+    end
+    return true
+  end, vim.api.nvim_list_bufs())
+  if not next(bufnrs) then
+    return
+  end
+
+  local filelist = {}
+  for _, bufnr in ipairs(bufnrs) do
+    local file = vim.api.nvim_buf_get_name(bufnr)
+    table.insert(filelist, Path:new(file):make_relative(cwd))
+  end
+  return filelist
+end
+
+local opts_contain_invert = function(args)
+  local invert = false
+  local files_with_matches = false
+
+  for _, v in ipairs(args) do
+    if v == "--invert-match" then
+      invert = true
+    elseif v == "--files-with-matches" or v == "--files-without-match" then
+      files_with_matches = true
+    end
+
+    if #v >= 2 and v:sub(1, 1) == "-" and v:sub(2, 2) ~= "-" then
+      local non_option = false
+      for i = 2, #v do
+        local vi = v:sub(i, i)
+        if vi == "=" then -- ignore option -g=xxx
+          break
+        elseif vi == "g" or vi == "f" or vi == "m" or vi == "e" or vi == "r" or vi == "t" or vi == "T" then
+          non_option = true
+        elseif non_option == false and vi == "v" then
+          invert = true
+        elseif non_option == false and vi == "l" then
+          files_with_matches = true
+        end
+      end
+    end
+  end
+  return invert, files_with_matches
+end
+
+-- Special keys:
+--  opts.search_dirs -- list of directory to search in
+--  opts.grep_open_files -- boolean to restrict search to open files
+local live_grep_custom = function(opts)
+  local vimgrep_arguments = opts.vimgrep_arguments or conf.vimgrep_arguments
+  local search_dirs = opts.search_dirs
+  local grep_open_files = opts.grep_open_files
+  opts.cwd = opts.cwd and vim.fn.expand(opts.cwd) or vim.loop.cwd()
+
+  local filelist = get_open_filelist(grep_open_files, opts.cwd)
+  if search_dirs then
+    for i, path in ipairs(search_dirs) do
+      search_dirs[i] = vim.fn.expand(path)
+    end
+  end
+
+  local additional_args = {}
+  if opts.additional_args ~= nil then
+    if type(opts.additional_args) == "function" then
+      additional_args = opts.additional_args(opts)
+    elseif type(opts.additional_args) == "table" then
+      additional_args = opts.additional_args
+    end
+  end
+
+  if opts.type_filter then
+    additional_args[#additional_args + 1] = "--type=" .. opts.type_filter
+  end
+
+  if type(opts.glob_pattern) == "string" then
+    additional_args[#additional_args + 1] = "--glob=" .. opts.glob_pattern
+  elseif type(opts.glob_pattern) == "table" then
+    for i = 1, #opts.glob_pattern do
+      additional_args[#additional_args + 1] = "--glob=" .. opts.glob_pattern[i]
+    end
+  end
+
+  if opts.file_encoding then
+    additional_args[#additional_args + 1] = "--encoding=" .. opts.file_encoding
+  end
+
+  local args = flatten { vimgrep_arguments, additional_args }
+  opts.__inverted, opts.__matches = opts_contain_invert(args)
+
+  local live_grepper = finders.new_job(function(prompt)
+    if not prompt or prompt == "" then
+      return nil
+    end
+
+    local search_list = {}
+
+    if grep_open_files then
+      search_list = filelist
+    elseif search_dirs then
+      search_list = search_dirs
+    end
+
+    return flatten { args, "--", prompt, search_list }
+  end, opts.entry_maker or make_entry.gen_from_vimgrep(opts), opts.max_results, opts.cwd)
+
+  local ok, msg = pcall(function()
+    live_grepper('test123', 1, 1)
+  end)
+    print(ok)
+    print(msg)
+
+  --pickers
+  --  .new(opts, {
+  --    prompt_title = "Live Grep",
+  --    finder = live_grepper,
+  --    previewer = conf.grep_previewer(opts),
+  --    sorter = sorters.highlighter_only(opts),
+  --    attach_mappings = function(_, map)
+  --      map("i", "<c-space>", actions.to_fuzzy_refine)
+  --      return true
+  --    end,
+  --  })
+  --  :find()
+end
+
+local test_background_grep = function(prompt_bufnr)
+    local action_state = require("telescope.actions.state")
+    local live_grep = require("telescope.builtin").live_grep
+    local current_line = 'test'--action_state.get_current_line()
+    --local entry_path = action_state.get_selected_entry().Path
+    --local dir = entry_path:is_dir() and entry_path or entry_path:parent()
+    --local relative = dir:make_relative(vim.fn.getcwd())
+    --local absolute = dir:absolute()
+    live_grep_custom({ default_text = current_line }) --results_title = relative .. "/", cwd = absolute,
+end
+vim.keymap.set('n', '<leader>ft', test_background_grep, { desc = "Grep Background", noremap = true })

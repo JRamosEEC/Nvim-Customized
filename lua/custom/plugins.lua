@@ -98,8 +98,20 @@ local plugins = {
         "rcarriga/nvim-dap-ui",
         keys = {
           { "<leader>du", function() require("dapui").toggle({}) end, desc = "Dap UI Toggler" },
-          { "<leader>dn", function() vim.cmd("NvimTreeClose") require("dapui").open() vim.cmd("wincmd h") vim.cmd("vertical resize 60") end, desc = "Dap UI Normalize Sizing" }, --A bit ghetto but works (Find cleaner/safer way like requiring nvim-tree)
           { "<leader>de", function() require("dapui").eval() end, desc = "Eval", mode = {"n", "v"} },
+          { "<leader>dn", function()
+                vim.cmd("NvimTreeClose")
+                require("dapui").open()
+                vim.cmd("wincmd h")
+                vim.cmd("vertical resize 60")
+                vim.cmd("wincmd j")
+                vim.cmd("wincmd j")
+                vim.cmd("horizontal resize 10")
+                vim.cmd("wincmd l")
+                vim.cmd("horizontal resize 10")
+            end,
+            desc = "Dap UI Normalize Sizing"
+          }, --A bit ghetto but works (Find cleaner/safer way like requiring nvim-tree)
         },
         opts = {
           icons = { expanded = "▾", collapsed = "▸", current_frame = "▸" },
@@ -115,9 +127,9 @@ local plugins = {
           layouts = {
             {
               elements = {
-                { id = "scopes", size = 0.55 },
-                { id = "breakpoints", size = 0.20 },
-                { id = "stacks", size = 0.25 },
+                { id = "scopes", size = 0.65 },
+                { id = "breakpoints", size = 0.15 },
+                { id = "stacks", size = 0.20 },
               },
               size = 60,
               position = "left",
@@ -128,7 +140,7 @@ local plugins = {
                 "repl",
                 --"console", --Remove the console for now I'm really not sure what it's use cases are
               },
-              size = 0.25,
+              size = 10,
               position = "bottom",
 
             },
@@ -196,12 +208,6 @@ local plugins = {
     "nvim-telescope/telescope-file-browser.nvim",
     dependencies = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"}
   },
-
-  -- Custom Lsp Colors (In testing they weren't really working for the diagnostics)
-  --{
-  --  "folke/lsp-colors.nvim",
-  --  lazy = false,
-  --}
 
   -- To make a plugin not be loaded
   -- {
