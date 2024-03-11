@@ -22,6 +22,20 @@ require "plugins"
 
 -- ### Custom Config
 
+--Debug Table (Just going to leave this here for the time being while I work on config)
+function dump(o)
+  if type(o) == 'table' then
+     local s = '{ '
+     for k,v in pairs(o) do
+        if type(k) ~= 'number' then k = '"'..k..'"' end
+        s = s .. '['..k..'] = ' .. dump(v) .. ','
+     end
+     return s .. '} '
+  else
+     return tostring(o)
+  end
+end
+
 -- Relative Line Number By Default
 vim.opt.relativenumber = true
 
@@ -49,6 +63,7 @@ telescope.setup({
     },
 })
 vim.keymap.set('n', '<leader>tt', '<cmd>Telescope<CR>', { desc = "Telescope", noremap = true }) --Keybind to open Telescope picker list
+vim.keymap.set('n', '<leader>tr', builtin.resume, { desc = "Telescope Resume", noremap = true }) --Keybind to resume Telescope finder
 vim.keymap.set('n', '<leader>fl', builtin.quickfix, { desc = "Find Last Search", noremap = true }) --Keybind to open Telescope quick fix (The last saved search)
 vim.keymap.set('n', '<leader>fh', builtin.quickfixhistory, { desc = "Find Search History", noremap = true }) --Keybind to open Telescope quick fix (The last saved search)
 
@@ -307,158 +322,33 @@ telescope.setup({
     },
 })
 
--- This Will Be Alot
-local finders = require("telescope.finders") --Going to need these if I rewrite live_grep function
-local make_entry = require("telescope.make_entry") --Going to need these if I rewrite live_grep function
-local pickers = require("telescope.pickers") --Going to need these if I rewrite live_grep function
-local sorters = require("telescope.sorters") --Going to need these if I rewrite live_grep function
-local actions = require("telescope.actions") --Going to need these if I rewrite live_grep function
+---- Grep In Background Process - (WIP)
+local finders = require("telescope.finders")
+local pickers = require("telescope.pickers")
 local conf = require("telescope.config").values
-local Path = require "plenary.path"
-local flatten = vim.tbl_flatten
-local filter = vim.tbl_filter
 
-local get_open_filelist = function(grep_open_files, cwd)
-  if not grep_open_files then
-    return nil
-  end
-
-  local bufnrs = filter(function(b)
-    if 1 ~= vim.fn.buflisted(b) then
-      return false
-    end
-    return true
-  end, vim.api.nvim_list_bufs())
-  if not next(bufnrs) then
-    return
-  end
-
-  local filelist = {}
-  for _, bufnr in ipairs(bufnrs) do
-    local file = vim.api.nvim_buf_get_name(bufnr)
-    table.insert(filelist, Path:new(file):make_relative(cwd))
-  end
-  return filelist
+local results = {}
+function LiveGrep(query)
+    local job_id = vim.fn.jobwait('rg --vimgrep test ./', {
+        on_exit = function(job_id, code, event) end, -- Do nothing justi a reminder how it works
+        on_stdout = function(job_id, data, event)
+            if (data[1] ~= nil and data[1] ~= '') then
+                require("notify")("Grep Results Ready")
+                results = data
+            end
+        end,
+        on_stderr = function(job_id, data, event) end, -- Do nothing justi a reminder how it works
+        detach = false,
+    })
 end
-
-local opts_contain_invert = function(args)
-  local invert = false
-  local files_with_matches = false
-
-  for _, v in ipairs(args) do
-    if v == "--invert-match" then
-      invert = true
-    elseif v == "--files-with-matches" or v == "--files-without-match" then
-      files_with_matches = true
-    end
-
-    if #v >= 2 and v:sub(1, 1) == "-" and v:sub(2, 2) ~= "-" then
-      local non_option = false
-      for i = 2, #v do
-        local vi = v:sub(i, i)
-        if vi == "=" then -- ignore option -g=xxx
-          break
-        elseif vi == "g" or vi == "f" or vi == "m" or vi == "e" or vi == "r" or vi == "t" or vi == "T" then
-          non_option = true
-        elseif non_option == false and vi == "v" then
-          invert = true
-        elseif non_option == false and vi == "l" then
-          files_with_matches = true
-        end
-      end
-    end
-  end
-  return invert, files_with_matches
+local open_results = function()
+    pickers.new({}, {
+        prompt_title = "Grep Results",
+        finder = finders.new_table { results = results },
+        sorter = conf.generic_sorter({}),
+        --previewer = conf.qflist_previewer({}), -- I'd like to get it to work if I could but I'm not sure rg --vimgrep is supplying all the data
+    }):find()
 end
-
--- Special keys:
---  opts.search_dirs -- list of directory to search in
---  opts.grep_open_files -- boolean to restrict search to open files
-local live_grep_custom = function(opts)
-  local vimgrep_arguments = opts.vimgrep_arguments or conf.vimgrep_arguments
-  local search_dirs = opts.search_dirs
-  local grep_open_files = opts.grep_open_files
-  opts.cwd = opts.cwd and vim.fn.expand(opts.cwd) or vim.loop.cwd()
-
-  local filelist = get_open_filelist(grep_open_files, opts.cwd)
-  if search_dirs then
-    for i, path in ipairs(search_dirs) do
-      search_dirs[i] = vim.fn.expand(path)
-    end
-  end
-
-  local additional_args = {}
-  if opts.additional_args ~= nil then
-    if type(opts.additional_args) == "function" then
-      additional_args = opts.additional_args(opts)
-    elseif type(opts.additional_args) == "table" then
-      additional_args = opts.additional_args
-    end
-  end
-
-  if opts.type_filter then
-    additional_args[#additional_args + 1] = "--type=" .. opts.type_filter
-  end
-
-  if type(opts.glob_pattern) == "string" then
-    additional_args[#additional_args + 1] = "--glob=" .. opts.glob_pattern
-  elseif type(opts.glob_pattern) == "table" then
-    for i = 1, #opts.glob_pattern do
-      additional_args[#additional_args + 1] = "--glob=" .. opts.glob_pattern[i]
-    end
-  end
-
-  if opts.file_encoding then
-    additional_args[#additional_args + 1] = "--encoding=" .. opts.file_encoding
-  end
-
-  local args = flatten { vimgrep_arguments, additional_args }
-  opts.__inverted, opts.__matches = opts_contain_invert(args)
-
-  local live_grepper = finders.new_job(function(prompt)
-    if not prompt or prompt == "" then
-      return nil
-    end
-
-    local search_list = {}
-
-    if grep_open_files then
-      search_list = filelist
-    elseif search_dirs then
-      search_list = search_dirs
-    end
-
-    return flatten { args, "--", prompt, search_list }
-  end, opts.entry_maker or make_entry.gen_from_vimgrep(opts), opts.max_results, opts.cwd)
-
-  local ok, msg = pcall(function()
-    live_grepper('test123', 1, 1)
-  end)
-    print(ok)
-    print(msg)
-
-  --pickers
-  --  .new(opts, {
-  --    prompt_title = "Live Grep",
-  --    finder = live_grepper,
-  --    previewer = conf.grep_previewer(opts),
-  --    sorter = sorters.highlighter_only(opts),
-  --    attach_mappings = function(_, map)
-  --      map("i", "<c-space>", actions.to_fuzzy_refine)
-  --      return true
-  --    end,
-  --  })
-  --  :find()
-end
-
-local test_background_grep = function(prompt_bufnr)
-    local action_state = require("telescope.actions.state")
-    local live_grep = require("telescope.builtin").live_grep
-    local current_line = 'test'--action_state.get_current_line()
-    --local entry_path = action_state.get_selected_entry().Path
-    --local dir = entry_path:is_dir() and entry_path or entry_path:parent()
-    --local relative = dir:make_relative(vim.fn.getcwd())
-    --local absolute = dir:absolute()
-    live_grep_custom({ default_text = current_line }) --results_title = relative .. "/", cwd = absolute,
-end
-vim.keymap.set('n', '<leader>ft', test_background_grep, { desc = "Grep Background", noremap = true })
+vim.cmd('command! -nargs=1 LiveGrep lua LiveGrep(<q-args>)') -- I want to find a cleaner way to do this
+vim.keymap.set('n', '<leader>fp', ":LiveGrep ", { desc = "Grep Process (Run in background)", noremap = true, silent = true }) -- I'd like to find a way to do a pop up text box that takes the string
+vim.keymap.set('n', '<leader>fr', open_results, { desc = "Grep Background", noremap = true, silent = true }) -- I need to do a dedicated notification saying it's done (Thinking like a pop box pluging)

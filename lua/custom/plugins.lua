@@ -178,6 +178,18 @@ local plugins = {
     },
   },
 
+  -- Popup Notifications (Currently Using - Grep Proccess(Custom))
+  {
+    "rcarriga/nvim-notify",
+    lazy = false,
+    opts = {
+        render = "minimal",
+        minimum_width = 25,
+        stages = "slide",
+        timeout = 1000,
+    },
+  },
+
   -- DadBod Database Tool 
   {
     "tpope/vim-dadbod",
