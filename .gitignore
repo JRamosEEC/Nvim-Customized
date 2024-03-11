@@ -8,3 +8,4 @@ coc-settings.json
 lazy-lock.json
 **/.DS_Store
 connections.json
+ws/*
