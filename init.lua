@@ -322,22 +322,29 @@ telescope.setup({
     },
 })
 
----- Grep In Background Process - (WIP)
+---- Grep In Background Process - (WIP) It's dropping some results for some reason and keeping an empty record
 local finders = require("telescope.finders")
 local pickers = require("telescope.pickers")
 local conf = require("telescope.config").values
 
 local results = {}
 function LiveGrep(query)
-    local job_id = vim.fn.jobwait('rg --vimgrep test ./', {
-        on_exit = function(job_id, code, event) end, -- Do nothing justi a reminder how it works
+    results = {} -- Reset results on a new search
+    local job_id = vim.fn.jobstart('rg --vimgrep ' .. query .. ' ./', {
+        on_exit = function(job_id, code, event) -- Do nothing justi a reminder how it works
+                require("notify")("Test")
+                print("debug:", dump(results))
+            if (next(results) == nil) then
+                require("notify")("Grep Results Ready")
+            end
+        end,
         on_stdout = function(job_id, data, event)
             if (data[1] ~= nil and data[1] ~= '') then
-                require("notify")("Grep Results Ready")
-                results = data
+                for k,v in pairs(data) do results[k] = v end
             end
         end,
         on_stderr = function(job_id, data, event) end, -- Do nothing justi a reminder how it works
+        pty = 1,
         detach = false,
     })
 end
