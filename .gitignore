@@ -7,4 +7,4 @@ coc-settings.json
 .luarc.json
 lazy-lock.json
 **/.DS_Store
-db_ui/connections.json
+connections.json
