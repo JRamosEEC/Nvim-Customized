@@ -279,7 +279,7 @@ local ts_select_dir_for_grep = function(prompt_bufnr)
 end
 vim.keymap.set('n', '<leader>fd', ts_select_dir_for_grep, { desc = "Find Directories", noremap = true })
 
--- Background Searching Proccess (WIP) I'd prefer to get the first method working
+-- Background Searching Proccess (WIP) I still wouldn't mind a put telescoped solution
 --vim.keymap.set('n', '<leader>fx', function()
 --    builtin.resume()
 --    local prompt_bufnr = vim.api.nvim_get_current_buf()
@@ -331,16 +331,16 @@ local results = {}
 function LiveGrep(query)
     results = {} -- Reset results on a new search
     local job_id = vim.fn.jobstart('rg --vimgrep ' .. query .. ' ./', {
-        on_exit = function(job_id, code, event) -- Do nothing justi a reminder how it works
-                require("notify")("Test")
-                print("debug:", dump(results))
-            if (next(results) == nil) then
+        on_exit = function(job_id, code, event)
+            if (results[1] ~= nil and results[1] ~= '') then -- If empty record in first element notif won't run
                 require("notify")("Grep Results Ready")
             end
         end,
         on_stdout = function(job_id, data, event)
-            if (data[1] ~= nil and data[1] ~= '') then
-                for k,v in pairs(data) do results[k] = v end
+            for k,v in pairs(data) do
+                if (v ~= nil and v ~= '') then
+                    table.insert(results, v)
+                end
             end
         end,
         on_stderr = function(job_id, data, event) end, -- Do nothing justi a reminder how it works

@@ -183,10 +183,11 @@ local plugins = {
     "rcarriga/nvim-notify",
     lazy = false,
     opts = {
-        render = "minimal",
+        render = "compact",
         minimum_width = 25,
         stages = "slide",
         timeout = 1000,
+        top_down = true, -- If I could position it above the bottom bar I'd like to do the bottom
     },
   },
 
