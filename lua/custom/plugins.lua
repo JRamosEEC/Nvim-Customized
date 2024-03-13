@@ -185,10 +185,16 @@ local plugins = {
     opts = {
         render = "compact",
         minimum_width = 25,
-        stages = "slide",
+        stages = "fade",
         timeout = 1000,
         top_down = true, -- If I could position it above the bottom bar I'd like to do the bottom
     },
+  },
+
+  -- Global Notes Interface
+  {
+    "backdround/global-note.nvim",
+    lazy = false,
   },
 
   -- DadBod Database Tool 

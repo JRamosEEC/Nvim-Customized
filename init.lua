@@ -25,13 +25,18 @@ require "plugins"
 -- Relative Line Number By Default
 vim.opt.relativenumber = true
 
+-- Setup Global Notes & Note Taking
+local global_note = require("global-note")
+global_note.setup()
+vim.keymap.set("n", "<leader>gn", global_note.toggle_note, { desc = "Global Notes", noremap = true })
+
 -- Setup Telescope
 local telescope = require("telescope")
 local telescope_actions = require("telescope.actions")
 local builtin = require("telescope.builtin")
 telescope.setup({
     defaults = {
-        mappings = { --If this keybind ever doesn't work or similarly <C-s> good terminal flow control and remove it on the terminal
+        mappings = {
             n = {
                 ["<C-q>"] = telescope_actions.send_to_qflist, -- + builtin.quickfixhistory()},
                 ["<C-c>"] = telescope_actions.close,
@@ -90,9 +95,21 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
         float = {border = 'single'},
     }
 )
---Wondering if maybe I can make a corner window or something that's out of the way but will open seperately
---vim.o.updatetime = 250
---vim.api.nvim_command('autocmd CursorHold * lua vim.diagnostic.open_float()') --It messes up the vim.lsp.buf.hover (Also Idk it might get in the way auto popping up)
+
+local lspNotif = false
+function NotifyDiagnostic() -- Need to be able to adjust width with replace or prematurely close then open another notif but neither is a feature yet
+    local lineDiagnostic = vim.lsp.diagnostic.get_line_diagnostics()
+    if (lineDiagnostic[1] ~= nil and lineDiagnostic[1] ~= '') then
+        local dMsg = lineDiagnostic[1].message
+        local notif_opts = { title = "Diagnostics", timeout = 2500, render = "wrapped-compact", hide_from_history = true, on_close = function() lspNotif = false end }
+        if lspNotif ~= false then
+            notif_opts["replace"] = lspNotif
+        end
+        lspNotif = require('notify')(dMsg, "info", notif_opts)
+    end
+end
+--vim.o.updatetime = 250 --Wondering if maybe I can make a corner window or something that's out of the way but will open seperately
+vim.api.nvim_command('autocmd CursorHold * :lua NotifyDiagnostic()')--lua vim.diagnostic.open_float()') --It messes up the vim.lsp.buf.hover (Also Idk it might get in the way auto popping up)
 
 -- LSP PHP Actor (Primary LSP)
 lspconfig.phpactor.setup({
