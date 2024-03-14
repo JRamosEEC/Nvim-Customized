@@ -30,7 +30,9 @@ local global_note = require("global-note")
 global_note.setup()
 vim.keymap.set("n", "<leader>gn", global_note.toggle_note, { desc = "Global Notes", noremap = true })
 
--- Setup Telescope
+--
+-- ## Telescope
+--
 local telescope = require("telescope")
 local telescope_actions = require("telescope.actions")
 local builtin = require("telescope.builtin")
@@ -62,7 +64,107 @@ vim.keymap.set('n', '<leader>fb', function() -- Set default find buffer funciton
     builtin.buffers({ sort_mru = true, ignore_current_buffer = true}) --, sorter = require'telescope.sorters'.get_substr_matcher() })
 end, {desc = "Find buffers (Sort Last-Used)", noremap = true})
 
+-- File Browser & Find In Directory - For Fuzzy Finder (Slow With Large File Trees Like Ours)
+local ts_select_dir_for_grep = function(prompt_bufnr)
+    local action_state = require("telescope.actions.state")
+    local fb = telescope.extensions.file_browser
+    local live_grep = require("telescope.builtin").live_grep
+    local current_line = action_state.get_current_line()
+    local async_oneshot_finder = require "telescope.finders.async_oneshot_finder"
+    local Path = require "plenary.path"
+    fb.file_browser({
+        files = false, --Disable to only use custom browse_folers function without predefined browse_files
+        depth = 1,
+        hidden = true,
+        use_fd = true, -- Kind of a necessity it's fast as hell
+        attach_mappings = function(prompt_bufnr)
+            require("telescope.actions").select_default:replace(function()
+                local entry_path = action_state.get_selected_entry().Path
+                local dir = entry_path:is_dir() and entry_path or entry_path:parent()
+                local relative = dir:make_relative(vim.fn.getcwd())
+                local absolute = dir:absolute()
+                live_grep({ results_title = relative .. "/", cwd = absolute, default_text = current_line, })
+            end)
+            return true
+        end,
+        browse_folders = function(opts) -- Redefine the function using only fd with command/args "fd -t d --maxdepth 1 --absolute-path" which will get all directories in the current path only (This function also get parent '../' dir)
+            local cwd = opts.cwd_to_path and opts.path or opts.cwd
+            local entry_maker = opts.entry_maker { cwd = cwd }
+            return async_oneshot_finder {
+                fn_command = function()
+                    return { command = "fd", args = { "--type", "directory", "--absolute-path", "--unrestricted", "--maxdepth", 1 } }
+                end,
+                entry_maker = entry_maker,
+                results = { entry_maker(Path:new(opts.path):parent():absolute()) }, --Parent Path To Include Parent Dir
+                cwd = cwd,
+            }
+        end,
+    })
+end
+vim.keymap.set('n', '<leader>fd', ts_select_dir_for_grep, { desc = "Find Directories", noremap = true })
+vim.keymap.set('n', '<leader>fW', function() builtin.live_grep({ additional_args = function(opts) return {"-uu"} end }) end, { desc = "Live Grep All", noremap = true }) -- Live Grep Everything Included
+
+local fb_actions = require "telescope._extensions.file_browser.actions" --For Custom File Browswer Mappings
+telescope.setup({
+    extensions = {
+        file_browser = {
+            mappings = {
+                ["i"] = { ["<C-]>"] = fb_actions.change_cwd },
+                ["n"] = { ["<C-]>"] = fb_actions.change_cwd },
+            },
+        },
+    },
+    pickers = {
+        live_grep = {
+            mappings = {
+                ["i"] = { ["<C-f>"] = ts_select_dir_for_grep, },
+                ["n"] = { ["<C-f>"] = ts_select_dir_for_grep, }
+            },
+        },
+    },
+})
+
+---- Grep In Background Process - (Note) Last thing I really want is a continuos notify that indicates searching in progress
+local finders = require("telescope.finders")
+local pickers = require("telescope.pickers")
+local conf = require("telescope.config").values
+
+local results = {}
+function LiveGrep(query)
+    results = {} -- Reset results on a new search
+    local job_id = vim.fn.jobstart('rg --color=never --no-heading --with-filename --line-number --column --smart-case -uu ' .. query .. ' ./', {
+        on_exit = function(job_id, code, event)
+            if (results[1] ~= nil and results[1] ~= '') then -- If empty record in first element notif won't run
+                require("notify")("Grep Results Ready")
+            end
+        end,
+        on_stdout = function(job_id, data, event)
+            for k,v in pairs(data) do
+                if (v ~= nil and v ~= '') then
+                    table.insert(results, v)
+                end
+            end
+        end,
+        on_stderr = function(job_id, data, event) end, -- Do nothing justi a reminder how it works
+        pty = 1,
+        detach = false,
+    })
+end
+local open_results = function()
+    pickers.new({}, {
+        prompt_title = "Grep Results",
+        finder = finders.new_table { results = results },
+        sorter = conf.generic_sorter({}),
+        previewer = conf.qflist_previewer({}), -- I'd like to get it to work if I could but I'm not sure rg --vimgrep is supplying all the data
+    }):find()
+end
+vim.cmd('command! -nargs=1 LiveGrep lua LiveGrep(<q-args>)') -- I want to find a cleaner way to do this
+vim.keymap.set('n', '<leader>fp', ":LiveGrep ", { desc = "Grep Process (Run in background)", noremap = true, silent = true }) -- I'd like to find a way to do a pop up text box that takes the string
+vim.keymap.set('n', '<leader>fr', open_results, { desc = "Grep Background", noremap = true, silent = true }) -- I need to do a dedicated notification saying it's done (Thinking like a pop box pluging)
+
+--
 -- ## LSP - (Two PHP LSP's for combined features e.g. completion snippets and deprecation messages)
+--
 local lspconfig = require('lspconfig')
 local cmp_lsp = require('cmp_nvim_lsp')
 local capabilities = cmp_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -109,7 +211,7 @@ function NotifyDiagnostic() -- Need to be able to adjust width with replace or p
     end
 end
 --vim.o.updatetime = 250 --Wondering if maybe I can make a corner window or something that's out of the way but will open seperately
-vim.api.nvim_command('autocmd CursorHold * :lua NotifyDiagnostic()')--lua vim.diagnostic.open_float()') --It messes up the vim.lsp.buf.hover (Also Idk it might get in the way auto popping up)
+--vim.api.nvim_command('autocmd CursorHold * :lua NotifyDiagnostic()')--lua vim.diagnostic.open_float()') --It messes up the vim.lsp.buf.hover (Also Idk it might get in the way auto popping up)
 
 -- LSP PHP Actor (Primary LSP)
 lspconfig.phpactor.setup({
@@ -137,7 +239,7 @@ lspconfig.phpactor.setup({
   },
   capabilities = capabilities,
 })
---LSP Intelephense (Alternative LSP)
+-- LSP Intelephense (Alternative LSP)
 lspconfig.intelephense.setup({
   settings = {
     intelephense = {
@@ -153,7 +255,9 @@ lspconfig.intelephense.setup({
   capabilities = capabilities,
 })
 
--- Dap (Setup in Plugins & Loaded With PHP Debugger Adapter Here)
+--
+-- ## Dap (Setup in Plugins & Loaded With PHP Debugger Adapter Here)
+--
 local getPathMap = function() -- Get current path & convert to PathMap (Current path without first 3 /home/jramos/devSys)
     local skipped = 0
     local pathMap = ''
@@ -210,7 +314,6 @@ vim.api.nvim_create_autocmd('DirChanged', {
       --restartDap() --Quirky bug right now if changing with another buffer like telescope it tries to run a dap for that buffer
     end,
 })
-
 -- Dap Virtual Text Inline Info (I don't think this is fully funcitonal yet)
 require("nvim-dap-virtual-text").setup({
   enabled = true,
@@ -242,123 +345,3 @@ vim.keymap.set('n', '<F9>', function() require('dap').toggle_breakpoint() end)
 vim.keymap.set('n', '<F10>', function() require('dap').step_over() end)
 vim.keymap.set('n', '<F11>', function() require('dap').step_into() end)
 vim.keymap.set('n', '<F12>', function() require('dap').step_out() end)
-
--- File Browser & Find In Directory - For Fuzzy Finder (Slow With Large File Trees Like Ours)
-local ts_select_dir_for_grep = function(prompt_bufnr)
-    local action_state = require("telescope.actions.state")
-    local fb = telescope.extensions.file_browser
-    local live_grep = require("telescope.builtin").live_grep
-    local current_line = action_state.get_current_line()
-    local async_oneshot_finder = require "telescope.finders.async_oneshot_finder"
-    local Path = require "plenary.path"
-    fb.file_browser({
-        files = false, --Disable to only use custom browse_folers function without predefined browse_files
-        depth = 1,
-        hidden = false,
-        use_fd = true, -- Kind of a necessity it's fast as hell
-        attach_mappings = function(prompt_bufnr)
-            require("telescope.actions").select_default:replace(function()
-                local entry_path = action_state.get_selected_entry().Path
-                local dir = entry_path:is_dir() and entry_path or entry_path:parent()
-                local relative = dir:make_relative(vim.fn.getcwd())
-                local absolute = dir:absolute()
-                live_grep({ results_title = relative .. "/", cwd = absolute, default_text = current_line, })
-            end)
-            return true
-        end,
-        browse_folders = function(opts) -- Redefine the function using only fd with command/args "fd -t d --maxdepth 1 --absolute-path" which will get all directories in the current path only (This function also get parent '../' dir)
-            local cwd = opts.cwd_to_path and opts.path or opts.cwd
-            local entry_maker = opts.entry_maker { cwd = cwd }
-            return async_oneshot_finder {
-                fn_command = function()
-                    return { command = "fd", args = { "--type", "directory", "--absolute-path", "--unrestricted", "--maxdepth", 1 } }
-                end,
-                entry_maker = entry_maker,
-                results = { entry_maker(Path:new(opts.path):parent():absolute()) }, --Parent Path To Include Parent Dir
-                cwd = cwd,
-            }
-        end,
-    })
-end
-vim.keymap.set('n', '<leader>fd', ts_select_dir_for_grep, { desc = "Find Directories", noremap = true })
-
--- Background Searching Proccess (WIP) I still wouldn't mind a put telescoped solution
---vim.keymap.set('n', '<leader>fx', function()
---    builtin.resume()
---    local prompt_bufnr = vim.api.nvim_get_current_buf()
---    vim.api.nvim_create_autocmd('User TelescopeResumePost', {
---        buffer = prompt_bufnr,
---        once = true,
---        callback = function ()
---            print("It works")
---        end,
---    })
---end, {desc = "Find Execute (As a background process)", noremap = true})
-
---vim.keymap.set('n', '<leader>fx', function()
---    builtin.live_grep({
---        on_complete = function(prompt_bufnr)
---            telescope_actions.select_default(prompt_bufnr)
---            require('telescope.actions.state').get_selected_entry(prompt_bufnr)
---            telescope_actions.close(prompt_bufnr)
---        end
---    })
---end, {desc = "Find Execute (As a background process)", noremap = true})
-
-local fb_actions = require "telescope._extensions.file_browser.actions" --For Custom File Browswer Mappings
-telescope.setup({
-    extensions = {
-        file_browser = {
-            mappings = {
-                ["i"] = { ["<C-]>"] = fb_actions.change_cwd },
-                ["n"] = { ["<C-]>"] = fb_actions.change_cwd },
-            },
-        },
-    },
-    pickers = {
-        live_grep = {
-            mappings = {
-                ["i"] = { ["<C-f>"] = ts_select_dir_for_grep, },
-                ["n"] = { ["<C-f>"] = ts_select_dir_for_grep, }
-            },
-        },
-    },
-})
-
----- Grep In Background Process - (WIP) It's dropping some results for some reason and keeping an empty record
-local finders = require("telescope.finders")
-local pickers = require("telescope.pickers")
-local conf = require("telescope.config").values
-
-local results = {}
-function LiveGrep(query)
-    results = {} -- Reset results on a new search
-    local job_id = vim.fn.jobstart('rg --vimgrep ' .. query .. ' ./', {
-        on_exit = function(job_id, code, event)
-            if (results[1] ~= nil and results[1] ~= '') then -- If empty record in first element notif won't run
-                require("notify")("Grep Results Ready")
-            end
-        end,
-        on_stdout = function(job_id, data, event)
-            for k,v in pairs(data) do
-                if (v ~= nil and v ~= '') then
-                    table.insert(results, v)
-                end
-            end
-        end,
-        on_stderr = function(job_id, data, event) end, -- Do nothing justi a reminder how it works
-        pty = 1,
-        detach = false,
-    })
-end
-local open_results = function()
-    pickers.new({}, {
-        prompt_title = "Grep Results",
-        finder = finders.new_table { results = results },
-        sorter = conf.generic_sorter({}),
-        --previewer = conf.qflist_previewer({}), -- I'd like to get it to work if I could but I'm not sure rg --vimgrep is supplying all the data
-    }):find()
-end
-vim.cmd('command! -nargs=1 LiveGrep lua LiveGrep(<q-args>)') -- I want to find a cleaner way to do this
-vim.keymap.set('n', '<leader>fp', ":LiveGrep ", { desc = "Grep Process (Run in background)", noremap = true, silent = true }) -- I'd like to find a way to do a pop up text box that takes the string
-vim.keymap.set('n', '<leader>fr', open_results, { desc = "Grep Background", noremap = true, silent = true }) -- I need to do a dedicated notification saying it's done (Thinking like a pop box pluging)

@@ -203,6 +203,7 @@ local default_plugins = {
     end,
     config = function(_, opts)
       dofile(vim.g.base46_cache .. "nvimtree")
+      opts['filters']['git_ignored'] = false
       require("nvim-tree").setup(opts)
       vim.cmd([[:hi NvimTreeExecFile gui=NONE]])
     end,

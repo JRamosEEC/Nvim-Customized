@@ -162,14 +162,30 @@ local plugins = {
         config = function(_, opts)
           local dap = require("dap")
           local dapui = require("dapui")
-          dapui.setup(opts)
-          dap.listeners.after.event_initialized["dapui_config"] = function()
+          dapui.setup(opts) -- Some of these don't work (Mostly the ones at the bottom)
+          dap.listeners.after.event_initialized.dapui_config = function()
             dapui.open()
           end
-          dap.listeners.before.event_terminated["dapui_config"] = function()
+          dap.listeners.before.event_stopped.dapui_config = function()
+            dapui.open()
+          end
+          dap.listeners.before.event_continued.dapui_config = function()
+            dapui.open()
+          end
+          --dap.listeners.before.event_breakpoint.dapui_config = function() dapui.open() end --Handy but runs repeatedly after continue where as stop is only at the stop
+          dap.listeners.before.disconnect.dapui_config = function()
             dapui.close()
           end
-          dap.listeners.before.event_exited["dapui_config"] = function()
+          dap.listeners.before.event_exited.dapui_config = function()
+            dapui.close()
+          end
+          dap.listeners.before.event_terminated.dapui_config = function()
+            dapui.close()
+          end
+          dap.listeners.before.event_progressEnd.dapui_config = function()
+            dapui.close()
+          end
+          dap.listeners.before.terminate.dapui_config = function()
             dapui.close()
           end
         end,
@@ -196,6 +212,8 @@ local plugins = {
     "backdround/global-note.nvim",
     lazy = false,
   },
+
+  -- 'samharju/yeet.nvim' -- Seems like a coold idea if I can send comannds to another session but idk if it's all that necessary
 
   -- DadBod Database Tool 
   {
