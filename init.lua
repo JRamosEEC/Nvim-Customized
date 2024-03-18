@@ -55,11 +55,11 @@ telescope.setup({
         },
     },
 })
+-- I'd like to add the previewer back to qflist this might be a similar solution to openning grep process results (Also need to optimize send_to_qflist)
 vim.keymap.set('n', '<leader>tt', '<cmd>Telescope<CR>', { desc = "Telescope", noremap = true }) --Keybind to open Telescope picker list
 vim.keymap.set('n', '<leader>tr', builtin.resume, { desc = "Telescope Resume", noremap = true }) --Keybind to resume Telescope finder
 vim.keymap.set('n', '<leader>fl', builtin.quickfix, { desc = "Find Last Search", noremap = true }) --Keybind to open Telescope quick fix (The last saved search)
-vim.keymap.set('n', '<leader>fh', builtin.quickfixhistory, { desc = "Find Search History", noremap = true }) --Keybind to open Telescope quick fix (The last saved search)
-
+vim.keymap.set('n', '<leader>fh', function() builtin.quickfixhistory({previewer = false}) end, { desc = "Find Search History", noremap = true }) --Open Telescope quick fix (Saved searches) - Remove previewer quicker load
 vim.keymap.set('n', '<leader>fb', function() -- Set default find buffer funcitonality to sort by last used and to ignore current
     builtin.buffers({ sort_mru = true, ignore_current_buffer = true}) --, sorter = require'telescope.sorters'.get_substr_matcher() })
 end, {desc = "Find buffers (Sort Last-Used)", noremap = true})
@@ -124,18 +124,26 @@ telescope.setup({
     },
 })
 
----- Grep In Background Process - (Note) Last thing I really want is a continuos notify that indicates searching in progress
+---- Grep In Background Process - (Fix) The escape characters are wonky need 3 \\\ to escape \ I think it's lua string? Or maybe std_in
 local finders = require("telescope.finders")
 local pickers = require("telescope.pickers")
-local conf = require("telescope.config").values
+local previewers = require("telescope.previewers")
 
 local results = {}
+local grepNotif = false
+local g_notif_opts = { title = "Grep Proccess", timeout = 3000, render = "wrapped-compact", hide_from_history = true, on_close = function() grepNotif = false end }
 function LiveGrep(query)
     results = {} -- Reset results on a new search
     local job_id = vim.fn.jobstart('rg --color=never --no-heading --with-filename --line-number --column --smart-case -uu ' .. query .. ' ./', {
         on_exit = function(job_id, code, event)
-            if (results[1] ~= nil and results[1] ~= '') then -- If empty record in first element notif won't run
-                require("notify")("Grep Results Ready")
+            g_notif_opts['timeout'] = 3000 -- Reset timeout on finish
+            if grepNotif ~= false then
+                g_notif_opts["replace"] = grepNotif
+            end
+            if (results[1] ~= nil and results[1] ~= '') then
+                grepNotif = require('notify')("Grep Results Ready", "info", g_notif_opts)
+            else
+                grepNotif = require('notify')("Grep Results Empty", "info", g_notif_opts)
             end
         end,
         on_stdout = function(job_id, data, event)
@@ -144,22 +152,74 @@ function LiveGrep(query)
                     table.insert(results, v)
                 end
             end
+            g_notif_opts["replace"] = nil -- Reset from previous Greps
+            g_notif_opts['timeout'] = 30000 -- Set an extremely long timeout to not lose notif
+            if grepNotif ~= false then
+                g_notif_opts["replace"] = grepNotif
+            end
+            grepNotif = require('notify')("Grep Process Searching", "info", g_notif_opts)
         end,
-        on_stderr = function(job_id, data, event) end, -- Do nothing justi a reminder how it works
+        on_stderr = function(job_id, data, event)
+            if grepNotif ~= false then
+                g_notif_opts["replace"] = grepNotif
+            end
+            grepNotif = require('notify')("An Error Occured With Grep Process", "info", g_notif_opts)
+        end, -- Do nothing just a reminder how it works
         pty = 1,
         detach = false,
     })
 end
-local open_results = function()
-    pickers.new({}, {
-        prompt_title = "Grep Results",
-        finder = finders.new_table { results = results },
-        sorter = conf.generic_sorter({}),
-        previewer = conf.qflist_previewer({}), -- I'd like to get it to work if I could but I'm not sure rg --vimgrep is supplying all the data
-    }):find()
-end
 vim.cmd('command! -nargs=1 LiveGrep lua LiveGrep(<q-args>)') -- I want to find a cleaner way to do this
 vim.keymap.set('n', '<leader>fp', ":LiveGrep ", { desc = "Grep Process (Run in background)", noremap = true, silent = true }) -- I'd like to find a way to do a pop up text box that takes the string
+
+-- Wrapping vimgrep previewer to manipulate data individually rather than all at once with with vimgrep entry_maker (Freezes opening picker) - Calls to preview_fn are called prior to __index forwarding to original
+local open_results = function()
+    local parse_with_col = function(t)
+        local _, _, filename, lnum, col, text = string.find(t.value, [[(..-):(%d+):(%d+):(.*)]])
+
+        local ok
+        ok, lnum = pcall(tonumber, lnum)
+        if not ok then lnum = nil end
+        ok, col = pcall(tonumber, col)
+        if not ok then col = nil end
+
+        t.filename = filename
+        t.lnum = lnum
+        t.col = col
+        t.text = text
+        return { filename, lnum, col, text }
+    end
+
+    local vg_previewer = previewers.vim_buffer_vimgrep.new({})
+    local wrapped_previewer = {
+        orig_previewer = vg_previewer,
+        preview_fn = function (self, entry, status) -- preview_fn called per highlited entry (Single grepped item) - instead of parsing all grep items only do current preview
+            local parsedEntry = parse_with_col({ value = entry[1] })
+            entry.filename = parsedEntry[1]
+            entry.lnum = parsedEntry[2]
+            entry.col = parsedEntry[3]
+            entry.text = parsedEntry[4]
+            vg_previewer.preview_fn(self, entry, status)
+        end
+    }
+    setmetatable(wrapped_previewer, {
+        __index = function(self, key)
+            local originalMethod = wrapped_previewer.orig_previewer[key]
+            if type(originalMethod) == "function" then
+                return function(...)
+                    return originalMethod(...)
+                end
+            else
+                return originalMethod
+            end
+        end
+    })
+    pickers.new({}, {
+        prompt_title = "Grep Results",
+        finder = finders.new_table({ results = results }),
+        previewer = wrapped_previewer,
+    }):find()
+end
 vim.keymap.set('n', '<leader>fr', open_results, { desc = "Grep Background", noremap = true, silent = true }) -- I need to do a dedicated notification saying it's done (Thinking like a pop box pluging)
 
 --
@@ -184,18 +244,10 @@ vim.keymap.set('n', '<leader>lh', vim.lsp.buf.hover, { desc = "Show Var Informat
 window.default_options.border = 'single'
 vim.diagnostic.config {float = {border = 'single'}}
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-    vim.lsp.handlers.hover, {
-        border = "single",
-        focusable = false,
-        title = "Details",
-    }
+    vim.lsp.handlers.hover, { border = "single", focusable = false, title = "Details" }
 )
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-        virtual_text = false,
-        underline = true,
-        float = {border = 'single'},
-    }
+    vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false, underline = true, float = {border = 'single'} }
 )
 
 local lspNotif = false
