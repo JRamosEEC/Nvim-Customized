@@ -36,11 +36,80 @@ vim.keymap.set("n", "<leader>gn", global_note.toggle_note, { desc = "Global Note
 local telescope = require("telescope")
 local telescope_actions = require("telescope.actions")
 local builtin = require("telescope.builtin")
+local action_state = require("telescope.actions.state")
+local from_entry = require("telescope.from_entry")
+
+-- Originally from grep preview
+local parse_with_col = function(t)
+    local _, _, filename, lnum, col, text = string.find(t.value, [[(..-):(%d+):(%d+):(.*)]])
+
+    local ok
+    ok, lnum = pcall(tonumber, lnum)
+    if not ok then lnum = nil end
+    ok, col = pcall(tonumber, col)
+    if not ok then col = nil end
+
+    t.filename = filename
+    t.lnum = lnum
+    t.col = col
+    t.text = text
+    return { filename, lnum, col, text }
+end
+
+local entry_to_qf_custom = function(entry)
+    --vim.pretty_print(entry)
+    local text = entry.text
+
+    if not text then
+        if type(entry.value) == "table" then
+            --text = entry.value.text
+        else
+            -- text = entry.value -- This is the original, I don't think this will break anything but I'm going to assumed it is the combined values such as with grep proccess
+            local parsedEntry = parse_with_col({ value = entry[1] })
+            entry.filename = parsedEntry[1]
+            entry.lnum = parsedEntry[2]
+            entry.col = parsedEntry[3]
+            --entry.text = parsedEntry[4]
+        end
+    end
+
+    -- (Grep process parses after entry maker so it comes through as the original item)
+    -- Plan of attack going to follow grep proccess
+    return {
+        bufnr = entry.bufnr,
+        filename = from_entry.path(entry, false, false),
+        lnum = vim.F.if_nil(entry.lnum, 1),
+        col = vim.F.if_nil(entry.col, 1),
+        --text = text,
+        --type = entry.qf_type,
+    }
+end
+
+local send_all_to_qf_custom = function(prompt_bufnr, mode, target)
+    local picker = action_state.get_current_picker(prompt_bufnr)
+    local manager = picker.manager
+
+    local qf_entries = {}
+    for entry in manager:iter() do
+        table.insert(qf_entries, entry_to_qf_custom(entry))
+    end
+    --vim.pretty_print(qf_entries)
+
+    local prompt = picker:_get_prompt()
+    telescope_actions.close(prompt_bufnr)
+
+    vim.api.nvim_exec_autocmds("QuickFixCmdPre", {})
+    local qf_title = string.format([[%s (%s)]], picker.prompt_title, prompt)
+    vim.fn.setqflist(qf_entries, mode)
+    vim.fn.setqflist({}, "a", { title = qf_title })
+    vim.api.nvim_exec_autocmds("QuickFixCmdPost", {})
+end
+
 telescope.setup({
     defaults = {
         mappings = {
             n = {
-                ["<C-q>"] = telescope_actions.send_to_qflist, -- + builtin.quickfixhistory()},
+                ["<C-q>"] = function(prompt_bufnr) send_all_to_qf_custom(prompt_bufnr, " ") end, -- + builtin.quickfixhistory()},
                 ["<C-c>"] = telescope_actions.close,
                 ["<C-n>"] = function() vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('a<C-n>', true, false, true), "i", false) end,
                 ["<C-p>"] = function() vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('a<C-p>', true, false, true), "i", false) end,
@@ -48,7 +117,8 @@ telescope.setup({
                 ["P"] = function() vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('i<C-r>"<C-c>', true, false, true), "i", false) end,
             },
             i = {
-                ["<C-q>"] = telescope_actions.send_to_qflist, -- + builtin.quickfixhistory},
+                --["<C-q>"] = telescope_actions.send_to_qflist, -- + builtin.quickfixhistory()},
+                ["<C-q>"] = function(prompt_bufnr) send_all_to_qf_custom(prompt_bufnr, " ") end, -- + builtin.quickfixhistory()},
                 ["<esc>"] = telescope_actions.close,
                 ["<C-c>"] = function() vim.cmd("stopinsert") end,
             },
@@ -66,7 +136,6 @@ end, {desc = "Find buffers (Sort Last-Used)", noremap = true})
 
 -- File Browser & Find In Directory - For Fuzzy Finder (Slow With Large File Trees Like Ours)
 local ts_select_dir_for_grep = function(prompt_bufnr)
-    local action_state = require("telescope.actions.state")
     local fb = telescope.extensions.file_browser
     local live_grep = require("telescope.builtin").live_grep
     local current_line = action_state.get_current_line()
@@ -174,31 +243,18 @@ vim.keymap.set('n', '<leader>fp', ":LiveGrep ", { desc = "Grep Process (Run in b
 
 -- Wrapping vimgrep previewer to manipulate data individually rather than all at once with with vimgrep entry_maker (Freezes opening picker) - Calls to preview_fn are called prior to __index forwarding to original
 local open_results = function()
-    local parse_with_col = function(t)
-        local _, _, filename, lnum, col, text = string.find(t.value, [[(..-):(%d+):(%d+):(.*)]])
-
-        local ok
-        ok, lnum = pcall(tonumber, lnum)
-        if not ok then lnum = nil end
-        ok, col = pcall(tonumber, col)
-        if not ok then col = nil end
-
-        t.filename = filename
-        t.lnum = lnum
-        t.col = col
-        t.text = text
-        return { filename, lnum, col, text }
-    end
-
     local vg_previewer = previewers.vim_buffer_vimgrep.new({})
     local wrapped_previewer = {
         orig_previewer = vg_previewer,
+        --I could maybe intercept the construction and parse all. The entry maker made this slow I'm not sure if it was the parsing part. Though qflist will still be slow. I might just want to remove text from qflist
         preview_fn = function (self, entry, status) -- preview_fn called per highlited entry (Single grepped item) - instead of parsing all grep items only do current preview
+            --vim.pretty_print(entry)
             local parsedEntry = parse_with_col({ value = entry[1] })
             entry.filename = parsedEntry[1]
             entry.lnum = parsedEntry[2]
             entry.col = parsedEntry[3]
             entry.text = parsedEntry[4]
+            --vim.pretty_print(entry)
             vg_previewer.preview_fn(self, entry, status)
         end
     }
