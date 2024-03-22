@@ -276,7 +276,7 @@ M.telescope = {
     ["<leader>ff"] = { "<cmd> Telescope find_files <CR>", "Find files" },
     --["<leader>fa"] = { "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>", "Find all" }, -- The original changed for override <leader>fF arguments
     ["<leader>fF"] = { "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>", "Find All Files" },
-    ["<leader>fw"] = { "<cmd> Telescope live_grep <CR>", "Live grep" },
+    --["<leader>fw"] = { "<cmd> Telescope live_grep <CR>", "Live grep" }, -- The original changed for override <leader>fw arguments that provide a faster search
     --["<leader>fb"] = { "<cmd> Telescope buffers <CR>", "Find buffers" }, -- The original changed for override <leader>fb arguments
     ["<leader>fB"] = { "<cmd> Telescope buffers <CR>", "Find buffers" },
     --["<leader>fh"] = { "<cmd> Telescope help_tags <CR>", "Help page" }, -- The original changed for overriden keybind
