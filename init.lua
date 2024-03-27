@@ -34,62 +34,133 @@ vim.keymap.set("n", "<leader>gn", global_note.toggle_note, { desc = "Global Note
 -- ## Telescope
 --
 local telescope = require("telescope")
+local finders = require("telescope.finders")
+local pickers = require("telescope.pickers")
+local previewers = require("telescope.previewers")
+local conf = require("telescope.config").values
+local make_entry = require("telescope.make_entry")
 local telescope_actions = require("telescope.actions")
 local builtin = require("telescope.builtin")
+local action_set = require("telescope.actions.set")
 local action_state = require("telescope.actions.state")
 local from_entry = require("telescope.from_entry")
 
--- Originally from grep preview - NOTE - Debating adding parsing back to grep entry make if by chance that wasn't the sigh up in processing that way entries all have the same data
-local parse_with_col = function(t)
-    local _, _, filename, lnum, col, text = string.find(t.value, [[(..-):(%d+):(%d+):(.*)]])
-    if (text ~= nil) then
-        text = string.sub(text,1,25) -- Limit text line length
-    end
+local parse_with_col = function(t) -- Originally from grep preview
+    local _, _, filename, lnum, col = string.find(t.value, [[(..-):(%d+):(%d+):(.*)]])
     local ok
     ok, lnum = pcall(tonumber, lnum)
-    if not ok then lnum = nil end
+    if not ok then lnum = 1 end
     ok, col = pcall(tonumber, col)
-    if not ok then col = nil end
-    return { filename, lnum, col, text }
+    if not ok then col = 1 end
+    return { filename, lnum, col }
 end
-local entry_to_qf_custom = function(entry) -- IMPORTANT NOTE (Grep process parses after entry maker so it comes through as the original item - All data in one string)
-    if not entry.text then
-        if type(entry.value) ~= "table" then
-            local parsedEntry = parse_with_col({ value = entry[1] })
-            entry.filename = parsedEntry[1]
-            entry.lnum = parsedEntry[2]
-            entry.col = parsedEntry[3]
-            entry.text = parsedEntry[4]
-        end
+local entry_to_qf_custom = function(entry)
+    if not entry.text and type(entry[1]) == "string" and type(entry.value) ~= "table" then
+        entry.filename, entry.lnum, entry.col = parse_with_col({ value = entry[1] })
     end
-    return { filename = from_entry.path(entry, false, false), lnum = vim.F.if_nil(entry.lnum, 1), col = vim.F.if_nil(entry.col, 1) } --, text = entry.text }
+    return { filename = from_entry.path(entry, false, false), lnum = entry.lnum, col = entry.col }
 end
 
--- Considering using async jobs to setqflist after telescope picker has been closed in the same manner as grep proccess
-local send_all_to_qf_custom = function(prompt_bufnr, mode, target)
+-- I think when I get the chance I'll implement the parsing computation and the array or stack storage computation in rust and query it like an lsp would (Interfacing it like a server)
+-- Vimscript qflist is expecting pre-parsed data for every entries filename,lnum,col,text - I'd rather do it one per viewed entry in the previewer (Made compatible with normal qflist functions)
+local customQflist = {}
+local send_all_to_qf_custom = function(prompt_bufnr, mode, experimental)
     local picker = action_state.get_current_picker(prompt_bufnr)
     local manager = picker.manager
+    local prompt = picker:_get_prompt()
 
-    local qf_entries = {}
-    for entry in manager:iter() do
-        table.insert(qf_entries, entry_to_qf_custom(entry)) --Parsing should either be done during async grep job or one at a time with qflist picker (Can maybe do like a soft text limit of 250 for each entry to preserve size of qflist)
+    if (experimental == true) then
+        local qf_title = string.format([[%s (%s)]], picker.prompt_title, prompt)
+        customQflist[qf_title] = {}
+        for entry in manager:iter() do
+            if not entry.text then
+                table.insert(customQflist[qf_title], entry[1]) -- It's raw text make sure not to grab any meta
+            else
+                table.insert(customQflist[qf_title], entry) -- It's already parsed store it
+            end
+        end
+        telescope_actions.close(prompt_bufnr)
+    else
+        local qf_entries = {}
+        for entry in manager:iter() do
+            table.insert(qf_entries, entry_to_qf_custom(entry)) -- Qflist is expecting data like col, lnum, etc (Though I could brute force using like text async seems to be the better option)
+        end
+        telescope_actions.close(prompt_bufnr)
+        vim.api.nvim_exec_autocmds("QuickFixCmdPre", {})
+        vim.fn.setqflist(qf_entries, mode) -- I think the simplest solution isn't removing parsing prior to setting qflist it's just making this async
+        vim.fn.setqflist({}, "a", { title = string.format([[%s (%s)]], picker.prompt_title, prompt) })
+        vim.api.nvim_exec_autocmds("QuickFixCmdPost", {})
+    end
+end
+
+local open_custom_qflist = function(key)
+    if customQflist[key] == nil or vim.tbl_isempty(customQflist[key]) then
+        return
     end
 
-    local prompt = picker:_get_prompt()
-    telescope_actions.close(prompt_bufnr)
-
-    vim.api.nvim_exec_autocmds("QuickFixCmdPre", {})
-    local qf_title = string.format([[%s (%s)]], picker.prompt_title, prompt)
-    vim.fn.setqflist(qf_entries, mode)
-    vim.fn.setqflist({}, "a", { title = qf_title })
-    vim.api.nvim_exec_autocmds("QuickFixCmdPost", {})
+    local entry_maker = nil
+    local wrapped_previewer = nil
+    if not customQflist[key][1].text then
+        local qfCustom_previewer = previewers.vim_buffer_qflist.new({}) -- Exactly the same as vimgrep previewer in telescope
+        wrapped_previewer = {
+            orig_previewer = qfCustom_previewer,
+            preview_fn = function (self, entry, status) -- preview_fn called per highlighted entry (Single grepped item)
+                local parsedEntry = parse_with_col({ value = entry[1] })
+                entry.filename = parsedEntry[1]
+                entry.lnum = parsedEntry[2]
+                entry.col = parsedEntry[3]
+                qfCustom_previewer.preview_fn(self, entry, status)
+            end
+        }
+        setmetatable(wrapped_previewer, {
+            __index = function(self, key)
+                local originalMethod = wrapped_previewer.orig_previewer[key]
+                if type(originalMethod) == "function" then
+                    return function(...)
+                        return originalMethod(...)
+                    end
+                end
+                return originalMethod
+            end
+        })
+    else
+        wrapped_previewer = previewers.vim_buffer_qflist.new({})
+        entry_maker = make_entry.gen_from_quickfix({})
+    end
+    pickers.new({}, {
+        prompt_title = "Custom Qflist",
+        finder = finders.new_table({ results = customQflist[key], entry_maker = entry_maker }),
+        previewer = wrapped_previewer,
+        sorter = conf.generic_sorter({}),
+    }):find()
 end
+local open_custom_qflist_history = function()
+    local qf_keys = {}
+    for k,v in pairs(customQflist) do
+        table.insert(qf_keys, k)
+    end
+    pickers.new({}, {
+        prompt_title = "Custom Qflist History",
+        finder = finders.new_table({ results = qf_keys }),
+        sorter = conf.generic_sorter({}),
+        attach_mappings = function(_, map)
+            action_set.select:replace(function(prompt_bufnr)
+                local key = action_state.get_selected_entry()[1]
+                telescope_actions.close(prompt_bufnr)
+                open_custom_qflist(key)
+            end)
+            return true
+        end,
+    }):find()
+end
+vim.keymap.set('n', '<leader>fh', function() open_custom_qflist_history() end, { desc = "Find Search History", noremap = true }) -- Open custom qflist (Now Default usage keybind)
 
 telescope.setup({
     defaults = {
         mappings = {
             n = {
-                ["<C-q>"] = function(prompt_bufnr) send_all_to_qf_custom(prompt_bufnr, " ") end, -- Old - telescope_actions.send_to_qflist + builtin.quickfixhistory()}
+                ["<C-q>"] = function(prompt_bufnr) send_all_to_qf_custom(prompt_bufnr, " ", true) end, -- Use custom "qflist" really just a store of raw result of searching in array and parse when previewing
+                ["<C-e>"] = function(prompt_bufnr) send_all_to_qf_custom(prompt_bufnr, " ") end, -- The original qf list functionality (Moved from my default usage keybind in favor of more efficient custom save list)
                 ["<C-c>"] = telescope_actions.close,
                 ["<C-n>"] = function() vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('a<C-n>', true, false, true), "i", false) end,
                 ["<C-p>"] = function() vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('a<C-p>', true, false, true), "i", false) end,
@@ -97,20 +168,20 @@ telescope.setup({
                 ["P"] = function() vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('i<C-r>"<C-c>', true, false, true), "i", false) end,
             },
             i = {
-                ["<C-q>"] = function(prompt_bufnr) send_all_to_qf_custom(prompt_bufnr, " ") end, -- Old - telescope_actions.send_to_qflist + builtin.quickfixhistory()}
+                ["<C-q>"] = function(prompt_bufnr) send_all_to_qf_custom(prompt_bufnr, " ", true) end,
+                ["<C-e>"] = function(prompt_bufnr) send_all_to_qf_custom(prompt_bufnr, " ") end,
                 ["<esc>"] = telescope_actions.close,
                 ["<C-c>"] = function() vim.cmd("stopinsert") end,
             },
         },
     },
 })
--- I'd like to add the previewer back to qflist this might be a similar solution to openning grep process results (Also need to optimize send_to_qflist)
 vim.keymap.set('n', '<leader>tt', '<cmd>Telescope<CR>', { desc = "Telescope", noremap = true }) --Keybind to open Telescope picker list
 vim.keymap.set('n', '<leader>tr', builtin.resume, { desc = "Telescope Resume", noremap = true }) --Keybind to resume Telescope finder
 vim.keymap.set('n', '<leader>fl', builtin.quickfix, { desc = "Find Last Search", noremap = true }) --Keybind to open Telescope quick fix (The last saved search)
-vim.keymap.set('n', '<leader>fh', function() builtin.quickfixhistory({previewer = false}) end, { desc = "Find Search History", noremap = true }) --Open Telescope quick fix (Saved searches) - Remove previewer quicker load
+vim.keymap.set('n', '<leader>fH', function() builtin.quickfixhistory({previewer = false}) end, { desc = "Find Search History", noremap = true }) -- Open Telescope original quick fix list (Saved searches) - Removed previewer quicker load
 vim.keymap.set('n', '<leader>fb', function() -- Set default find buffer funcitonality to sort by last used and to ignore current
-    builtin.buffers({ sort_mru = true, ignore_current_buffer = true}) --, sorter = require'telescope.sorters'.get_substr_matcher() })
+builtin.buffers({ sort_mru = true, ignore_current_buffer = true}) --, sorter = require'telescope.sorters'.get_substr_matcher() })
 end, {desc = "Find buffers (Sort Last-Used)", noremap = true})
 
 -- File Browser & Find In Directory - For Fuzzy Finder (Slow With Large File Trees Like Ours)
@@ -154,13 +225,13 @@ vim.keymap.set('n', '<leader>fw', function() builtin.live_grep({
     additional_args = function(opts)
         return { { "-o", "--no-binary", "--max-filesize=295K" } }
     end,
-    glob_pattern = { "!*.min.{js,css,js.map,css.map}", "!wordpress/wp-includes/*", "!wordpress/wp-admin/*", "!wordpress/wp-content/plugins/*", "!migrations/*/seeds/*" },
+    glob_pattern = { "!*.min.{js,css,js.map,css.map}", "!public/js/jquery*", "!wordpress/wp-includes/*", "!wordpress/wp-admin/*", "!wordpress/wp-content/plugins/*", "!migrations/*/seeds/*" },
 }) end, { desc = "Live Grep", noremap = true })
 vim.keymap.set('n', '<leader>fW', function() builtin.live_grep({
     additional_args = function(opts)
         return { { "-uu", "-o", "--no-binary", "--max-filesize=295K" } }
     end,
-    glob_pattern = { "!*.min.{js,css,js.map,css.map}", "!wordpress/wp-includes/*", "!wordpress/wp-admin/*", "!wordpress/wp-content/plugins/*", "!migrations/*/seeds/*" },
+    glob_pattern = { "!*.min.{js,css,js.map,css.map}", "!public/js/jquery*", "!wordpress/wp-includes/*", "!wordpress/wp-admin/*", "!wordpress/wp-content/plugins/*", "!migrations/*/seeds/*" },
 }) end, { desc = "Live Grep All", noremap = true }) -- Live Grep Everything Included
 
 local fb_actions = require "telescope._extensions.file_browser.actions" --For Custom File Browswer Mappings
@@ -184,12 +255,6 @@ telescope.setup({
 })
 
 ---- Grep In Background Process - (Fix) The escape characters are wonky need 3 \\\ to escape \ I think it's lua string? Or maybe std_in
-local finders = require("telescope.finders")
-local pickers = require("telescope.pickers")
-local previewers = require("telescope.previewers")
-local make_entry = require("telescope.make_entry")
-local conf = require("telescope.config").values
-
 local queryText = ""
 local results = {}
 local grepNotif = false
@@ -197,13 +262,13 @@ local g_notif_opts = { title = "Grep Proccess", timeout = 3000, render = "wrappe
 function LiveGrep(query, flag) --I'm leaving the idea of flags here because it could be handy
     results = {} -- Reset results on a new search
     queryText = query -- Save the query text as an identifier to each search
-    local job_id = vim.fn.jobstart("rg --vimgrep --glob '!*.min.{js,css,js.map,css.map}' --glob '!wordpress/wp-includes/*' --glob '!wordpress/wp-admin/*' --glob '!wordpress/wp-content/plugins/*' --glob '!migrations/*/seeds/*' --max-filesize 295K -o --color=never --no-heading --with-filename --line-number --column --smart-case --no-binary --no-search-zip -uu " .. query .. " ./", {
+    local job_id = vim.fn.jobstart("rg --vimgrep --glob '!*.min.{js,css,js.map,css.map}' --glob '!public/js/jquery*' --glob '!wordpress/wp-includes/*' --glob '!wordpress/wp-admin/*' --glob '!wordpress/wp-content/plugins/*' --glob '!migrations/*/seeds/*' --max-filesize 295K -o --color=never --no-heading --with-filename --line-number --column --smart-case --no-binary --no-search-zip -uu " .. query .. " ./", {
         on_exit = function(job_id, code, event)
             g_notif_opts['timeout'] = 3000 -- Reset timeout on finish
             if grepNotif ~= false then
                 g_notif_opts["replace"] = grepNotif
             end
-            if (results[1] ~= nil and results[1] ~= '') then
+            if not vim.tbl_isempty(results) then
                 grepNotif = require('notify')("Grep Results Ready", "info", g_notif_opts)
             else
                 grepNotif = require('notify')("Grep Results Empty", "info", g_notif_opts)
@@ -260,13 +325,13 @@ local open_results = function()
             return originalMethod
         end
     })
-    --local entry_maker = make_entry.gen_from_string({}) local wrap_entry_maker = function(line) return entry_maker(line) end -- I don't need the entry maker wrapper right now but keep this incase I might later
     pickers.new({}, {
         prompt_title = "Grep Proccess Results (" .. queryText .. ") - Sorting",
         finder = finders.new_table({ results = results }),
         previewer = wrapped_previewer,
         sorter = conf.generic_sorter({}),
     }):find()
+    --local entry_maker = make_entry.gen_from_string({}) local wrap_entry_maker = function(line) return entry_maker(line) end -- I don't need the entry maker wrapper right now but keep this incase I might later
 end
 vim.keymap.set('n', '<leader>fr', open_results, { desc = "Grep Background", noremap = true, silent = true })
 
