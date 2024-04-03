@@ -24,18 +24,18 @@ M.dadBod = {
       end,
       "Find DadBod Buffer",
     },
-    ["<leader>dr"] = {
-      function()
-        vim.cmd "DBUIRenameBuffer"
-      end,
-      "Rename DadBod Buffer",
-    },
     ["<leader>dq"] = {
       function()
         vim.cmd "DBUILastQueryInfo"
       end,
       "DadBod Last Query Info",
     },
+    --["<leader>dr"] = { --I'm using the <leader>dr mapping for restarting the dap ui plugin now save for later if needed
+    --  function()
+    --    vim.cmd "DBUIRenameBuffer"
+    --  end,
+    --  "Rename DadBod Buffer",
+    --},
   },
 }
 

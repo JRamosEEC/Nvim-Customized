@@ -83,11 +83,11 @@ local send_all_to_qf_custom = function(prompt_bufnr, mode, experimental)
     else
         local qf_entries = {}
         for entry in manager:iter() do
-            table.insert(qf_entries, entry_to_qf_custom(entry)) -- Qflist is expecting data like col, lnum, etc (Though I could brute force using like text async seems to be the better option)
+            table.insert(qf_entries, entry_to_qf_custom(entry)) -- The normal Qflist is expecting data like col, lnum, etc so parse it out of custom grep data
         end
         telescope_actions.close(prompt_bufnr)
         vim.api.nvim_exec_autocmds("QuickFixCmdPre", {})
-        vim.fn.setqflist(qf_entries, mode) -- I think the simplest solution isn't removing parsing prior to setting qflist it's just making this async
+        vim.fn.setqflist(qf_entries, mode)
         vim.fn.setqflist({}, "a", { title = string.format([[%s (%s)]], picker.prompt_title, prompt) })
         vim.api.nvim_exec_autocmds("QuickFixCmdPost", {})
     end
@@ -380,7 +380,7 @@ end
 
 -- LSP PHP Actor (Primary LSP)
 lspconfig.phpactor.setup({
-  filetype = { "php", "phtml" },
+  filetypes = { "php", "phtml" }, --Removing phtml here doesn't work (Actually none of these work when debugging lspconfig there are two after with php patterns that might be the clue)
   init_options = {
     --["language_server_completion.trim_leading_dollar"] = true,
     ["completion_worse.completor.constant.enabled"] = true, --Default is false I don't see why
@@ -391,8 +391,8 @@ lspconfig.phpactor.setup({
     ["language_server_worse_reflection.inlay_hints.types"] = true, --Default false
     --Right now I'm utilizing diagnostics without a specified Language Server - Try determining if phpactor or psalm is worth it
     --Extra Extensions Added Below
-    ["language_server_php_cs_fixer.enabled"] = true, --PSR standards
-    ["php_code_sniffer.enabled"] = true, --Code standards
+    --["language_server_php_cs_fixer.enabled"] = true, --PSR standards -- Package doesn't exist need to install
+    --["php_code_sniffer.enabled"] = true, --Code standards -- Package doesn't exist need to install
     ["prophecy.enabled"] = true, --Propechy is a mocking extension
     ["symfony.enabled"] = true,
     ["phpunit.enabled"] = true,

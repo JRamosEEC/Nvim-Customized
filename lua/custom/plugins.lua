@@ -99,7 +99,8 @@ local plugins = {
         keys = {
           { "<leader>du", function() require("dapui").toggle({}) end, desc = "Dap UI Toggler" },
           { "<leader>de", function() require("dapui").eval() end, desc = "Eval", mode = {"n", "v"} },
-          { "<leader>dn", function()
+          { "<leader>dr", function() vim.cmd("Lazy reload nvim-dap-ui") end, desc = "Dap UI Reload" }, -- Sometimes the text can get frozen for some reaseon use this to restart plugin
+          { "<leader>dn", function() --A bit ghetto but works (Find cleaner/safer way like requiring nvim-tree)
                 vim.cmd("NvimTreeClose")
                 require("dapui").open()
                 vim.cmd("wincmd h")
@@ -111,7 +112,7 @@ local plugins = {
                 vim.cmd("horizontal resize 10")
             end,
             desc = "Dap UI Normalize Sizing"
-          }, --A bit ghetto but works (Find cleaner/safer way like requiring nvim-tree)
+          },
         },
         opts = {
           icons = { expanded = "▾", collapsed = "▸", current_frame = "▸" },
