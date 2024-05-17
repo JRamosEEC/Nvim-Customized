@@ -9,3 +9,26 @@ lazy-lock.json
 **/.DS_Store
 connections.json
 ws/*
+
+.*.swp
+tags
+target
+/grep/Cargo.lock
+/globset/Cargo.lock
+/ignore/Cargo.lock
+/termcolor/Cargo.lock
+/wincolor/Cargo.lock
+/deployment
+/.idea
+
+# Snapcraft files
+stage
+prime
+parts
+*.snap
+*.pyc
+ripgrep*_source.tar.bz2
+
+# Cargo timings
+cargo-timing-*.html
+cargo-timing.html

@@ -254,6 +254,19 @@ telescope.setup({
     },
 })
 
+
+--Updates
+-- I'm probably going to have ro write my own Printer type classs
+-- I'm not sure how I'm going to deal with the fact the search_worker requires a term color implemented class
+-- Either I can work with it to create a mutable object
+-- Otherwise I'll have to create my own search_worker function that can somehow run a builder without a term color type Printer
+
+--Goals -
+-- I created a RCP Protocol App and I cloned ripgrep.
+-- Somehow I need to call a grep matcher/regex/searcher/whatever
+-- I need to set the "Printer" to take the results and store them in my RCP application
+-- This application will then manage parsing & fetching when needed
+
 ---- Grep In Background Process - (Fix) The escape characters are wonky need 3 \\\ to escape \ I think it's lua string? Or maybe std_in
 local queryText = ""
 local results = {}
@@ -335,7 +348,6 @@ local open_results = function()
 end
 vim.keymap.set('n', '<leader>fr', open_results, { desc = "Grep Background", noremap = true, silent = true })
 
---
 -- ## LSP - (Two PHP LSP's for combined features e.g. completion snippets and deprecation messages)
 --
 local lspconfig = require('lspconfig')
@@ -420,9 +432,20 @@ lspconfig.intelephense.setup({
   capabilities = capabilities,
 })
 
---
--- ## Dap (Setup in Plugins & Loaded With PHP Debugger Adapter Here)
---
+--Set Clang LSP For Local Dev
+local cmp_nvim_lsp = require "cmp_nvim_lsp"
+require("lspconfig").clangd.setup({
+    on_attach = on_attach,
+    capabilities = cmp_nvim_lsp.default_capabilities(),
+    cmd = {
+        "clangd",
+        "--offset-encoding=utf-16"
+    },
+})
+
+require('lspconfig').rust_analyzer.setup({})
+
+-- Dap (Setup in Plugins & Loaded With PHP Debugger Adapter Here)
 local getPathMap = function() -- Get current path & convert to PathMap (Current path without first 3 /home/jramos/devSys)
     local skipped = 0
     local pathMap = ''
@@ -438,6 +461,8 @@ end
 local dap = require('dap')
 require('dap').set_log_level('trace')
 telescope.load_extension('dap')
+
+-- PHP Debug Adapter & Config
 dap.adapters.php = {
   type = "executable",
   command = "node",
@@ -451,7 +476,7 @@ dap.configurations.php = {
     port = 9003,
     log = true,
     pathMappings = {
-      ["/home/justin" .. getPathMap()] = "${workspaceFolder}", --['/home/justin/sandbox/dev/zf2'] = "${workspaceFolder}",
+      ["/home/jramos" .. getPathMap()] = "${workspaceFolder}", --['/home/justin/sandbox/dev/zf2'] = "${workspaceFolder}",
     },
     stopOnEntry = false,
     xdebugSettings = {
@@ -459,18 +484,45 @@ dap.configurations.php = {
     }
   }
 }
+
+-- Rust Debug Adapter & Config
+dap.adapters.lldb = {
+    type = "server",
+    port = "${port}",
+    executable = {
+        command = "/usr/bin/lldb-vscode",
+        args = {"--port", "${port}"}
+    }
+}
+dap.configurations.rust = {
+    {
+        type = 'lldb',
+        request = "launch",
+        name = "Rust Debug",
+        program = function()
+            return vim.fn.input('Path to binary: ', vim.fn.getcwd() .. '/rust/', 'file')
+        end,
+        cwd = "${workspaceFolder}",
+        stopOnEntry = true,
+    }
+}
+
+-- C Debug Adapter & Config (At some point)
+
 -- Change PathMap on the fly & auto restart dap (Leave PathMap command example/override, autocmd should be automatically run on DirChanged)
 local restartDap = function()
   require('dap').disconnect()
   require('dap').close()
   require('dap').continue()
 end
+
 vim.api.nvim_create_user_command("PathMap", function(args)
     if (args['args']) then
       dap.configurations.php[1].pathMappings = { ["/home/justin/sandbox/dev" .. string.lower(args['args'])] = "${workspaceFolder}" }
       restartDap()
     end
 end, {nargs='*'})
+
 vim.api.nvim_create_autocmd('DirChanged', {
     callback = function()
       dap.configurations.php[1].pathMappings = { ["/home/justin" .. getPathMap()] = "${workspaceFolder}" }
@@ -512,3 +564,51 @@ vim.keymap.set('n', '<F5>', function() require('dap').continue() end)
 vim.keymap.set('n', '<F6>', function() require('dap').close() end)
 vim.keymap.set('n', '<F9>', function() require('dap').run_to_cursor() end)
 vim.keymap.set('n', '<F10>', function() require('dap').toggle_breakpoint() end)
+
+-- Rust Testing
+--./rust/search-history/target/debug/search-history
+
+-- RPC Messages
+
+local debugFn = function(job_id, data, event)
+    vim.pretty_print({jobId = job_id, data = data, event = event})
+end
+
+local rgExe = './rust/search-history/target/debug/search-history'
+local rgArgs = {
+    "--vimgrep",
+    "-o",
+    "-uu",
+    "--column",
+    "--no-binary",
+    "--no-heading",
+    "--smart-case",
+    "--line-number",
+    "--with-filename",
+    "--no-search-zip",
+    "--color=never",
+    "--max-filesize=295K",
+    "--glob='!*.min.{js,css,js.map,css.map}'",
+    "--glob='!public/js/jquery*'",
+    "--glob='!wordpress/wp-includes/*'",
+    "--glob='!wordpress/wp-admin/*'",
+    "--glob='!wordpress/wp-content/plugins/*'",
+    "--glob='!migrations/*/seeds/*'",
+}
+local searchHistoryJobId = vim.fn.jobstart({ rgExe, unpack(rgArgs) }, {
+    rpc = true,
+    on_exit = debugFn,
+    on_stdout = debugFn,
+    on_stderr = debugFn
+})
+
+function rustGrep(search)
+    vim.rpcnotify(searchHistoryJobId, 'search', search)
+end
+function close()
+    vim.fn.jobclose(searchHistoryJobId)
+end
+vim.cmd('command! -nargs=+ RustGrep lua rustGrep(<f-args>)')
+vim.cmd('command! -nargs=+ Close lua close(<f-args>)')
+
+vim.keymap.set('n', '<leader>rg', ":RustGrep ", { desc = "Grep Process (Run in background)", noremap = true, silent = true })
