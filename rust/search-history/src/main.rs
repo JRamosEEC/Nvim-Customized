@@ -1,11 +1,14 @@
 #![allow(unused_imports)]
 #![allow(unused_variables)]
+#![allow(unused_assignments)]
+#![allow(unused_mut)]
 #![allow(dead_code)]
 
 // Ripgrep source code project initialization below by default 64 bit musl 
-#[cfg(all(target_env = "musl", target_pointer_width = "64"))]
-#[global_allocator]
-static ALLOC: jemallocator::Jemalloc = jemallocator::Jemalloc;
+// Re enable later if it doesn't break anything
+//#[cfg(all(target_env = "musl", target_pointer_width = "64"))]
+//#[global_allocator]
+//static ALLOC: jemallocator::Jemalloc = jemallocator::Jemalloc;
 
 use std::{io::Write, process::ExitCode};
 use crate::flags::{HiArgs, LowArgs, SearchMode};
@@ -65,8 +68,7 @@ impl EventHandler {
     fn new() -> EventHandler {
         let session = Session::new_parent().unwrap();
         let nvim = Neovim::new(session);
-
-        EventHandler { nvim }
+        return EventHandler { nvim };
     }
 
     //For now I'm not sure how better to handle unhappy path except return and end
@@ -77,14 +79,16 @@ impl EventHandler {
             crate::flags::ParseResult::Err(err) => return Err(err),
             _ => return Ok(false),
         };
+
         let receiver = self.nvim.session.start_event_loop_channel();
         for (event, values) in receiver {
             match RpcMessages::from(event) {
                 RpcMessages::Search => {
-                    let search_string: &str = values.iter().next().unwrap().as_str().unwrap();
+                    //let search_string: &str = values.iter().next().unwrap().as_str().unwrap();
 
                     let mut cloned_args = initial_args.clone();
-                    cloned_args.positional.push(std::ffi::OsString::from("test"));
+                    cloned_args.positional.push(std::ffi::OsString::from("test")); //Term
+                    cloned_args.positional.push(std::ffi::OsString::from("./")); //Dir
                     let hi_args_result = match crate::flags::HiArgs::from_low_args(cloned_args) {
                         Ok(hi_args) => crate::flags::ParseResult::Ok(hi_args),
                         Err(err) => crate::flags::ParseResult::Err(err),
@@ -96,16 +100,18 @@ impl EventHandler {
                     };
 
                     //Will have to send the search
-                    //self.nvim.command(format!("echo \"{}\"", search_string).as_str()).unwrap();
+                    //self.nvim.command("echo \"test\"").unwrap();
+                    //self.nvim.command(&format!("echo \"{:?}\"", receiver)).unwrap();
                     self.nvim.command("echo 'Starting Test'").unwrap();
                     self.nvim.command("echo 'Run:'").unwrap();
                     let result = match rg_search(&args) {
                         Ok(res) => true,
-                        Err(err) => false, 
+                        Err(err) => return Err(err), 
                     };
                     self.nvim.command("echo '-Finish'").unwrap();
                 }
                 RpcMessages::Unknown(event) => {
+                    self.nvim.command("echo \"test\"").unwrap();
                     //Unknown Event
                 }
             }
@@ -115,6 +121,47 @@ impl EventHandler {
 }
 
 fn main() -> ExitCode {
+    let mut debug_mode: bool = false;
+    let args: Vec<String> = std::env::args().collect();
+    for arg in args {
+        if arg.as_str() == "debug" {
+            debug_mode = true;
+        }
+    }
+
+    if debug_mode {
+        //Get the initial low args (Inject search-positional in search call)
+        let initial_args = match flags::parse_low(){
+            crate::flags::ParseResult::Ok(low) => low,
+            crate::flags::ParseResult::Err(err) => return ExitCode::FAILURE,
+            _ => return ExitCode::FAILURE,
+        };
+
+        let mut cloned_args = initial_args.clone();
+        cloned_args.positional.pop(); //Pop off the debug (Should be first)
+        cloned_args.positional.push(std::ffi::OsString::from("test")); //Term
+        cloned_args.positional.push(std::ffi::OsString::from("./")); //Dir
+        let hi_args_result = match crate::flags::HiArgs::from_low_args(cloned_args) {
+            Ok(hi_args) => crate::flags::ParseResult::Ok(hi_args),
+            Err(err) => crate::flags::ParseResult::Err(err),
+        };
+        let args = match hi_args_result{
+            crate::flags::ParseResult::Ok(args) => args,
+            crate::flags::ParseResult::Err(err) => return ExitCode::FAILURE,
+            _ => return ExitCode::FAILURE,
+        };
+
+        println!("{:#?}", args);
+        let result = match rg_search(&args) {
+            Ok(res) => true,
+            Err(err) => {
+                eprintln_locked!("{:#}", err);
+                return ExitCode::FAILURE;
+            }, 
+        };
+        return ExitCode::SUCCESS;
+    }
+
     let mut event_handler = EventHandler::new();
     match event_handler.recv() {
         Ok(res) => (),
@@ -210,6 +257,7 @@ fn search_parallel(args: &crate::flags::HiArgs, mode: SearchMode) -> anyhow::Res
     let matched = AtomicBool::new(false);
     let searched = AtomicBool::new(false);
 
+    //Have to rewrite this to not use a printer at all
     let mut searcher = args.search_worker(
         args.matcher()?,
         args.searcher()?,

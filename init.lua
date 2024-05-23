@@ -490,7 +490,7 @@ dap.adapters.lldb = {
     type = "server",
     port = "${port}",
     executable = {
-        command = "/usr/bin/lldb-vscode",
+        command = "lldb-vscode",
         args = {"--port", "${port}"}
     }
 }
@@ -500,10 +500,14 @@ dap.configurations.rust = {
         request = "launch",
         name = "Rust Debug",
         program = function()
-            return vim.fn.input('Path to binary: ', vim.fn.getcwd() .. '/rust/', 'file')
+            local projName = vim.fn.input('Project Name: ')
+            local projDir = vim.fn.getcwd() .. '/rust/' .. projName
+            vim.fn.jobstart('cargo build --manifest-path=' .. projDir .. '/Cargo.toml')
+            return projDir .. '/target/debug/' .. projName
         end,
+        args = {'debug'},
         cwd = "${workspaceFolder}",
-        stopOnEntry = true,
+        stopOnEntry = false,
     }
 }
 
