@@ -28,6 +28,80 @@ mod search;
 //extern crate ripgrep;
 //use ripgrep;
 
+
+/// This is the big test can I write my own Buffer
+/// I'm not sure how this will work surely the color information comes from checking the enum from
+/// term color (Probably need to modify more rg modules)
+//#[derive(Clone, Debug)]
+//pub struct NoColor<W>(W);
+//
+//impl<W: Write> NoColor<W> {
+//    //Note the wtr here is the Vec<u8> (That's the buffer)
+//    pub fn new(wtr: W) -> NoColor<W> {
+//        NoColor(wtr)
+//    }
+//
+//    /// Consume this `NoColor` value and return the inner writer.
+//    pub fn into_inner(self) -> W {
+//        self.0
+//    }
+//
+//    /// Return a reference to the inner writer.
+//    pub fn get_ref(&self) -> &W {
+//        &self.0
+//    }
+//
+//    /// Return a mutable reference to the inner writer.
+//    pub fn get_mut(&mut self) -> &mut W {
+//        &mut self.0
+//    }
+//}
+//
+//impl<W: Write> Write for NoColor<W> {
+//    #[inline]
+//    fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
+//        self.0.write(buf)
+//    }
+//
+//    #[inline]
+//    fn flush(&mut self) -> std::io::Result<()> {
+//        self.0.flush()
+//    }
+//}
+//
+//impl<W: Write> termcolor::WriteColor for NoColor<W> {
+//    #[inline]
+//    fn supports_color(&self) -> bool {
+//        false
+//    }
+//
+//    #[inline]
+//    fn supports_hyperlinks(&self) -> bool {
+//        false
+//    }
+//
+//    #[inline]
+//    fn set_color(&mut self, _: &termcolor::ColorSpec) -> std::io::Result<()> {
+//        Ok(())
+//    }
+//
+//    #[inline]
+//    fn set_hyperlink(&mut self, _: &termcolor::HyperlinkSpec) -> std::io::Result<()> {
+//        Ok(())
+//    }
+//
+//    #[inline]
+//    fn reset(&mut self) -> std::io::Result<()> {
+//        Ok(())
+//    }
+//
+//    #[inline]
+//    fn is_synchronous(&self) -> bool {
+//        false
+//    }
+//}
+
+
 struct GrepProccess {
     //I'm not sure this will need any properties
 }
@@ -139,8 +213,13 @@ fn main() -> ExitCode {
 
         let mut cloned_args = initial_args.clone();
         cloned_args.positional.pop(); //Pop off the debug (Should be first)
-        cloned_args.positional.push(std::ffi::OsString::from("test")); //Term
-        cloned_args.positional.push(std::ffi::OsString::from("./")); //Dir
+        //cloned_args.positional.push(std::ffi::OsString::from("test.*t")); //Term
+        //Tests implicit
+        cloned_args.positional.push(std::ffi::OsString::from("l.l")); //Term
+        cloned_args.positional.push(std::ffi::OsString::from("./src/")); //Dir
+        //Tests eplicit
+        //cloned_args.positional.push(std::ffi::OsString::from("alphanu")); //Term
+        //cloned_args.positional.push(std::ffi::OsString::from("./src/flags/defs.rs")); //Dir
         let hi_args_result = match crate::flags::HiArgs::from_low_args(cloned_args) {
             Ok(hi_args) => crate::flags::ParseResult::Ok(hi_args),
             Err(err) => crate::flags::ParseResult::Err(err),
@@ -150,8 +229,6 @@ fn main() -> ExitCode {
             crate::flags::ParseResult::Err(err) => return ExitCode::FAILURE,
             _ => return ExitCode::FAILURE,
         };
-
-        println!("{:#?}", args);
         let result = match rg_search(&args) {
             Ok(res) => true,
             Err(err) => {
@@ -238,7 +315,6 @@ fn rg_search(args: &crate::flags::HiArgs) -> anyhow::Result<bool> {
     let matched = match args.mode() {
         crate::flags::Mode::Search(_) if !args.matches_possible() => false,
         crate::flags::Mode::Search(mode) => search_parallel(&args, mode)?,
-        crate::flags::Mode::Files => files_parallel(&args)?,
         _ => return Ok(false),
     };
     if matched && (args.quiet() || !messages::errored()) {
@@ -248,26 +324,36 @@ fn rg_search(args: &crate::flags::HiArgs) -> anyhow::Result<bool> {
 }
 
 fn search_parallel(args: &crate::flags::HiArgs, mode: SearchMode) -> anyhow::Result<bool> {
-    use std::sync::atomic::{AtomicBool, Ordering};
-
-    let started_at = std::time::Instant::now();
     let haystack_builder = args.haystack_builder();
     let bufwtr = args.buffer_writer();
-    let stats = args.stats().map(std::sync::Mutex::new);
-    let matched = AtomicBool::new(false);
-    let searched = AtomicBool::new(false);
 
+    //Actually I just realized my options right now have a color writer that's not correct
+    //This however forces no color
+    let test_buffer = termcolor::Buffer::no_color(); //Termcolor buffer_writer().buffer();
+        //println!("{:#?}", bufwtr.color_choice);
+        //test_buffer.write_all("test");
+
+    //let test_vec_as_buf = vec![];
+    //let test_printer_with_vec = search::Printer::Standard(self.printer_standard(wtr));
+
+            //println!("{:#?}", "Create Search Worker");
     //Have to rewrite this to not use a printer at all
+    //Everything depends on W being a termcolor::WriteColor generic
+
+
+    //Next step is to completely remove the printer and work with the sole buffers
+    //Search worker will manage the buffer and it will create a CustomSink
+    //SearchWorker likely need to store buffer of buffers & create  single use buffer for each thread
+    //This custom sink will implement the ability to Vec<u8> buffers.push() it's buffer of matched bytes
+    //Custom sink will also need to get that line number and store it somehow
     let mut searcher = args.search_worker(
         args.matcher()?,
         args.searcher()?,
-        args.printer(mode, bufwtr.buffer()),
+        args.printer(bufwtr.buffer()), //test_vec_as_buf, //args.printer(mode, test_buffer), //This is doable
     )?;
+            //println!("{:#?}", "After Create Search Worker");
     args.walk_builder()?.build_parallel().run(|| {
         let bufwtr = &bufwtr;
-        let stats = &stats;
-        let matched = &matched;
-        let searched = &searched;
         let haystack_builder = &haystack_builder;
         let mut searcher = searcher.clone();
 
@@ -276,7 +362,6 @@ fn search_parallel(args: &crate::flags::HiArgs, mode: SearchMode) -> anyhow::Res
                 Some(haystack) => haystack,
                 None => return WalkState::Continue,
             };
-            searched.store(true, Ordering::SeqCst);
             searcher.printer().get_mut().clear();
             let search_result = match searcher.search(&haystack) {
                 Ok(search_result) => search_result,
@@ -285,157 +370,48 @@ fn search_parallel(args: &crate::flags::HiArgs, mode: SearchMode) -> anyhow::Res
                     return WalkState::Continue;
                 }
             };
-            if search_result.has_match() {
-                matched.store(true, Ordering::SeqCst);
-            }
-            if let Some(ref locked_stats) = *stats {
-                let mut stats = locked_stats.lock().unwrap();
-                *stats += search_result.stats().unwrap();
-            }
+            //The wtr stored in the print is some how populated with the raw output buffer
+            //This includes the desired results for linenum & preview line
+            //Unlike the state of sink in core.rs this is a joined buffer
+            //If I can somehow get the raw line by line that gets matched to sink and just store
+            //Each line in a vector that would be ideal, though I can split raw buffer just as easily
+            //I believe this will have something to do with bufwtr and the buffer()
+            //That printer is constructed with as that is the wtr it's writing to
+            //It'll be tough but I might be able to create a custom buffer that will write to a
+            //Vector index for each line
+            //println!("{:#?}", searcher.printer().get_mut()); //I believe this is the buffer
+
+            //haystack.path() - With this I can store the path
+            //
+            //sunk.line_number() //Somehow I have to get the line number out of the sunk
+            // -Look to this (standard.rs)
+            // -- Sunk is created with SinkMatch where SinkMatch.line_number()
+            // -- SinkMatch is passed in to matched as param so CustomSink should get this
+            //
+            //fn from_match(
+            //    searcher: &'a Searcher,
+            //    sink: &'a StandardSink<'_, '_, M, W>,
+            //    mat: &'a SinkMatch<'a>,
+            //) -> StandardImpl<'a, M, W> {
+            //    let sunk = Sunk::from_sink_match(
+            //        mat,
+            //        &sink.standard.matches,
+            //        sink.replacer.replacement(),
+            //    );
+            //    StandardImpl { sunk, ..StandardImpl::new(searcher, sink) }
+            //}
+            //
             if let Err(err) = bufwtr.print(searcher.printer().get_mut()) {
-                // A broken pipe means graceful termination.
                 if err.kind() == std::io::ErrorKind::BrokenPipe {
-                    return WalkState::Quit;
+                    return WalkState::Quit; //Broken pipe means graceful termination.
                 }
-                // Otherwise, we continue on our merry way.
                 err_message!("{}: {}", haystack.path().display(), err);
             }
-            if matched.load(Ordering::SeqCst) && args.quit_after_match() {
-                WalkState::Quit
-            } else {
-                WalkState::Continue
-            }
+            //return WalkState::Quit;
+            return WalkState::Continue;
         })
     });
-    if args.has_implicit_path() && !searched.load(Ordering::SeqCst) {
-        eprint_nothing_searched();
-    }
-    if let Some(ref locked_stats) = stats {
-        let stats = locked_stats.lock().unwrap();
-        let mut wtr = searcher.printer().get_mut();
-        let _ = print_stats(mode, &stats, started_at, &mut wtr);
-        let _ = bufwtr.print(&mut wtr);
-    }
-    Ok(matched.load(Ordering::SeqCst))
-}
-
-/// This recursively steps through the file list (current directory by default)
-/// and prints each path sequentially using multiple threads.
-fn files_parallel(args: &HiArgs) -> anyhow::Result<bool> {
-    use std::{
-        sync::{
-            atomic::{AtomicBool, Ordering},
-            mpsc,
-        },
-        thread,
-    };
-
-    let haystack_builder = args.haystack_builder();
-    let mut path_printer = args.path_printer_builder().build(args.stdout());
-    let matched = AtomicBool::new(false);
-    let (tx, rx) = mpsc::channel::<crate::haystack::Haystack>();
-
-    // We spawn a single printing thread to make sure we don't tear writes.
-    // We use a channel here under the presumption that it's probably faster
-    // than using a mutex in the worker threads below, but this has never been
-    // seriously litigated.
-    let print_thread = thread::spawn(move || -> std::io::Result<()> {
-        for haystack in rx.iter() {
-            path_printer.write(haystack.path())?;
-        }
-        Ok(())
-    });
-    args.walk_builder()?.build_parallel().run(|| {
-        let haystack_builder = &haystack_builder;
-        let matched = &matched;
-        let tx = tx.clone();
-
-        Box::new(move |result| {
-            let haystack = match haystack_builder.build_from_result(result) {
-                Some(haystack) => haystack,
-                None => return WalkState::Continue,
-            };
-            matched.store(true, Ordering::SeqCst);
-            if args.quit_after_match() {
-                WalkState::Quit
-            } else {
-                match tx.send(haystack) {
-                    Ok(_) => WalkState::Continue,
-                    Err(_) => WalkState::Quit,
-                }
-            }
-        })
-    });
-    drop(tx);
-    if let Err(err) = print_thread.join().unwrap() {
-        // A broken pipe means graceful termination, so fall through.
-        // Otherwise, something bad happened while writing to stdout, so bubble
-        // it up.
-        if err.kind() != std::io::ErrorKind::BrokenPipe {
-            return Err(err.into());
-        }
-    }
-    Ok(matched.load(Ordering::SeqCst))
-}
-
-fn eprint_nothing_searched() {
-    err_message!(
-        "No files were searched, which means ripgrep probably \
-         applied a filter you didn't expect.\n\
-         Running with --debug will show why files are being skipped."
-    );
-}
-
-//See if even runs. ideally remove any bloat like useless printing. I just want data strucutre
-fn print_stats<W: Write>(
-    mode: SearchMode,
-    stats: &grep::printer::Stats,
-    started: std::time::Instant,
-    mut wtr: W,
-) -> std::io::Result<()> {
-    let elapsed = std::time::Instant::now().duration_since(started);
-    if matches!(mode, SearchMode::JSON) {
-        // We specifically match the format laid out by the JSON printer in
-        // the grep-printer crate. We simply "extend" it with the 'summary'
-        // message type.
-        serde_json::to_writer(
-            &mut wtr,
-            &serde_json::json!({
-                "type": "summary",
-                "data": {
-                    "stats": stats,
-                    "elapsed_total": {
-                        "secs": elapsed.as_secs(),
-                        "nanos": elapsed.subsec_nanos(),
-                        "human": format!("{:0.6}s", elapsed.as_secs_f64()),
-                    },
-                }
-            }),
-        )?;
-        write!(wtr, "\n")
-    } else {
-        write!(
-            wtr,
-            "
-{matches} matches
-{lines} matched lines
-{searches_with_match} files contained matches
-{searches} files searched
-{bytes_printed} bytes printed
-{bytes_searched} bytes searched
-{search_time:0.6} seconds spent searching
-{process_time:0.6} seconds
-",
-            matches = stats.matches(),
-            lines = stats.matched_lines(),
-            searches_with_match = stats.searches_with_match(),
-            searches = stats.searches(),
-            bytes_printed = stats.bytes_printed(),
-            bytes_searched = stats.bytes_searched(),
-            search_time = stats.elapsed().as_secs_f64(),
-            process_time = elapsed.as_secs_f64(),
-        )
-    }
+    return Ok(true);
 }
 
 //Might want to see this syntax later

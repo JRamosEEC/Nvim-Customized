@@ -106,6 +106,7 @@ pub struct StandardBuilder {
 impl StandardBuilder {
     /// Return a new builder for configuring the standard printer.
     pub fn new() -> StandardBuilder {
+        //println!("{:#?}", "Standard Builder");
         StandardBuilder { config: Config::default() }
     }
 
@@ -128,6 +129,7 @@ impl StandardBuilder {
     /// select the `termcolor::NoColor` wrapper to avoid needing to import
     /// from `termcolor` explicitly.
     pub fn build<W: WriteColor>(&self, wtr: W) -> Standard<W> {
+        //println!("{:#?}", "Build");
         Standard {
             config: self.config.clone(),
             wtr: RefCell::new(CounterWriter::new(wtr)),
@@ -490,7 +492,7 @@ impl StandardBuilder {
 /// the `termcolor::NoColor` adapter can be used to wrap any `io::Write`
 /// implementation without enabling any colors.
 #[derive(Clone, Debug)]
-pub struct Standard<W> {
+pub struct Standard<W> { //Here
     config: Config,
     wtr: RefCell<CounterWriter<W>>,
     matches: Vec<Match>,
@@ -505,6 +507,7 @@ impl<W: WriteColor> Standard<W> {
     /// `io::Write` implementation (simultaneously sacrificing colors), use
     /// the `new_no_color` constructor.
     pub fn new(wtr: W) -> Standard<W> {
+        //println!("{:#?}", "Test");
         StandardBuilder::new().build(wtr)
     }
 }
@@ -516,6 +519,7 @@ impl<W: io::Write> Standard<NoColor<W>> {
     /// The writer can be any implementation of `io::Write`. With this
     /// constructor, the printer will never emit colors.
     pub fn new_no_color(wtr: W) -> Standard<NoColor<W>> {
+        //println!("{:#?}", "Test");
         StandardBuilder::new().build_no_color(wtr)
     }
 }
@@ -529,6 +533,7 @@ impl<W: WriteColor> Standard<W> {
         &'s mut self,
         matcher: M,
     ) -> StandardSink<'static, 's, M, W> {
+        //println!("{:#?}", "No Path Sink");
         let interpolator =
             hyperlink::Interpolator::new(&self.config.hyperlink);
         let stats = if self.config.stats { Some(Stats::new()) } else { None };
@@ -562,6 +567,7 @@ impl<W: WriteColor> Standard<W> {
         P: ?Sized + AsRef<Path>,
     {
         if !self.config.path {
+            //println!("{:#?}", "Get Sink");
             return self.sink(matcher);
         }
         let interpolator =
@@ -717,10 +723,13 @@ impl<'p, 's, M: Matcher, W: WriteColor> StandardSink<'p, 's, M, W> {
         bytes: &[u8],
         range: std::ops::Range<usize>,
     ) -> io::Result<()> {
+        //println!("{:#?}", "RecordMatches");
         self.standard.matches.clear();
         if !self.needs_match_granularity {
             return Ok(());
         }
+        //println!("{:#?}", "RecordMatches");
+        //println!("{:#?}", self.standard.matches);
         // If printing requires knowing the location of each individual match,
         // then compute and stored those right now for use later. While this
         // adds an extra copy for storing the matches, we do amortize the
@@ -812,6 +821,12 @@ impl<'p, 's, M: Matcher, W: WriteColor> Sink for StandardSink<'p, 's, M, W> {
         searcher: &Searcher,
         mat: &SinkMatch<'_>,
     ) -> Result<bool, io::Error> {
+        //println!("{:#?}", "This will have to do with solution"); //Here
+        //println!("{:#?}", "sinkMatched:StandardSinkMatched"); //Here
+        //println!("{:#?}", mat.bytes()); //Here
+        //println!("{:#?}", mat.buffer()); //Raw file buf
+        //println!("{:#?}", mat.buffer()); //Raw file buf
+        //println!("{:#?}", mat.bytes_range_in_buffer());
         self.match_count += 1;
         // When we've exceeded our match count, then the remaining context
         // lines should not be reset, but instead, decremented. This avoids a
@@ -827,23 +842,28 @@ impl<'p, 's, M: Matcher, W: WriteColor> Sink for StandardSink<'p, 's, M, W> {
             self.after_context_remaining = searcher.after_context() as u64;
         }
 
+        //println!("{:#?}", "sinkMatched:RecMatches"); //Here
         self.record_matches(
             searcher,
             mat.buffer(),
             mat.bytes_range_in_buffer(),
         )?;
+        //println!("{:#?}", "sinkMatched:Replace"); //Here
         self.replace(searcher, mat.buffer(), mat.bytes_range_in_buffer())?;
 
+        //println!("{:#?}", "sinkMatched:Stats"); //Here
         if let Some(ref mut stats) = self.stats {
             stats.add_matches(self.standard.matches.len() as u64);
             stats.add_matched_lines(mat.lines().count() as u64);
         }
+        //println!("{:#?}", "sinkMatched:Binary"); //Here
         if searcher.binary_detection().convert_byte().is_some() {
             if self.binary_byte_offset.is_some() {
                 return Ok(false);
             }
         }
 
+        //println!("{:#?}", "sinkMatched:FromMatch"); //Here
         StandardImpl::from_match(searcher, self, mat).sink()?;
         Ok(!self.should_quit())
     }
@@ -968,11 +988,13 @@ impl<'a, M: Matcher, W: WriteColor> StandardImpl<'a, M, W> {
         sink: &'a StandardSink<'_, '_, M, W>,
         mat: &'a SinkMatch<'a>,
     ) -> StandardImpl<'a, M, W> {
+        //println!("{:#?}", "____StandarImpl"); //Here
         let sunk = Sunk::from_sink_match(
             mat,
             &sink.standard.matches,
             sink.replacer.replacement(),
         );
+        //println!("{:#?}", sunk); //The matched buffer and line
         StandardImpl { sunk, ..StandardImpl::new(searcher, sink) }
     }
 
@@ -992,8 +1014,11 @@ impl<'a, M: Matcher, W: WriteColor> StandardImpl<'a, M, W> {
     }
 
     fn sink(&self) -> io::Result<()> {
+        //println!("{:#?}", "MatchedLinkSink");
+        //println!("{:#?}", self.sunk);
         self.write_search_prelude()?;
         if self.sunk.matches().is_empty() {
+            //println!("{:#?}", "Sunk Mathches Empty (Buffer Match is full)");
             if self.multi_line() && !self.is_context() {
                 self.sink_fast_multi_line()
             } else {
@@ -1018,6 +1043,8 @@ impl<'a, M: Matcher, W: WriteColor> StandardImpl<'a, M, W> {
         debug_assert!(self.sunk.matches().is_empty());
         debug_assert!(!self.multi_line() || self.is_context());
 
+        //println!("{:#?}", "sink_fast");
+        //println!("{:#?}", self.sunk.bytes());
         self.write_prelude(
             self.sunk.absolute_byte_offset(),
             self.sunk.line_number(),
@@ -1273,6 +1300,7 @@ impl<'a, M: Matcher, W: WriteColor> StandardImpl<'a, M, W> {
                 &mut 0,
             )?;
         } else {
+            //println!("{:#?}", "write_line");
             // self.write_trim(line)?;
             self.write(line)?;
             if !self.has_line_terminator(line) {
@@ -1432,10 +1460,12 @@ impl<'a, M: Matcher, W: WriteColor> StandardImpl<'a, M, W> {
     }
 
     fn write_search_prelude(&self) -> io::Result<()> {
+        //println!("{:#?}", self.sunk.bytes()); //It's already written
         let this_search_written = self.wtr().borrow().count() > 0;
         if this_search_written {
             return Ok(());
         }
+        //println!("{:#?}", "WriteSearchPrelude");
         if let Some(ref sep) = *self.config().separator_search {
             let ever_written = self.wtr().borrow().total_count() > 0;
             if ever_written {
@@ -1555,6 +1585,7 @@ impl<'a, M: Matcher, W: WriteColor> StandardImpl<'a, M, W> {
     }
 
     fn write(&self, buf: &[u8]) -> io::Result<()> {
+        //println!("{:#?}", "written");
         self.wtr().borrow_mut().write_all(buf)
     }
 

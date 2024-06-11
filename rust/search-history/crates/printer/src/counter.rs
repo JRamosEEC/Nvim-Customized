@@ -13,6 +13,7 @@ pub(crate) struct CounterWriter<W> {
 
 impl<W: Write> CounterWriter<W> {
     pub(crate) fn new(wtr: W) -> CounterWriter<W> {
+        //println!("{:#?}", "Create CoutnerWriter");
         CounterWriter { wtr, count: 0, total_count: 0 }
     }
 }
@@ -53,6 +54,7 @@ impl<W: Write> Write for CounterWriter<W> {
     // A high match count ad hoc benchmark flagged this as a hot spot.
     #[inline(always)]
     fn write(&mut self, buf: &[u8]) -> Result<usize, io::Error> {
+        //println!("{:#?}", "CounterWriter Writing");
         let n = self.wtr.write(buf)?;
         self.count += n as u64;
         Ok(n)

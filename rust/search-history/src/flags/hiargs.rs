@@ -9,7 +9,7 @@ use std::{
 
 use {
     bstr::BString,
-    grep::printer::{ColorSpecs, SummaryKind},
+    grep::printer::ColorSpecs,
 };
 
 use crate::{
@@ -20,7 +20,7 @@ use crate::{
         PatternSource, SearchMode, SortMode, SortModeKind, TypeChange,
     },
     haystack::{Haystack, HaystackBuilder},
-    search::{PatternMatcher, Printer, SearchWorker, SearchWorkerBuilder},
+    search::{PatternMatcher, SearchWorker, SearchWorkerBuilder},
 };
 
 /// A high level representation of CLI arguments.
@@ -535,66 +535,8 @@ impl HiArgs {
         self.mode
     }
 
-    /// Returns a builder for constructing a "path printer."
-    ///
-    /// This is useful for the `--files` mode in ripgrep, where the printer
-    /// just needs to emit paths and not need to worry about the functionality
-    /// of searching.
-    pub(crate) fn path_printer_builder(
-        &self,
-    ) -> grep::printer::PathPrinterBuilder {
-        let mut builder = grep::printer::PathPrinterBuilder::new();
-        builder
-            .color_specs(self.colors.clone())
-            .hyperlink(self.hyperlink_config.clone())
-            .separator(self.path_separator.clone())
-            .terminator(self.path_terminator.unwrap_or(b'\n'));
-        builder
-    }
-
-    /// Returns a printer for the given search mode.
-    ///
-    /// This chooses which printer to build (JSON, summary or standard) based
-    /// on the search mode given.
-    pub(crate) fn printer<W: termcolor::WriteColor>(
-        &self,
-        search_mode: SearchMode,
-        wtr: W,
-    ) -> Printer<W> {
-        let summary_kind = if self.quiet {
-            SummaryKind::Quiet
-        } else {
-            match search_mode {
-                SearchMode::FilesWithMatches => SummaryKind::PathWithMatch,
-                SearchMode::FilesWithoutMatch => SummaryKind::PathWithoutMatch,
-                SearchMode::Count => SummaryKind::Count,
-                SearchMode::CountMatches => SummaryKind::CountMatches,
-                SearchMode::JSON => {
-                    return Printer::JSON(self.printer_json(wtr))
-                }
-                SearchMode::Standard => {
-                    return Printer::Standard(self.printer_standard(wtr))
-                }
-            }
-        };
-        Printer::Summary(self.printer_summary(wtr, summary_kind))
-    }
-
-    /// Builds a JSON printer.
-    fn printer_json<W: std::io::Write>(
-        &self,
-        wtr: W,
-    ) -> grep::printer::JSON<W> {
-        grep::printer::JSONBuilder::new()
-            .pretty(false)
-            .max_matches(self.max_count)
-            .always_begin_end(false)
-            .build(wtr)
-    }
-
     /// Builds a "standard" grep printer where matches are printed as plain
-    /// text lines.
-    fn printer_standard<W: termcolor::WriteColor>(
+    pub(crate) fn printer<W: termcolor::WriteColor>(
         &self,
         wtr: W,
     ) -> grep::printer::Standard<W> {
@@ -635,27 +577,6 @@ impl HiArgs {
         builder.build(wtr)
     }
 
-    /// Builds a "summary" printer where search results are aggregated on a
-    /// file-by-file basis.
-    fn printer_summary<W: termcolor::WriteColor>(
-        &self,
-        wtr: W,
-        kind: SummaryKind,
-    ) -> grep::printer::Summary<W> {
-        grep::printer::SummaryBuilder::new()
-            .color_specs(self.colors.clone())
-            .exclude_zero(!self.include_zero)
-            .hyperlink(self.hyperlink_config.clone())
-            .kind(kind)
-            .max_matches(self.max_count)
-            .path(self.with_filename)
-            .path_terminator(self.path_terminator.clone())
-            .separator_field(b":".to_vec())
-            .separator_path(self.path_separator.clone())
-            .stats(self.stats.is_some())
-            .build(wtr)
-    }
-
     /// Returns true if ripgrep should operate in "quiet" mode.
     ///
     /// Generally speaking, quiet mode means that ripgrep should not print
@@ -686,15 +607,9 @@ impl HiArgs {
         &self,
         matcher: PatternMatcher,
         searcher: grep::searcher::Searcher,
-        printer: Printer<W>,
+        printer: grep::printer::Standard<W>,
     ) -> anyhow::Result<SearchWorker<W>> {
         let mut builder = SearchWorkerBuilder::new();
-        builder
-            .preprocessor(self.pre.clone())?
-            .preprocessor_globs(self.pre_globs.clone())
-            .search_zip(self.search_zip)
-            .binary_detection_explicit(self.binary.explicit.clone())
-            .binary_detection_implicit(self.binary.implicit.clone());
         Ok(builder.build(matcher, searcher, printer))
     }
 

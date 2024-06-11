@@ -40,6 +40,7 @@ where
             while self.fill()? && self.core.match_by_line(self.rdr.buffer())? {
             }
         }
+            //println!("{:#?}", 8);
         self.core.finish(
             self.rdr.absolute_byte_offset(),
             self.rdr.binary_byte_offset(),

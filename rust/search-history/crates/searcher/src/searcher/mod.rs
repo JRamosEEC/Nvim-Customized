@@ -631,6 +631,7 @@ impl Searcher {
         M: Matcher,
         S: Sink,
     {
+            //println!("{:#?}", 3);
         let path = path.as_ref();
         let file = File::open(path).map_err(S::Error::error_io)?;
         self.search_file_maybe_path(matcher, Some(path), &file, write_to)
@@ -667,6 +668,7 @@ impl Searcher {
         S: Sink,
     {
         if let Some(mmap) = self.config.mmap.open(file, path) {
+            //println!("{:#?}", 4);
             log::trace!("{:?}: searching via memory map", path);
             return self.search_slice(matcher, &mmap, write_to);
         }
@@ -756,6 +758,7 @@ impl Searcher {
         M: Matcher,
         S: Sink,
     {
+            //println!("{:#?}", "SearchSlice");
         self.check_config(&matcher).map_err(S::Error::error_config)?;
 
         // We can search the slice directly, unless we need to do transcoding.
@@ -769,6 +772,7 @@ impl Searcher {
             log::trace!("slice reader: searching via multiline strategy");
             MultiLine::new(self, matcher, slice, write_to).run()
         } else {
+            //println!("{:#?}", "SliceByLine.run()");
             log::trace!("slice reader: searching via slice-by-line strategy");
             SliceByLine::new(self, matcher, slice, write_to).run()
         }

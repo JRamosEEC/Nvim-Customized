@@ -337,6 +337,8 @@ impl<'s, M: Matcher, S: Sink> Core<'s, M, S> {
                         return Ok(Stop);
                     }
                 }
+            //println!("{:#?}", line);
+            //println!("{:#?}", line.end());
                 self.set_pos(line.end());
                 if !self.sink_matched(buf, &line)? {
                     return Ok(Stop);
@@ -348,6 +350,7 @@ impl<'s, M: Matcher, S: Sink> Core<'s, M, S> {
         if !self.after_context_by_line(buf, buf.len())? {
             return Ok(Stop);
         }
+            //println!("{:#?}", buf);
         self.set_pos(buf.len());
         Ok(Continue)
     }
@@ -456,6 +459,7 @@ impl<'s, M: Matcher, S: Sink> Core<'s, M, S> {
         buf: &[u8],
         range: &Range,
     ) -> Result<bool, S::Error> {
+            //println!("{:#?}", "sink_match");
         if self.binary && self.detect_binary(buf, range)? {
             return Ok(false);
         }
@@ -465,6 +469,7 @@ impl<'s, M: Matcher, S: Sink> Core<'s, M, S> {
         self.count_lines(buf, range.start());
         let offset = self.absolute_byte_offset + range.start() as u64;
         let linebuf = &buf[*range];
+            //println!("{:#?}", linebuf);
         let keepgoing = self.sink.matched(
             &self.searcher,
             &SinkMatch {
