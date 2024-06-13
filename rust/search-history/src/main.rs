@@ -11,7 +11,7 @@
 //static ALLOC: jemallocator::Jemalloc = jemallocator::Jemalloc;
 
 use std::{io::Write, process::ExitCode};
-use crate::flags::{HiArgs, LowArgs, SearchMode};
+use crate::{search::SearchResults, flags::{HiArgs, LowArgs, SearchMode}};
 
 use ignore::WalkState;
 use neovim_lib::{Neovim, NeovimApi, Session};
@@ -215,8 +215,9 @@ fn main() -> ExitCode {
         cloned_args.positional.pop(); //Pop off the debug (Should be first)
         //cloned_args.positional.push(std::ffi::OsString::from("test.*t")); //Term
         //Tests implicit
-        cloned_args.positional.push(std::ffi::OsString::from("l.l")); //Term
-        cloned_args.positional.push(std::ffi::OsString::from("./src/")); //Dir
+        cloned_args.positional.push(std::ffi::OsString::from("l.low")); //Term
+        cloned_args.positional.push(std::ffi::OsString::from("./")); //Dir
+        //cloned_args.positional.push(std::ffi::OsString::from("./src/")); //Dir
         //Tests eplicit
         //cloned_args.positional.push(std::ffi::OsString::from("alphanu")); //Term
         //cloned_args.positional.push(std::ffi::OsString::from("./src/flags/defs.rs")); //Dir
@@ -329,29 +330,33 @@ fn search_parallel(args: &crate::flags::HiArgs, mode: SearchMode) -> anyhow::Res
 
     //Actually I just realized my options right now have a color writer that's not correct
     //This however forces no color
-    let test_buffer = termcolor::Buffer::no_color(); //Termcolor buffer_writer().buffer();
+    //let test_buffer = termcolor::Buffer::no_color(); //Termcolor buffer_writer().buffer();
         //println!("{:#?}", bufwtr.color_choice);
         //test_buffer.write_all("test");
 
-    //let test_vec_as_buf = vec![];
+    let search_results: Vec<Vec<u8>> = vec![];
     //let test_printer_with_vec = search::Printer::Standard(self.printer_standard(wtr));
 
             //println!("{:#?}", "Create Search Worker");
     //Have to rewrite this to not use a printer at all
     //Everything depends on W being a termcolor::WriteColor generic
 
+    //Outer results which is a Vec<Vec<u8>>
+    let search_results = SearchResults::new();
 
     //Next step is to completely remove the printer and work with the sole buffers
     //Search worker will manage the buffer and it will create a CustomSink
     //SearchWorker likely need to store buffer of buffers & create  single use buffer for each thread
     //This custom sink will implement the ability to Vec<u8> buffers.push() it's buffer of matched bytes
     //Custom sink will also need to get that line number and store it somehow
+
+    //My plan - each worker get's it's own store. After search iterate over it and push into search results from box
     let mut searcher = args.search_worker(
         args.matcher()?,
         args.searcher()?,
-        args.printer(bufwtr.buffer()), //test_vec_as_buf, //args.printer(mode, test_buffer), //This is doable
     )?;
             //println!("{:#?}", "After Create Search Worker");
+            //println!("{:#?}", search_results);
     args.walk_builder()?.build_parallel().run(|| {
         let bufwtr = &bufwtr;
         let haystack_builder = &haystack_builder;
@@ -362,52 +367,11 @@ fn search_parallel(args: &crate::flags::HiArgs, mode: SearchMode) -> anyhow::Res
                 Some(haystack) => haystack,
                 None => return WalkState::Continue,
             };
-            searcher.printer().get_mut().clear();
-            let search_result = match searcher.search(&haystack) {
-                Ok(search_result) => search_result,
-                Err(err) => {
-                    err_message!("{}: {}", haystack.path().display(), err);
-                    return WalkState::Continue;
-                }
-            };
-            //The wtr stored in the print is some how populated with the raw output buffer
-            //This includes the desired results for linenum & preview line
-            //Unlike the state of sink in core.rs this is a joined buffer
-            //If I can somehow get the raw line by line that gets matched to sink and just store
-            //Each line in a vector that would be ideal, though I can split raw buffer just as easily
-            //I believe this will have something to do with bufwtr and the buffer()
-            //That printer is constructed with as that is the wtr it's writing to
-            //It'll be tough but I might be able to create a custom buffer that will write to a
-            //Vector index for each line
-            //println!("{:#?}", searcher.printer().get_mut()); //I believe this is the buffer
 
-            //haystack.path() - With this I can store the path
-            //
-            //sunk.line_number() //Somehow I have to get the line number out of the sunk
-            // -Look to this (standard.rs)
-            // -- Sunk is created with SinkMatch where SinkMatch.line_number()
-            // -- SinkMatch is passed in to matched as param so CustomSink should get this
-            //
-            //fn from_match(
-            //    searcher: &'a Searcher,
-            //    sink: &'a StandardSink<'_, '_, M, W>,
-            //    mat: &'a SinkMatch<'a>,
-            //) -> StandardImpl<'a, M, W> {
-            //    let sunk = Sunk::from_sink_match(
-            //        mat,
-            //        &sink.standard.matches,
-            //        sink.replacer.replacement(),
-            //    );
-            //    StandardImpl { sunk, ..StandardImpl::new(searcher, sink) }
-            //}
-            //
-            if let Err(err) = bufwtr.print(searcher.printer().get_mut()) {
-                if err.kind() == std::io::ErrorKind::BrokenPipe {
-                    return WalkState::Quit; //Broken pipe means graceful termination.
-                }
-                err_message!("{}: {}", haystack.path().display(), err);
+            if searcher.search(&haystack) {
+                //Push to outer search results vector
+                println!("{:#?}", searcher.get_results());
             }
-            //return WalkState::Quit;
             return WalkState::Continue;
         })
     });

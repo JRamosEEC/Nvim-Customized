@@ -20,7 +20,7 @@ use crate::{
         PatternSource, SearchMode, SortMode, SortModeKind, TypeChange,
     },
     haystack::{Haystack, HaystackBuilder},
-    search::{PatternMatcher, SearchWorker, SearchWorkerBuilder},
+    search::{SearchResults, PatternMatcher, SearchWorker, SearchWorkerBuilder},
 };
 
 /// A high level representation of CLI arguments.
@@ -600,17 +600,13 @@ impl HiArgs {
     }
 
     /// Build a worker for executing searches.
-    ///
-    /// Search results are found using the given matcher and written to the
-    /// given printer.
-    pub(crate) fn search_worker<W: termcolor::WriteColor>(
+    pub(crate) fn search_worker(
         &self,
         matcher: PatternMatcher,
         searcher: grep::searcher::Searcher,
-        printer: grep::printer::Standard<W>,
-    ) -> anyhow::Result<SearchWorker<W>> {
+    ) -> anyhow::Result<SearchWorker> {
         let mut builder = SearchWorkerBuilder::new();
-        Ok(builder.build(matcher, searcher, printer))
+        Ok(builder.build(matcher, searcher))
     }
 
     /// Build a searcher from the command line parameters.
