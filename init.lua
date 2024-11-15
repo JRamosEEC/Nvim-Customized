@@ -20,10 +20,13 @@ dofile(vim.g.base46_cache .. "defaults")
 vim.opt.rtp:prepend(lazypath)
 require "plugins"
 
--- ### Custom Config
+-- ### Custom Config ### ---
 
 -- Relative Line Number By Default
 vim.opt.relativenumber = true
+
+-- Custom Yank Current File Name
+vim.keymap.set('n', '<leader>yc', function() vim.fn.setreg("+", vim.fn.expand("%:p")) end, { desc = "Yank Current Filename", noremap = true })
 
 -- Setup Global Notes & Note Taking
 local global_note = require("global-note")
@@ -256,7 +259,7 @@ telescope.setup({
 
 
 --Updates
--- I'm probably going to have ro write my own Printer type classs
+-- I'm probably going to have re-write my own Printer type classs
 -- I'm not sure how I'm going to deal with the fact the search_worker requires a term color implemented class
 -- Either I can work with it to create a mutable object
 -- Otherwise I'll have to create my own search_worker function that can somehow run a builder without a term color type Printer
@@ -426,15 +429,18 @@ lspconfig.intelephense.setup({
         undefinedMethods = false,
         duplicateSymbols = false,
       },
+      files = {
+        maxSize = 10000000,
+      },
     },
   },
   debounce_text_changes = 150,
   capabilities = capabilities,
 })
 
---Set Clang LSP For Local Dev
+--Set Clang LSP
 local cmp_nvim_lsp = require "cmp_nvim_lsp"
-require("lspconfig").clangd.setup({
+lspconfig.clangd.setup({
     on_attach = on_attach,
     capabilities = cmp_nvim_lsp.default_capabilities(),
     cmd = {
@@ -443,7 +449,8 @@ require("lspconfig").clangd.setup({
     },
 })
 
-require('lspconfig').rust_analyzer.setup({})
+--Set Rust Analyze
+lspconfig.rust_analyzer.setup({})
 
 -- Dap (Setup in Plugins & Loaded With PHP Debugger Adapter Here)
 local getPathMap = function() -- Get current path & convert to PathMap (Current path without first 3 /home/jramos/devSys)
@@ -476,7 +483,7 @@ dap.configurations.php = {
     port = 9003,
     log = true,
     pathMappings = {
-      ["/home/jramos" .. getPathMap()] = "${workspaceFolder}", --['/home/justin/sandbox/dev/zf2'] = "${workspaceFolder}",
+      ["/home/justin" .. getPathMap()] = "${workspaceFolder}", --['/home/justin/sandbox/dev/zf2'] = "${workspaceFolder}",
     },
     stopOnEntry = false,
     xdebugSettings = {
