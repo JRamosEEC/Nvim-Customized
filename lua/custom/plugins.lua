@@ -1,5 +1,9 @@
 local overrides = require("custom.configs.overrides")
 
+--
+-- NOTE TO SELF take a look at event I believe that's what triggers lazy loading I didn't realize
+--
+
 ---@type NvPluginSpec[]
 local plugins = {
 
@@ -38,6 +42,17 @@ local plugins = {
   {
     "nvim-tree/nvim-tree.lua",
     opts = overrides.nvimtree,
+  },
+
+  {
+    "lewis6991/gitsigns.nvim",
+    event = "User FilePost",
+    opts = overrides.gitsigns,
+    config = function(_, opts)
+      vim.api.nvim_command('hi GitSignsStagedAdd guifg=#144646')
+      vim.api.nvim_command('hi GitSignsStagedDelete guifg=#144646')
+      require("gitsigns").setup(opts)
+    end,
   },
 
   -- Install a plugin
@@ -222,12 +237,29 @@ local plugins = {
 
   -- DadBod Database Tool 
   {
-    "tpope/vim-dadbod",
-    lazy = false, -- This one can be fixed for sure
-    dependencies = { "kristijanhusak/vim-dadbod-ui", "kristijanhusak/vim-dadbod-completion", "pbogut/vim-dadbod-ssh" },
-    config = function()
-      require("custom.config.dadbod").setup()
-      vim.api.nvim_create_autocmd("FileType", {pattern = "dbout", command = [[setlocal nofoldenable]]}) --autocmd FileType dbout setlocal nofoldenable
+    "tpope/vim-dadbod-ui",
+    lazy = false,
+    dependencies = {
+        {
+            "kristijanhusak/vim-dadbod",
+            lazy = true,
+            config = function()
+                require("custom.config.dadbod").setup()
+                vim.api.nvim_create_autocmd("FileType", {pattern = "dbout", command = [[setlocal nofoldenable]]}) --autocmd FileType dbout setlocal nofoldenable
+            end,
+        },
+        {
+            "kristijanhusak/vim-dadbod-completion",
+            lazy = true,
+            --ft = { 'sql', 'mysql', 'plsql' }
+        },
+        {
+            "pbogut/vim-dadbod-ssh",
+            lazy = true
+        }
+    },
+    init = function()
+        vim.g.db_ui_use_nerd_fonts = 1
     end,
   },
 

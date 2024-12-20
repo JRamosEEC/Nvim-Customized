@@ -22,6 +22,9 @@ require "plugins"
 
 -- ### Custom Config ### ---
 
+-- Experiment with dvorak for now --
+--vim.opt.keymap = 'dvorak'
+
 -- Relative Line Number By Default
 vim.opt.relativenumber = true
 
