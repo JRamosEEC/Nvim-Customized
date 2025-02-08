@@ -31,7 +31,7 @@ M.general = {
     ["<C-c>"] = { "<cmd> %y+ <CR>", "Copy whole file" },
 
     -- line numbers
-    ["<leader>n"] = { "<cmd> set nu! <CR>", "Toggle line number" },
+    --["<leader>n"] = { "<cmd> set nu! <CR>", "Toggle line number" }, --Couldn't find a convenient way to unbind keymap.del would error - rebinded in custom mappings
     ["<leader>rn"] = { "<cmd> set rnu! <CR>", "Toggle relative number" },
 
     -- Allow moving the cursor through wrapped lines with j, k, <Up> and <Down>

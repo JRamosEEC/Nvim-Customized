@@ -4,9 +4,33 @@ local M = {}
 M.general = {
   n = {
     --[";"] = { ":", "enter command mode", opts = { nowait = true } }, --Custom edit, couldn't rebind ';' so remove this definition
+    ["<leader>tn"] = { "<cmd> set nu! <CR>", "Toggle line number" }, -- Rebinding So I Can Make "<leader>n" A Chain Command
+    ["y<CR>"] = { "<ESC>", "Escape Action" }, -- When saving I y<CR> By Habit Beause Of The Fucking Overwrite Message And It Fucks Up My Yanks Everytime
+    -- DVORAK Mappings --
+    ["d"] = { "h", "Move Left" },
+    ["h"] = { "j", "Move Down" },
+    ["t"] = { "k", "Move Up" },
+    ["n"] = { "l", "Move Right" },
+    [","] = { "w", "Move Forward A Word" },
+    ["k"] = { "b", "Move Back A Word" },
+    ["D"] = { "d", "Delete" },
+    ["D,"] = { "dw", "Delete Word" },
+    ["DD"] = { "dd", "Delete Line" },
+    ["Dd"] = { "dd", "Delete Line" },
+    ["Di"] = { "di", "Delete In" },
+    ["DI"] = { "di", "Delete In" },
+    ["Da"] = { "da", "Delete Around" },
+    ["DA"] = { "da", "Delete Around" },
   },
-  v = {
-    [">"] = { ">gv", "indent"},
+  x = {
+    -- DVORAK Mappings --
+    ["d"] = { "h", "Move Left" },
+    ["h"] = { "j", "Move Down" },
+    ["t"] = { "k", "Move Up" },
+    ["n"] = { "l", "Move Right" },
+    [","] = { "w", "Move Forward A Word" },
+    ["k"] = { "b", "Move Back A Word" },
+    ["D"] = { "d", "Delete" },
   },
 }
 

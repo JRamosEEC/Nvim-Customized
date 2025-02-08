@@ -65,7 +65,13 @@ local plugins = {
   },
 
   -- ### Custom Plugins --
-    -- Most Plugins Should Probably Be Lazy Loaded
+  -- Most Plugins Should Probably Be Lazy Loaded
+
+  -- Floaterm - Used For Simple Method To Integrate Tig & Terminal Features 
+  {
+    "voldikss/vim-floaterm",
+    lazy = false,
+  },
 
   -- Save/Load Sessions
   {

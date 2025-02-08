@@ -20,10 +20,9 @@ dofile(vim.g.base46_cache .. "defaults")
 vim.opt.rtp:prepend(lazypath)
 require "plugins"
 
--- ### Custom Config ### ---
-
+-- ### Custom Config - Mappings Done In Custom Mappings ### ---
 -- Experiment with dvorak for now --
---vim.opt.keymap = 'dvorak'
+-- vim.opt.keymap = 'dvorak'
 
 vim.cmd('autocmd BufRead,BufNewFile *.hbs set filetype=javascript')
 vim.cmd('autocmd BufRead,BufNewFile *.html set filetype=javascript')
@@ -42,6 +41,9 @@ vim.keymap.set('n', '<leader>yc', function() vim.fn.setreg("+", vim.fn.expand("%
 local global_note = require("global-note")
 global_note.setup()
 vim.keymap.set("n", "<leader>gn", global_note.toggle_note, { desc = "Global Notes", noremap = true })
+
+-- Setup Floating Terminal
+vim.keymap.set("n", "<leader>nt", ":FloatermNew<CR>", { desc = "Floating Terminal" })
 
 --
 -- ## Telescope
@@ -268,6 +270,47 @@ telescope.setup({
 })
 
 
+--
+-- ## Tig Imitation With Telescope (I'm thinking I could use this example I copied for another git functionality)
+-- NOTE: For now I think I'm just going to use a floating term
+--
+--local tig_status = function()
+--  require("telescope.pickers")
+--    .new({
+--      finder = require("telescope.finders").new_oneshot_job({ "git", "jump", "--stdout", "diff" }, {
+--        entry_maker = function(line)
+--          local filename, lnum_string = line:match("([^:]+):(%d+).*")
+--
+--          -- I couldn't find a way to use grep in new_oneshot_job so we have to filter here.
+--          -- return nil if filename is /dev/null because this means the file was deleted.
+--          if filename:match("^/dev/null") then
+--            return nil
+--          end
+--
+--          return {
+--            value = filename,
+--            display = line,
+--            ordinal = line,
+--            filename = filename,
+--            lnum = tonumber(lnum_string),
+--          }
+--        end,
+--      }),
+--      sorter = require("telescope.sorters").get_generic_fuzzy_sorter(),
+--      previewer = require("telescope.config").values.grep_previewer({}),
+--      results_title = "Git hunks",
+--      prompt_title = "Git hunks",
+--      --layout_strategy = "flex",
+--    }, {})
+--    :find()
+--end
+--
+vim.keymap.set("n", "<Leader>ts", ":FloatermNew ssh justin@bos-webdev1<CR>", { desc = "Tig Status" })
+
+--
+-- ## Grep In Background Process (Custom)
+--
+
 --Updates
 -- I'm probably going to have re-write my own Printer type classs
 -- I'm not sure how I'm going to deal with the fact the search_worker requires a term color implemented class
@@ -361,6 +404,7 @@ local open_results = function()
 end
 vim.keymap.set('n', '<leader>fr', open_results, { desc = "Grep Background", noremap = true, silent = true })
 
+--
 -- ## LSP - (Two PHP LSP's for combined features e.g. completion snippets and deprecation messages)
 --
 local lspconfig = require('lspconfig')
@@ -462,7 +506,9 @@ lspconfig.clangd.setup({
 --Set Rust Analyze
 lspconfig.rust_analyzer.setup({})
 
--- Dap (Setup in Plugins & Loaded With PHP Debugger Adapter Here)
+--
+-- ## Dap (Setup in Plugins & Loaded With PHP Debugger Adapter Here)
+--
 local getPathMap = function() -- Get current path & convert to PathMap (Current path without first 3 /home/jramos/devSys)
     local skipped = 0
     local pathMap = ''
@@ -586,7 +632,11 @@ vim.keymap.set('n', '<F6>', function() require('dap').close() end)
 vim.keymap.set('n', '<F9>', function() require('dap').run_to_cursor() end)
 vim.keymap.set('n', '<F10>', function() require('dap').toggle_breakpoint() end)
 
--- Rust Testing
+
+--
+-- ## Rust Grep Search Server (Testing)
+--
+
 --./rust/search-history/target/debug/search-history
 
 -- RPC Messages
@@ -616,6 +666,7 @@ local rgArgs = {
     "--glob=!wordpress/wp-content/plugins/*",
     "--glob=!migrations/*/seeds/*",
 }
+--Look to lazy load and make it only start after first <leader>rg call then stay alive
 --local searchHistoryJobId = vim.fn.jobstart({ rgExe, unpack(rgArgs) }, {
 --    rpc = true,
 --    on_exit = debugFn,
