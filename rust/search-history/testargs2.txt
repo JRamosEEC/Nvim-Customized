@@ -1,0 +1,2557 @@
+HiArgs {
+    binary: BinaryDetection {
+        explicit: BinaryDetection(
+            Convert(
+                0,
+            ),
+        ),
+        implicit: BinaryDetection(
+            Quit(
+                0,
+            ),
+        ),
+    },
+    boundary: None,
+    buffer: Auto,
+    byte_offset: false,
+    case: Smart,
+    color: Never,
+    colors: ColorSpecs {
+        path: ColorSpec {
+            fg_color: Some(
+                Magenta,
+            ),
+            bg_color: None,
+            bold: false,
+            intense: false,
+            underline: false,
+            dimmed: false,
+            italic: false,
+            reset: true,
+            strikethrough: false,
+        },
+        line: ColorSpec {
+            fg_color: Some(
+                Green,
+            ),
+            bg_color: None,
+            bold: false,
+            intense: false,
+            underline: false,
+            dimmed: false,
+            italic: false,
+            reset: true,
+            strikethrough: false,
+        },
+        column: ColorSpec {
+            fg_color: None,
+            bg_color: None,
+            bold: false,
+            intense: false,
+            underline: false,
+            dimmed: false,
+            italic: false,
+            reset: true,
+            strikethrough: false,
+        },
+        matched: ColorSpec {
+            fg_color: Some(
+                Red,
+            ),
+            bg_color: None,
+            bold: true,
+            intense: false,
+            underline: false,
+            dimmed: false,
+            italic: false,
+            reset: true,
+            strikethrough: false,
+        },
+    },
+    column: true,
+    context: Limited(
+        ContextModeLimited {
+            before: None,
+            after: None,
+            both: None,
+        },
+    ),
+    context_separator: ContextSeparator(
+        Some(
+            "--",
+        ),
+    ),
+    crlf: false,
+    dfa_size_limit: None,
+    encoding: Auto,
+    engine: Default,
+    field_context_separator: FieldContextSeparator(
+        "-",
+    ),
+    field_match_separator: FieldMatchSeparator(
+        ":",
+    ),
+    file_separator: None,
+    fixed_strings: false,
+    follow: false,
+    globs: Override(
+        Gitignore {
+            set: GlobSet {
+                len: 1,
+                strats: [
+                    Extension(
+                        ExtensionStrategy(
+                            {},
+                        ),
+                    ),
+                    BasenameLiteral(
+                        BasenameLiteralStrategy(
+                            {},
+                        ),
+                    ),
+                    Literal(
+                        LiteralStrategy(
+                            {},
+                        ),
+                    ),
+                    Suffix(
+                        SuffixStrategy {
+                            matcher: AhoCorasick(
+                                dfa::DFA(
+                                D 000000: \x00 => 0
+                                F 000001:
+                                 >000002: \x00 => 2
+                                  000003: \x00 => 0
+                                match kind: Standard
+                                prefilter: false
+                                state length: 4
+                                pattern length: 0
+                                shortest pattern length: 18446744073709551615
+                                longest pattern length: 0
+                                alphabet length: 1
+                                stride: 1
+                                byte classes: ByteClasses(0 => [0-255])
+                                memory usage: 16
+                                )
+                                ,
+                            ),
+                            map: [],
+                            longest: 0,
+                        },
+                    ),
+                    Prefix(
+                        PrefixStrategy {
+                            matcher: AhoCorasick(
+                                dfa::DFA(
+                                D 000000: \x00 => 0
+                                F 000001:
+                                 >000002: \x00 => 2
+                                  000003: \x00 => 0
+                                match kind: Standard
+                                prefilter: false
+                                state length: 4
+                                pattern length: 0
+                                shortest pattern length: 18446744073709551615
+                                longest pattern length: 0
+                                alphabet length: 1
+                                stride: 1
+                                byte classes: ByteClasses(0 => [0-255])
+                                memory usage: 16
+                                )
+                                ,
+                            ),
+                            map: [],
+                            longest: 0,
+                        },
+                    ),
+                    RequiredExtension(
+                        RequiredExtensionStrategy(
+                            {},
+                        ),
+                    ),
+                    Regex(
+                        RegexSetStrategy {
+                            matcher: Regex {
+                                imp: RegexI {
+                                    strat: Core {
+                                        info: RegexInfo(
+                                            RegexInfoI {
+                                                config: Config {
+                                                    match_kind: Some(
+                                                        All,
+                                                    ),
+                                                    utf8_empty: Some(
+                                                        false,
+                                                    ),
+                                                    autopre: None,
+                                                    pre: None,
+                                                    which_captures: None,
+                                                    nfa_size_limit: Some(
+                                                        Some(
+                                                            10485760,
+                                                        ),
+                                                    ),
+                                                    onepass_size_limit: None,
+                                                    hybrid_cache_capacity: Some(
+                                                        10485760,
+                                                    ),
+                                                    hybrid: None,
+                                                    dfa: None,
+                                                    dfa_size_limit: None,
+                                                    dfa_state_limit: None,
+                                                    onepass: None,
+                                                    backtrack: None,
+                                                    byte_classes: None,
+                                                    line_terminator: None,
+                                                },
+                                                props: [
+                                                    Properties(
+                                                        PropertiesI {
+                                                            minimum_len: Some(
+                                                                22,
+                                                            ),
+                                                            maximum_len: None,
+                                                            look_set: Az,
+                                                            look_set_prefix: A,
+                                                            look_set_suffix: z,
+                                                            look_set_prefix_any: A,
+                                                            look_set_suffix_any: z,
+                                                            utf8: false,
+                                                            explicit_captures_len: 0,
+                                                            static_explicit_captures_len: Some(
+                                                                0,
+                                                            ),
+                                                            literal: false,
+                                                            alternation_literal: false,
+                                                        },
+                                                    ),
+                                                ],
+                                                props_union: Properties(
+                                                    PropertiesI {
+                                                        minimum_len: Some(
+                                                            22,
+                                                        ),
+                                                        maximum_len: None,
+                                                        look_set: Az,
+                                                        look_set_prefix: A,
+                                                        look_set_suffix: z,
+                                                        look_set_prefix_any: A,
+                                                        look_set_suffix_any: z,
+                                                        utf8: false,
+                                                        explicit_captures_len: 0,
+                                                        static_explicit_captures_len: Some(
+                                                            0,
+                                                        ),
+                                                        literal: false,
+                                                        alternation_literal: false,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        pre: None,
+                                        nfa: thompson::NFA(
+                                        ^000000: capture(pid=0, group=0, slot=0) => 1
+                                         000001: Start => 2
+                                         000002: w => 3
+                                         000003: o => 4
+                                         000004: r => 5
+                                         000005: d => 6
+                                         000006: p => 7
+                                         000007: r => 8
+                                         000008: e => 9
+                                         000009: s => 10
+                                         000010: s => 11
+                                         000011: / => 12
+                                         000012: w => 13
+                                         000013: p => 14
+                                         000014: - => 15
+                                         000015: i => 16
+                                         000016: n => 17
+                                         000017: c => 18
+                                         000018: l => 19
+                                         000019: u => 20
+                                         000020: d => 21
+                                         000021: e => 22
+                                         000022: s => 23
+                                         000023: / => 24
+                                         000024: binary-union(25, 26)
+                                         000025: sparse(\x00-. => 24, 0-\xFF => 24)
+                                         000026: End => 27
+                                         000027: capture(pid=0, group=0, slot=1) => 28
+                                         000028: MATCH(0)
+                                        
+                                        transition equivalence classes: ByteClasses(0 => [\x00-,], 1 => [-], 2 => [.], 3 => [/], 4 => [0-b], 5 => [c], 6 => [d], 7 => [e], 8 => [f-h], 9 => [i], 10 => [j-k], 11 => [l], 12 => [m], 13 => [n], 14 => [o], 15 => [p], 16 => [q], 17 => [r], 18 => [s], 19 => [t], 20 => [u], 21 => [v], 22 => [w], 23 => [x-\xFF], 24 => [EOI])
+                                        )
+                                        ,
+                                        nfarev: Some(
+                                            thompson::NFA(
+                                            ^000000: Start => 1
+                                             000001: binary-union(2, 3)
+                                             000002: sparse(\x00-. => 1, 0-\xFF => 1)
+                                             000003: / => 4
+                                             000004: s => 5
+                                             000005: e => 6
+                                             000006: d => 7
+                                             000007: u => 8
+                                             000008: l => 9
+                                             000009: c => 10
+                                             000010: n => 11
+                                             000011: i => 12
+                                             000012: - => 13
+                                             000013: p => 14
+                                             000014: w => 15
+                                             000015: / => 16
+                                             000016: s => 17
+                                             000017: s => 18
+                                             000018: e => 19
+                                             000019: r => 20
+                                             000020: p => 21
+                                             000021: d => 22
+                                             000022: r => 23
+                                             000023: o => 24
+                                             000024: w => 25
+                                             000025: End => 26
+                                             000026: MATCH(0)
+                                            
+                                            transition equivalence classes: ByteClasses(0 => [\x00-,], 1 => [-], 2 => [.], 3 => [/], 4 => [0-b], 5 => [c], 6 => [d], 7 => [e], 8 => [f-h], 9 => [i], 10 => [j-k], 11 => [l], 12 => [m], 13 => [n], 14 => [o], 15 => [p], 16 => [q], 17 => [r], 18 => [s], 19 => [t], 20 => [u], 21 => [v], 22 => [w], 23 => [x-\xFF], 24 => [EOI])
+                                            )
+                                            ,
+                                        ),
+                                        pikevm: PikeVM(
+                                            PikeVMEngine(
+                                                PikeVM {
+                                                    config: Config {
+                                                        match_kind: Some(
+                                                            All,
+                                                        ),
+                                                        pre: Some(
+                                                            None,
+                                                        ),
+                                                    },
+                                                    nfa: thompson::NFA(
+                                                    ^000000: capture(pid=0, group=0, slot=0) => 1
+                                                     000001: Start => 2
+                                                     000002: w => 3
+                                                     000003: o => 4
+                                                     000004: r => 5
+                                                     000005: d => 6
+                                                     000006: p => 7
+                                                     000007: r => 8
+                                                     000008: e => 9
+                                                     000009: s => 10
+                                                     000010: s => 11
+                                                     000011: / => 12
+                                                     000012: w => 13
+                                                     000013: p => 14
+                                                     000014: - => 15
+                                                     000015: i => 16
+                                                     000016: n => 17
+                                                     000017: c => 18
+                                                     000018: l => 19
+                                                     000019: u => 20
+                                                     000020: d => 21
+                                                     000021: e => 22
+                                                     000022: s => 23
+                                                     000023: / => 24
+                                                     000024: binary-union(25, 26)
+                                                     000025: sparse(\x00-. => 24, 0-\xFF => 24)
+                                                     000026: End => 27
+                                                     000027: capture(pid=0, group=0, slot=1) => 28
+                                                     000028: MATCH(0)
+                                                    
+                                                    transition equivalence classes: ByteClasses(0 => [\x00-,], 1 => [-], 2 => [.], 3 => [/], 4 => [0-b], 5 => [c], 6 => [d], 7 => [e], 8 => [f-h], 9 => [i], 10 => [j-k], 11 => [l], 12 => [m], 13 => [n], 14 => [o], 15 => [p], 16 => [q], 17 => [r], 18 => [s], 19 => [t], 20 => [u], 21 => [v], 22 => [w], 23 => [x-\xFF], 24 => [EOI])
+                                                    )
+                                                    ,
+                                                },
+                                            ),
+                                        ),
+                                        backtrack: BoundedBacktracker(
+                                            None,
+                                        ),
+                                        onepass: OnePass(
+                                            None,
+                                        ),
+                                        hybrid: Hybrid(
+                                            None,
+                                        ),
+                                        dfa: DFA(
+                                            Some(
+                                                DFAEngine(
+                                                    Regex {
+                                                        forward: dense::DFA(
+                                                        D 000000: 
+                                                        Q 000032: 
+                                                         *000064: 
+                                                        A 000096: \x00-\x02 => 96, \x04-\x17 => 96, EOI => 64
+                                                          000128: 
+                                                          000160: \x16 => 832
+                                                          000192: \x06 => 224
+                                                          000224: \x0F => 256
+                                                          000256: \x11 => 288
+                                                          000288: \x07 => 320
+                                                          000320: \x12 => 352
+                                                          000352: \x12 => 384
+                                                          000384: \x03 => 416
+                                                          000416: \x16 => 448
+                                                          000448: \x0F => 480
+                                                          000480: \x01 => 512
+                                                          000512: \t => 544
+                                                          000544: \r => 576
+                                                          000576: \x05 => 608
+                                                          000608: \x0B => 640
+                                                          000640: \x14 => 672
+                                                          000672: \x06 => 704
+                                                          000704: \x07 => 736
+                                                          000736: \x12 => 768
+                                                          000768: \x03 => 96
+                                                          000800: \x11 => 192
+                                                          000832: \x0E => 800
+                                                        
+                                                        START-GROUP(unanchored)
+                                                          NonWordByte => 000128
+                                                          WordByte => 000128
+                                                          Text => 000160
+                                                          LineLF => 000128
+                                                          LineCR => 000128
+                                                          CustomLineTerminator => 000128
+                                                        START-GROUP(anchored)
+                                                          NonWordByte => 000128
+                                                          WordByte => 000128
+                                                          Text => 000160
+                                                          LineLF => 000128
+                                                          LineCR => 000128
+                                                          CustomLineTerminator => 000128
+                                                        START_GROUP(pattern: PatternID(0))
+                                                          NonWordByte => 000128
+                                                          WordByte => 000128
+                                                          Text => 000160
+                                                          LineLF => 000128
+                                                          LineCR => 000128
+                                                          CustomLineTerminator => 000128
+                                                        state length: 27
+                                                        pattern length: 1
+                                                        flags: Flags { has_empty: false, is_utf8: false, is_always_start_anchored: true }
+                                                        )
+                                                        ,
+                                                        reverse: dense::DFA(
+                                                        D 000000: 
+                                                        Q 000032: 
+                                                         *000064: 
+                                                        A 000096: \x00-\x02 => 96, \x03 => 864, \x04-\x17 => 96
+                                                          000128: 
+                                                          000160: \x00-\x02 => 96, \x03 => 864, \x04-\x17 => 96
+                                                          000192: \x07 => 224
+                                                          000224: \x06 => 256
+                                                          000256: \x14 => 288
+                                                          000288: \x0B => 320
+                                                          000320: \x05 => 352
+                                                          000352: \r => 384
+                                                          000384: \t => 416
+                                                          000416: \x01 => 448
+                                                          000448: \x0F => 480
+                                                          000480: \x16 => 512
+                                                          000512: \x03 => 544
+                                                          000544: \x12 => 576
+                                                          000576: \x12 => 608
+                                                          000608: \x07 => 640
+                                                          000640: \x11 => 672
+                                                          000672: \x0F => 704
+                                                          000704: \x06 => 736
+                                                          000736: \x11 => 768
+                                                          000768: \x0E => 800
+                                                          000800: \x16 => 832
+                                                          000832: EOI => 64
+                                                          000864: \x12 => 192
+                                                        
+                                                        START-GROUP(unanchored)
+                                                          NonWordByte => 000000
+                                                          WordByte => 000000
+                                                          Text => 000000
+                                                          LineLF => 000000
+                                                          LineCR => 000000
+                                                          CustomLineTerminator => 000000
+                                                        START-GROUP(anchored)
+                                                          NonWordByte => 000128
+                                                          WordByte => 000128
+                                                          Text => 000160
+                                                          LineLF => 000128
+                                                          LineCR => 000128
+                                                          CustomLineTerminator => 000128
+                                                        START_GROUP(pattern: PatternID(0))
+                                                          NonWordByte => 000128
+                                                          WordByte => 000128
+                                                          Text => 000160
+                                                          LineLF => 000128
+                                                          LineCR => 000128
+                                                          CustomLineTerminator => 000128
+                                                        state length: 28
+                                                        pattern length: 1
+                                                        flags: Flags { has_empty: false, is_utf8: false, is_always_start_anchored: true }
+                                                        )
+                                                        ,
+                                                    },
+                                                ),
+                                            ),
+                                        ),
+                                    },
+                                    info: RegexInfo(
+                                        RegexInfoI {
+                                            config: Config {
+                                                match_kind: Some(
+                                                    All,
+                                                ),
+                                                utf8_empty: Some(
+                                                    false,
+                                                ),
+                                                autopre: None,
+                                                pre: None,
+                                                which_captures: None,
+                                                nfa_size_limit: Some(
+                                                    Some(
+                                                        10485760,
+                                                    ),
+                                                ),
+                                                onepass_size_limit: None,
+                                                hybrid_cache_capacity: Some(
+                                                    10485760,
+                                                ),
+                                                hybrid: None,
+                                                dfa: None,
+                                                dfa_size_limit: None,
+                                                dfa_state_limit: None,
+                                                onepass: None,
+                                                backtrack: None,
+                                                byte_classes: None,
+                                                line_terminator: None,
+                                            },
+                                            props: [
+                                                Properties(
+                                                    PropertiesI {
+                                                        minimum_len: Some(
+                                                            22,
+                                                        ),
+                                                        maximum_len: None,
+                                                        look_set: Az,
+                                                        look_set_prefix: A,
+                                                        look_set_suffix: z,
+                                                        look_set_prefix_any: A,
+                                                        look_set_suffix_any: z,
+                                                        utf8: false,
+                                                        explicit_captures_len: 0,
+                                                        static_explicit_captures_len: Some(
+                                                            0,
+                                                        ),
+                                                        literal: false,
+                                                        alternation_literal: false,
+                                                    },
+                                                ),
+                                            ],
+                                            props_union: Properties(
+                                                PropertiesI {
+                                                    minimum_len: Some(
+                                                        22,
+                                                    ),
+                                                    maximum_len: None,
+                                                    look_set: Az,
+                                                    look_set_prefix: A,
+                                                    look_set_suffix: z,
+                                                    look_set_prefix_any: A,
+                                                    look_set_suffix_any: z,
+                                                    utf8: false,
+                                                    explicit_captures_len: 0,
+                                                    static_explicit_captures_len: Some(
+                                                        0,
+                                                    ),
+                                                    literal: false,
+                                                    alternation_literal: false,
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                },
+                                pool: Pool(
+                                    Pool {
+                                        stacks: [
+                                            CacheLine(
+                                                Mutex {
+                                                    data: [],
+                                                    poisoned: false,
+                                                    ..
+                                                },
+                                            ),
+                                            CacheLine(
+                                                Mutex {
+                                                    data: [],
+                                                    poisoned: false,
+                                                    ..
+                                                },
+                                            ),
+                                            CacheLine(
+                                                Mutex {
+                                                    data: [],
+                                                    poisoned: false,
+                                                    ..
+                                                },
+                                            ),
+                                            CacheLine(
+                                                Mutex {
+                                                    data: [],
+                                                    poisoned: false,
+                                                    ..
+                                                },
+                                            ),
+                                            CacheLine(
+                                                Mutex {
+                                                    data: [],
+                                                    poisoned: false,
+                                                    ..
+                                                },
+                                            ),
+                                            CacheLine(
+                                                Mutex {
+                                                    data: [],
+                                                    poisoned: false,
+                                                    ..
+                                                },
+                                            ),
+                                            CacheLine(
+                                                Mutex {
+                                                    data: [],
+                                                    poisoned: false,
+                                                    ..
+                                                },
+                                            ),
+                                            CacheLine(
+                                                Mutex {
+                                                    data: [],
+                                                    poisoned: false,
+                                                    ..
+                                                },
+                                            ),
+                                        ],
+                                        owner: 0,
+                                        owner_val: UnsafeCell { .. },
+                                    },
+                                ),
+                            },
+                            map: [
+                                0,
+                            ],
+                            patset: Pool(
+                                Pool {
+                                    stacks: [
+                                        CacheLine(
+                                            Mutex {
+                                                data: [],
+                                                poisoned: false,
+                                                ..
+                                            },
+                                        ),
+                                        CacheLine(
+                                            Mutex {
+                                                data: [],
+                                                poisoned: false,
+                                                ..
+                                            },
+                                        ),
+                                        CacheLine(
+                                            Mutex {
+                                                data: [],
+                                                poisoned: false,
+                                                ..
+                                            },
+                                        ),
+                                        CacheLine(
+                                            Mutex {
+                                                data: [],
+                                                poisoned: false,
+                                                ..
+                                            },
+                                        ),
+                                        CacheLine(
+                                            Mutex {
+                                                data: [],
+                                                poisoned: false,
+                                                ..
+                                            },
+                                        ),
+                                        CacheLine(
+                                            Mutex {
+                                                data: [],
+                                                poisoned: false,
+                                                ..
+                                            },
+                                        ),
+                                        CacheLine(
+                                            Mutex {
+                                                data: [],
+                                                poisoned: false,
+                                                ..
+                                            },
+                                        ),
+                                        CacheLine(
+                                            Mutex {
+                                                data: [],
+                                                poisoned: false,
+                                                ..
+                                            },
+                                        ),
+                                    ],
+                                    owner: 0,
+                                    owner_val: UnsafeCell { .. },
+                                },
+                            ),
+                        },
+                    ),
+                ],
+            },
+            root: "/home/jramos/.config/nvim/rust/search-history",
+            globs: [
+                Glob {
+                    from: None,
+                    original: "!wordpress/wp-includes/*",
+                    actual: "wordpress/wp-includes/*",
+                    is_whitelist: true,
+                    is_only_dir: false,
+                },
+            ],
+            num_ignores: 0,
+            num_whitelists: 1,
+            matches: Some(
+                Pool(
+                    Pool {
+                        stacks: [
+                            CacheLine(
+                                Mutex {
+                                    data: [],
+                                    poisoned: false,
+                                    ..
+                                },
+                            ),
+                            CacheLine(
+                                Mutex {
+                                    data: [],
+                                    poisoned: false,
+                                    ..
+                                },
+                            ),
+                            CacheLine(
+                                Mutex {
+                                    data: [],
+                                    poisoned: false,
+                                    ..
+                                },
+                            ),
+                            CacheLine(
+                                Mutex {
+                                    data: [],
+                                    poisoned: false,
+                                    ..
+                                },
+                            ),
+                            CacheLine(
+                                Mutex {
+                                    data: [],
+                                    poisoned: false,
+                                    ..
+                                },
+                            ),
+                            CacheLine(
+                                Mutex {
+                                    data: [],
+                                    poisoned: false,
+                                    ..
+                                },
+                            ),
+                            CacheLine(
+                                Mutex {
+                                    data: [],
+                                    poisoned: false,
+                                    ..
+                                },
+                            ),
+                            CacheLine(
+                                Mutex {
+                                    data: [],
+                                    poisoned: false,
+                                    ..
+                                },
+                            ),
+                        ],
+                        owner: 0,
+                        owner_val: UnsafeCell { .. },
+                    },
+                ),
+            ),
+        },
+    ),
+    heading: false,
+    hidden: true,
+    hyperlink_config: HyperlinkConfig(
+        HyperlinkConfigInner {
+            env: HyperlinkEnvironment {
+                host: Some(
+                    "ArchBTW",
+                ),
+                wsl_prefix: None,
+            },
+            format: HyperlinkFormat {
+                parts: [],
+                is_line_dependent: false,
+            },
+        },
+    ),
+    ignore_file_case_insensitive: false,
+    ignore_file: [],
+    include_zero: false,
+    invert_match: false,
+    is_terminal_stdout: false,
+    line_number: true,
+    max_columns: None,
+    max_columns_preview: false,
+    max_count: None,
+    max_depth: None,
+    max_filesize: Some(
+        302080,
+    ),
+    mmap_choice: MmapChoice(
+        Never,
+    ),
+    mode: Search(
+        Standard,
+    ),
+    multiline: false,
+    multiline_dotall: false,
+    no_ignore_dot: true,
+    no_ignore_exclude: true,
+    no_ignore_files: false,
+    no_ignore_global: true,
+    no_ignore_parent: true,
+    no_ignore_vcs: true,
+    no_require_git: false,
+    no_unicode: false,
+    null_data: false,
+    one_file_system: false,
+    only_matching: true,
+    path_separator: None,
+    paths: Paths {
+        paths: [
+            "./",
+        ],
+        has_implicit_path: false,
+        is_one_file: false,
+    },
+    path_terminator: None,
+    patterns: Patterns {
+        patterns: [
+            "test",
+        ],
+    },
+    pre: None,
+    pre_globs: Override(
+        Gitignore {
+            set: GlobSet {
+                len: 0,
+                strats: [],
+            },
+            root: "",
+            globs: [],
+            num_ignores: 0,
+            num_whitelists: 0,
+            matches: None,
+        },
+    ),
+    quiet: false,
+    quit_after_match: false,
+    regex_size_limit: None,
+    replace: None,
+    search_zip: false,
+    sort: None,
+    stats: None,
+    stop_on_nonmatch: false,
+    threads: 12,
+    trim: false,
+    types: Types {
+        defs: [
+            FileTypeDef {
+                name: "ada",
+                globs: [
+                    "*.adb",
+                    "*.ads",
+                ],
+            },
+            FileTypeDef {
+                name: "agda",
+                globs: [
+                    "*.agda",
+                    "*.lagda",
+                ],
+            },
+            FileTypeDef {
+                name: "aidl",
+                globs: [
+                    "*.aidl",
+                ],
+            },
+            FileTypeDef {
+                name: "alire",
+                globs: [
+                    "alire.toml",
+                ],
+            },
+            FileTypeDef {
+                name: "amake",
+                globs: [
+                    "*.bp",
+                    "*.mk",
+                ],
+            },
+            FileTypeDef {
+                name: "asciidoc",
+                globs: [
+                    "*.adoc",
+                    "*.asc",
+                    "*.asciidoc",
+                ],
+            },
+            FileTypeDef {
+                name: "asm",
+                globs: [
+                    "*.S",
+                    "*.asm",
+                    "*.s",
+                ],
+            },
+            FileTypeDef {
+                name: "asp",
+                globs: [
+                    "*.ascx",
+                    "*.ascx.cs",
+                    "*.ascx.vb",
+                    "*.asp",
+                    "*.aspx",
+                    "*.aspx.cs",
+                    "*.aspx.vb",
+                ],
+            },
+            FileTypeDef {
+                name: "ats",
+                globs: [
+                    "*.ats",
+                    "*.dats",
+                    "*.hats",
+                    "*.sats",
+                ],
+            },
+            FileTypeDef {
+                name: "avro",
+                globs: [
+                    "*.avdl",
+                    "*.avpr",
+                    "*.avsc",
+                ],
+            },
+            FileTypeDef {
+                name: "awk",
+                globs: [
+                    "*.awk",
+                ],
+            },
+            FileTypeDef {
+                name: "bat",
+                globs: [
+                    "*.bat",
+                ],
+            },
+            FileTypeDef {
+                name: "batch",
+                globs: [
+                    "*.bat",
+                ],
+            },
+            FileTypeDef {
+                name: "bazel",
+                globs: [
+                    "*.BUILD",
+                    "*.bazel",
+                    "*.bazelrc",
+                    "*.bzl",
+                    "BUILD",
+                    "MODULE.bazel",
+                    "WORKSPACE",
+                    "WORKSPACE.bazel",
+                ],
+            },
+            FileTypeDef {
+                name: "bitbake",
+                globs: [
+                    "*.bb",
+                    "*.bbappend",
+                    "*.bbclass",
+                    "*.conf",
+                    "*.inc",
+                ],
+            },
+            FileTypeDef {
+                name: "brotli",
+                globs: [
+                    "*.br",
+                ],
+            },
+            FileTypeDef {
+                name: "buildstream",
+                globs: [
+                    "*.bst",
+                ],
+            },
+            FileTypeDef {
+                name: "bzip2",
+                globs: [
+                    "*.bz2",
+                    "*.tbz2",
+                ],
+            },
+            FileTypeDef {
+                name: "c",
+                globs: [
+                    "*.[chH]",
+                    "*.[chH].in",
+                    "*.cats",
+                ],
+            },
+            FileTypeDef {
+                name: "cabal",
+                globs: [
+                    "*.cabal",
+                ],
+            },
+            FileTypeDef {
+                name: "candid",
+                globs: [
+                    "*.did",
+                ],
+            },
+            FileTypeDef {
+                name: "carp",
+                globs: [
+                    "*.carp",
+                ],
+            },
+            FileTypeDef {
+                name: "cbor",
+                globs: [
+                    "*.cbor",
+                ],
+            },
+            FileTypeDef {
+                name: "ceylon",
+                globs: [
+                    "*.ceylon",
+                ],
+            },
+            FileTypeDef {
+                name: "clojure",
+                globs: [
+                    "*.clj",
+                    "*.cljc",
+                    "*.cljs",
+                    "*.cljx",
+                ],
+            },
+            FileTypeDef {
+                name: "cmake",
+                globs: [
+                    "*.cmake",
+                    "CMakeLists.txt",
+                ],
+            },
+            FileTypeDef {
+                name: "cmd",
+                globs: [
+                    "*.bat",
+                    "*.cmd",
+                ],
+            },
+            FileTypeDef {
+                name: "cml",
+                globs: [
+                    "*.cml",
+                ],
+            },
+            FileTypeDef {
+                name: "coffeescript",
+                globs: [
+                    "*.coffee",
+                ],
+            },
+            FileTypeDef {
+                name: "config",
+                globs: [
+                    "*.cfg",
+                    "*.conf",
+                    "*.config",
+                    "*.ini",
+                ],
+            },
+            FileTypeDef {
+                name: "coq",
+                globs: [
+                    "*.v",
+                ],
+            },
+            FileTypeDef {
+                name: "cpp",
+                globs: [
+                    "*.[ChH]",
+                    "*.[ChH].in",
+                    "*.[ch]pp",
+                    "*.[ch]pp.in",
+                    "*.[ch]xx",
+                    "*.[ch]xx.in",
+                    "*.cc",
+                    "*.cc.in",
+                    "*.hh",
+                    "*.hh.in",
+                    "*.inl",
+                ],
+            },
+            FileTypeDef {
+                name: "creole",
+                globs: [
+                    "*.creole",
+                ],
+            },
+            FileTypeDef {
+                name: "crystal",
+                globs: [
+                    "*.cr",
+                    "*.ecr",
+                    "Projectfile",
+                    "shard.yml",
+                ],
+            },
+            FileTypeDef {
+                name: "cs",
+                globs: [
+                    "*.cs",
+                ],
+            },
+            FileTypeDef {
+                name: "csharp",
+                globs: [
+                    "*.cs",
+                ],
+            },
+            FileTypeDef {
+                name: "cshtml",
+                globs: [
+                    "*.cshtml",
+                ],
+            },
+            FileTypeDef {
+                name: "csproj",
+                globs: [
+                    "*.csproj",
+                ],
+            },
+            FileTypeDef {
+                name: "css",
+                globs: [
+                    "*.css",
+                    "*.scss",
+                ],
+            },
+            FileTypeDef {
+                name: "csv",
+                globs: [
+                    "*.csv",
+                ],
+            },
+            FileTypeDef {
+                name: "cuda",
+                globs: [
+                    "*.cu",
+                    "*.cuh",
+                ],
+            },
+            FileTypeDef {
+                name: "cython",
+                globs: [
+                    "*.pxd",
+                    "*.pxi",
+                    "*.pyx",
+                ],
+            },
+            FileTypeDef {
+                name: "d",
+                globs: [
+                    "*.d",
+                ],
+            },
+            FileTypeDef {
+                name: "dart",
+                globs: [
+                    "*.dart",
+                ],
+            },
+            FileTypeDef {
+                name: "devicetree",
+                globs: [
+                    "*.dts",
+                    "*.dtsi",
+                ],
+            },
+            FileTypeDef {
+                name: "dhall",
+                globs: [
+                    "*.dhall",
+                ],
+            },
+            FileTypeDef {
+                name: "diff",
+                globs: [
+                    "*.diff",
+                    "*.patch",
+                ],
+            },
+            FileTypeDef {
+                name: "dita",
+                globs: [
+                    "*.dita",
+                    "*.ditamap",
+                    "*.ditaval",
+                ],
+            },
+            FileTypeDef {
+                name: "docker",
+                globs: [
+                    "*Dockerfile*",
+                ],
+            },
+            FileTypeDef {
+                name: "dockercompose",
+                globs: [
+                    "docker-compose.*.yml",
+                    "docker-compose.yml",
+                ],
+            },
+            FileTypeDef {
+                name: "dts",
+                globs: [
+                    "*.dts",
+                    "*.dtsi",
+                ],
+            },
+            FileTypeDef {
+                name: "dvc",
+                globs: [
+                    "*.dvc",
+                    "Dvcfile",
+                ],
+            },
+            FileTypeDef {
+                name: "ebuild",
+                globs: [
+                    "*.ebuild",
+                    "*.eclass",
+                ],
+            },
+            FileTypeDef {
+                name: "edn",
+                globs: [
+                    "*.edn",
+                ],
+            },
+            FileTypeDef {
+                name: "elisp",
+                globs: [
+                    "*.el",
+                ],
+            },
+            FileTypeDef {
+                name: "elixir",
+                globs: [
+                    "*.eex",
+                    "*.ex",
+                    "*.exs",
+                    "*.heex",
+                    "*.leex",
+                    "*.livemd",
+                ],
+            },
+            FileTypeDef {
+                name: "elm",
+                globs: [
+                    "*.elm",
+                ],
+            },
+            FileTypeDef {
+                name: "erb",
+                globs: [
+                    "*.erb",
+                ],
+            },
+            FileTypeDef {
+                name: "erlang",
+                globs: [
+                    "*.erl",
+                    "*.hrl",
+                ],
+            },
+            FileTypeDef {
+                name: "fennel",
+                globs: [
+                    "*.fnl",
+                ],
+            },
+            FileTypeDef {
+                name: "fidl",
+                globs: [
+                    "*.fidl",
+                ],
+            },
+            FileTypeDef {
+                name: "fish",
+                globs: [
+                    "*.fish",
+                ],
+            },
+            FileTypeDef {
+                name: "flatbuffers",
+                globs: [
+                    "*.fbs",
+                ],
+            },
+            FileTypeDef {
+                name: "fortran",
+                globs: [
+                    "*.F",
+                    "*.F77",
+                    "*.F90",
+                    "*.F95",
+                    "*.f",
+                    "*.f77",
+                    "*.f90",
+                    "*.f95",
+                    "*.pfo",
+                ],
+            },
+            FileTypeDef {
+                name: "fsharp",
+                globs: [
+                    "*.fs",
+                    "*.fsi",
+                    "*.fsx",
+                ],
+            },
+            FileTypeDef {
+                name: "fut",
+                globs: [
+                    "*.fut",
+                ],
+            },
+            FileTypeDef {
+                name: "gap",
+                globs: [
+                    "*.g",
+                    "*.gap",
+                    "*.gd",
+                    "*.gi",
+                    "*.tst",
+                ],
+            },
+            FileTypeDef {
+                name: "gn",
+                globs: [
+                    "*.gn",
+                    "*.gni",
+                ],
+            },
+            FileTypeDef {
+                name: "go",
+                globs: [
+                    "*.go",
+                ],
+            },
+            FileTypeDef {
+                name: "gprbuild",
+                globs: [
+                    "*.gpr",
+                ],
+            },
+            FileTypeDef {
+                name: "gradle",
+                globs: [
+                    "*.gradle",
+                    "*.gradle.kts",
+                    "gradle-wrapper.*",
+                    "gradle.properties",
+                    "gradlew",
+                    "gradlew.bat",
+                ],
+            },
+            FileTypeDef {
+                name: "graphql",
+                globs: [
+                    "*.graphql",
+                    "*.graphqls",
+                ],
+            },
+            FileTypeDef {
+                name: "groovy",
+                globs: [
+                    "*.gradle",
+                    "*.groovy",
+                ],
+            },
+            FileTypeDef {
+                name: "gzip",
+                globs: [
+                    "*.gz",
+                    "*.tgz",
+                ],
+            },
+            FileTypeDef {
+                name: "h",
+                globs: [
+                    "*.h",
+                    "*.hh",
+                    "*.hpp",
+                ],
+            },
+            FileTypeDef {
+                name: "haml",
+                globs: [
+                    "*.haml",
+                ],
+            },
+            FileTypeDef {
+                name: "hare",
+                globs: [
+                    "*.ha",
+                ],
+            },
+            FileTypeDef {
+                name: "haskell",
+                globs: [
+                    "*.c2hs",
+                    "*.cpphs",
+                    "*.hs",
+                    "*.hsc",
+                    "*.lhs",
+                ],
+            },
+            FileTypeDef {
+                name: "hbs",
+                globs: [
+                    "*.hbs",
+                ],
+            },
+            FileTypeDef {
+                name: "hs",
+                globs: [
+                    "*.hs",
+                    "*.lhs",
+                ],
+            },
+            FileTypeDef {
+                name: "html",
+                globs: [
+                    "*.ejs",
+                    "*.htm",
+                    "*.html",
+                ],
+            },
+            FileTypeDef {
+                name: "hy",
+                globs: [
+                    "*.hy",
+                ],
+            },
+            FileTypeDef {
+                name: "idris",
+                globs: [
+                    "*.idr",
+                    "*.lidr",
+                ],
+            },
+            FileTypeDef {
+                name: "janet",
+                globs: [
+                    "*.janet",
+                ],
+            },
+            FileTypeDef {
+                name: "java",
+                globs: [
+                    "*.java",
+                    "*.jsp",
+                    "*.jspx",
+                    "*.properties",
+                ],
+            },
+            FileTypeDef {
+                name: "jinja",
+                globs: [
+                    "*.j2",
+                    "*.jinja",
+                    "*.jinja2",
+                ],
+            },
+            FileTypeDef {
+                name: "jl",
+                globs: [
+                    "*.jl",
+                ],
+            },
+            FileTypeDef {
+                name: "js",
+                globs: [
+                    "*.cjs",
+                    "*.js",
+                    "*.jsx",
+                    "*.mjs",
+                    "*.vue",
+                ],
+            },
+            FileTypeDef {
+                name: "json",
+                globs: [
+                    "*.json",
+                    "*.sarif",
+                    "composer.lock",
+                ],
+            },
+            FileTypeDef {
+                name: "jsonl",
+                globs: [
+                    "*.jsonl",
+                ],
+            },
+            FileTypeDef {
+                name: "julia",
+                globs: [
+                    "*.jl",
+                ],
+            },
+            FileTypeDef {
+                name: "jupyter",
+                globs: [
+                    "*.ipynb",
+                    "*.jpynb",
+                ],
+            },
+            FileTypeDef {
+                name: "k",
+                globs: [
+                    "*.k",
+                ],
+            },
+            FileTypeDef {
+                name: "kotlin",
+                globs: [
+                    "*.kt",
+                    "*.kts",
+                ],
+            },
+            FileTypeDef {
+                name: "lean",
+                globs: [
+                    "*.lean",
+                ],
+            },
+            FileTypeDef {
+                name: "less",
+                globs: [
+                    "*.less",
+                ],
+            },
+            FileTypeDef {
+                name: "license",
+                globs: [
+                    "*[.-]LICEN[CS]E*",
+                    "AGPL-*[0-9]*",
+                    "APACHE-*[0-9]*",
+                    "BSD-*[0-9]*",
+                    "CC-BY-*",
+                    "COPYING",
+                    "COPYING[.-]*",
+                    "COPYRIGHT",
+                    "COPYRIGHT[.-]*",
+                    "EULA",
+                    "EULA[.-]*",
+                    "GFDL-*[0-9]*",
+                    "GNU-*[0-9]*",
+                    "GPL-*[0-9]*",
+                    "LGPL-*[0-9]*",
+                    "LICEN[CS]E",
+                    "LICEN[CS]E[.-]*",
+                    "MIT-*[0-9]*",
+                    "MPL-*[0-9]*",
+                    "NOTICE",
+                    "NOTICE[.-]*",
+                    "OFL-*[0-9]*",
+                    "PATENTS",
+                    "PATENTS[.-]*",
+                    "UNLICEN[CS]E",
+                    "UNLICEN[CS]E[.-]*",
+                    "agpl[.-]*",
+                    "gpl[.-]*",
+                    "lgpl[.-]*",
+                    "licen[cs]e",
+                    "licen[cs]e.*",
+                ],
+            },
+            FileTypeDef {
+                name: "lilypond",
+                globs: [
+                    "*.ily",
+                    "*.ly",
+                ],
+            },
+            FileTypeDef {
+                name: "lisp",
+                globs: [
+                    "*.el",
+                    "*.jl",
+                    "*.lisp",
+                    "*.lsp",
+                    "*.sc",
+                    "*.scm",
+                ],
+            },
+            FileTypeDef {
+                name: "lock",
+                globs: [
+                    "*.lock",
+                    "package-lock.json",
+                ],
+            },
+            FileTypeDef {
+                name: "log",
+                globs: [
+                    "*.log",
+                ],
+            },
+            FileTypeDef {
+                name: "lua",
+                globs: [
+                    "*.lua",
+                ],
+            },
+            FileTypeDef {
+                name: "lz4",
+                globs: [
+                    "*.lz4",
+                ],
+            },
+            FileTypeDef {
+                name: "lzma",
+                globs: [
+                    "*.lzma",
+                ],
+            },
+            FileTypeDef {
+                name: "m4",
+                globs: [
+                    "*.ac",
+                    "*.m4",
+                ],
+            },
+            FileTypeDef {
+                name: "make",
+                globs: [
+                    "*.mak",
+                    "*.mk",
+                    "[Gg][Nn][Uu]makefile",
+                    "[Gg][Nn][Uu]makefile.am",
+                    "[Gg][Nn][Uu]makefile.in",
+                    "[Mm]akefile",
+                    "[Mm]akefile.am",
+                    "[Mm]akefile.in",
+                ],
+            },
+            FileTypeDef {
+                name: "mako",
+                globs: [
+                    "*.mako",
+                    "*.mao",
+                ],
+            },
+            FileTypeDef {
+                name: "man",
+                globs: [
+                    "*.[0-9][cEFMmpSx]",
+                    "*.[0-9lnpx]",
+                ],
+            },
+            FileTypeDef {
+                name: "markdown",
+                globs: [
+                    "*.markdown",
+                    "*.md",
+                    "*.mdown",
+                    "*.mdwn",
+                    "*.mdx",
+                    "*.mkd",
+                    "*.mkdn",
+                ],
+            },
+            FileTypeDef {
+                name: "matlab",
+                globs: [
+                    "*.m",
+                ],
+            },
+            FileTypeDef {
+                name: "md",
+                globs: [
+                    "*.markdown",
+                    "*.md",
+                    "*.mdown",
+                    "*.mdwn",
+                    "*.mdx",
+                    "*.mkd",
+                    "*.mkdn",
+                ],
+            },
+            FileTypeDef {
+                name: "meson",
+                globs: [
+                    "meson.build",
+                    "meson.options",
+                    "meson_options.txt",
+                ],
+            },
+            FileTypeDef {
+                name: "minified",
+                globs: [
+                    "*.min.css",
+                    "*.min.html",
+                    "*.min.js",
+                ],
+            },
+            FileTypeDef {
+                name: "mint",
+                globs: [
+                    "*.mint",
+                ],
+            },
+            FileTypeDef {
+                name: "mk",
+                globs: [
+                    "mkfile",
+                ],
+            },
+            FileTypeDef {
+                name: "ml",
+                globs: [
+                    "*.ml",
+                ],
+            },
+            FileTypeDef {
+                name: "motoko",
+                globs: [
+                    "*.mo",
+                ],
+            },
+            FileTypeDef {
+                name: "msbuild",
+                globs: [
+                    "*.csproj",
+                    "*.fsproj",
+                    "*.proj",
+                    "*.props",
+                    "*.sln",
+                    "*.targets",
+                    "*.vcxproj",
+                ],
+            },
+            FileTypeDef {
+                name: "nim",
+                globs: [
+                    "*.nim",
+                    "*.nimble",
+                    "*.nimf",
+                    "*.nims",
+                ],
+            },
+            FileTypeDef {
+                name: "nix",
+                globs: [
+                    "*.nix",
+                ],
+            },
+            FileTypeDef {
+                name: "objc",
+                globs: [
+                    "*.h",
+                    "*.m",
+                ],
+            },
+            FileTypeDef {
+                name: "objcpp",
+                globs: [
+                    "*.h",
+                    "*.mm",
+                ],
+            },
+            FileTypeDef {
+                name: "ocaml",
+                globs: [
+                    "*.ml",
+                    "*.mli",
+                    "*.mll",
+                    "*.mly",
+                ],
+            },
+            FileTypeDef {
+                name: "org",
+                globs: [
+                    "*.org",
+                    "*.org_archive",
+                ],
+            },
+            FileTypeDef {
+                name: "pants",
+                globs: [
+                    "BUILD",
+                ],
+            },
+            FileTypeDef {
+                name: "pascal",
+                globs: [
+                    "*.dpr",
+                    "*.inc",
+                    "*.lpr",
+                    "*.pas",
+                    "*.pp",
+                ],
+            },
+            FileTypeDef {
+                name: "pdf",
+                globs: [
+                    "*.pdf",
+                ],
+            },
+            FileTypeDef {
+                name: "perl",
+                globs: [
+                    "*.PL",
+                    "*.perl",
+                    "*.pl",
+                    "*.plh",
+                    "*.plx",
+                    "*.pm",
+                    "*.t",
+                ],
+            },
+            FileTypeDef {
+                name: "php",
+                globs: [
+                    "*.php",
+                    "*.php3",
+                    "*.php4",
+                    "*.php5",
+                    "*.php7",
+                    "*.php8",
+                    "*.pht",
+                    "*.phtml",
+                ],
+            },
+            FileTypeDef {
+                name: "po",
+                globs: [
+                    "*.po",
+                ],
+            },
+            FileTypeDef {
+                name: "pod",
+                globs: [
+                    "*.pod",
+                ],
+            },
+            FileTypeDef {
+                name: "postscript",
+                globs: [
+                    "*.eps",
+                    "*.ps",
+                ],
+            },
+            FileTypeDef {
+                name: "prolog",
+                globs: [
+                    "*.P",
+                    "*.pl",
+                    "*.pro",
+                    "*.prolog",
+                ],
+            },
+            FileTypeDef {
+                name: "protobuf",
+                globs: [
+                    "*.proto",
+                ],
+            },
+            FileTypeDef {
+                name: "ps",
+                globs: [
+                    "*.cdxml",
+                    "*.ps1",
+                    "*.ps1xml",
+                    "*.psd1",
+                    "*.psm1",
+                ],
+            },
+            FileTypeDef {
+                name: "puppet",
+                globs: [
+                    "*.epp",
+                    "*.erb",
+                    "*.pp",
+                    "*.rb",
+                ],
+            },
+            FileTypeDef {
+                name: "purs",
+                globs: [
+                    "*.purs",
+                ],
+            },
+            FileTypeDef {
+                name: "py",
+                globs: [
+                    "*.py",
+                    "*.pyi",
+                ],
+            },
+            FileTypeDef {
+                name: "python",
+                globs: [
+                    "*.py",
+                    "*.pyi",
+                ],
+            },
+            FileTypeDef {
+                name: "qmake",
+                globs: [
+                    "*.prf",
+                    "*.pri",
+                    "*.pro",
+                ],
+            },
+            FileTypeDef {
+                name: "qml",
+                globs: [
+                    "*.qml",
+                ],
+            },
+            FileTypeDef {
+                name: "r",
+                globs: [
+                    "*.R",
+                    "*.Rmd",
+                    "*.Rnw",
+                    "*.r",
+                ],
+            },
+            FileTypeDef {
+                name: "racket",
+                globs: [
+                    "*.rkt",
+                ],
+            },
+            FileTypeDef {
+                name: "raku",
+                globs: [
+                    "*.p6",
+                    "*.pl6",
+                    "*.pm6",
+                    "*.raku",
+                    "*.rakudoc",
+                    "*.rakumod",
+                    "*.rakutest",
+                ],
+            },
+            FileTypeDef {
+                name: "rdoc",
+                globs: [
+                    "*.rdoc",
+                ],
+            },
+            FileTypeDef {
+                name: "readme",
+                globs: [
+                    "*README",
+                    "README*",
+                ],
+            },
+            FileTypeDef {
+                name: "reasonml",
+                globs: [
+                    "*.re",
+                    "*.rei",
+                ],
+            },
+            FileTypeDef {
+                name: "red",
+                globs: [
+                    "*.r",
+                    "*.red",
+                    "*.reds",
+                ],
+            },
+            FileTypeDef {
+                name: "rescript",
+                globs: [
+                    "*.res",
+                    "*.resi",
+                ],
+            },
+            FileTypeDef {
+                name: "robot",
+                globs: [
+                    "*.robot",
+                ],
+            },
+            FileTypeDef {
+                name: "rst",
+                globs: [
+                    "*.rst",
+                ],
+            },
+            FileTypeDef {
+                name: "ruby",
+                globs: [
+                    "*.gemspec",
+                    "*.rb",
+                    "*.rbw",
+                    ".irbrc",
+                    "Gemfile",
+                    "Rakefile",
+                    "config.ru",
+                ],
+            },
+            FileTypeDef {
+                name: "rust",
+                globs: [
+                    "*.rs",
+                ],
+            },
+            FileTypeDef {
+                name: "sass",
+                globs: [
+                    "*.sass",
+                    "*.scss",
+                ],
+            },
+            FileTypeDef {
+                name: "scala",
+                globs: [
+                    "*.sbt",
+                    "*.scala",
+                ],
+            },
+            FileTypeDef {
+                name: "sh",
+                globs: [
+                    "*.bash",
+                    "*.bashrc",
+                    "*.csh",
+                    "*.cshrc",
+                    "*.ksh",
+                    "*.kshrc",
+                    "*.sh",
+                    "*.tcsh",
+                    "*.zsh",
+                    ".bash_login",
+                    ".bash_logout",
+                    ".bash_profile",
+                    ".bashrc",
+                    ".cshrc",
+                    ".kshrc",
+                    ".login",
+                    ".logout",
+                    ".profile",
+                    ".tcshrc",
+                    ".zlogin",
+                    ".zlogout",
+                    ".zprofile",
+                    ".zshenv",
+                    ".zshrc",
+                    "bash_login",
+                    "bash_logout",
+                    "bash_profile",
+                    "bashrc",
+                    "profile",
+                    "zlogin",
+                    "zlogout",
+                    "zprofile",
+                    "zshenv",
+                    "zshrc",
+                ],
+            },
+            FileTypeDef {
+                name: "slim",
+                globs: [
+                    "*.skim",
+                    "*.slim",
+                    "*.slime",
+                ],
+            },
+            FileTypeDef {
+                name: "smarty",
+                globs: [
+                    "*.tpl",
+                ],
+            },
+            FileTypeDef {
+                name: "sml",
+                globs: [
+                    "*.sig",
+                    "*.sml",
+                ],
+            },
+            FileTypeDef {
+                name: "solidity",
+                globs: [
+                    "*.sol",
+                ],
+            },
+            FileTypeDef {
+                name: "soy",
+                globs: [
+                    "*.soy",
+                ],
+            },
+            FileTypeDef {
+                name: "spark",
+                globs: [
+                    "*.spark",
+                ],
+            },
+            FileTypeDef {
+                name: "spec",
+                globs: [
+                    "*.spec",
+                ],
+            },
+            FileTypeDef {
+                name: "sql",
+                globs: [
+                    "*.psql",
+                    "*.sql",
+                ],
+            },
+            FileTypeDef {
+                name: "stylus",
+                globs: [
+                    "*.styl",
+                ],
+            },
+            FileTypeDef {
+                name: "sv",
+                globs: [
+                    "*.h",
+                    "*.sv",
+                    "*.svh",
+                    "*.v",
+                    "*.vg",
+                ],
+            },
+            FileTypeDef {
+                name: "svelte",
+                globs: [
+                    "*.svelte",
+                ],
+            },
+            FileTypeDef {
+                name: "svg",
+                globs: [
+                    "*.svg",
+                ],
+            },
+            FileTypeDef {
+                name: "swift",
+                globs: [
+                    "*.swift",
+                ],
+            },
+            FileTypeDef {
+                name: "swig",
+                globs: [
+                    "*.def",
+                    "*.i",
+                ],
+            },
+            FileTypeDef {
+                name: "systemd",
+                globs: [
+                    "*.automount",
+                    "*.conf",
+                    "*.device",
+                    "*.link",
+                    "*.mount",
+                    "*.path",
+                    "*.scope",
+                    "*.service",
+                    "*.slice",
+                    "*.socket",
+                    "*.swap",
+                    "*.target",
+                    "*.timer",
+                ],
+            },
+            FileTypeDef {
+                name: "taskpaper",
+                globs: [
+                    "*.taskpaper",
+                ],
+            },
+            FileTypeDef {
+                name: "tcl",
+                globs: [
+                    "*.tcl",
+                ],
+            },
+            FileTypeDef {
+                name: "tex",
+                globs: [
+                    "*.bib",
+                    "*.cls",
+                    "*.dtx",
+                    "*.ins",
+                    "*.ltx",
+                    "*.sty",
+                    "*.tex",
+                ],
+            },
+            FileTypeDef {
+                name: "texinfo",
+                globs: [
+                    "*.texi",
+                ],
+            },
+            FileTypeDef {
+                name: "textile",
+                globs: [
+                    "*.textile",
+                ],
+            },
+            FileTypeDef {
+                name: "tf",
+                globs: [
+                    "*.auto.tfvars",
+                    "*.auto.tfvars.json",
+                    "*.terraform.lock.hcl",
+                    "*.terraformrc",
+                    "*.tf",
+                    "*.tf.json",
+                    "*.tfrc",
+                    "terraform.rc",
+                    "terraform.tfvars",
+                    "terraform.tfvars.json",
+                ],
+            },
+            FileTypeDef {
+                name: "thrift",
+                globs: [
+                    "*.thrift",
+                ],
+            },
+            FileTypeDef {
+                name: "toml",
+                globs: [
+                    "*.toml",
+                    "Cargo.lock",
+                ],
+            },
+            FileTypeDef {
+                name: "ts",
+                globs: [
+                    "*.cts",
+                    "*.mts",
+                    "*.ts",
+                    "*.tsx",
+                ],
+            },
+            FileTypeDef {
+                name: "twig",
+                globs: [
+                    "*.twig",
+                ],
+            },
+            FileTypeDef {
+                name: "txt",
+                globs: [
+                    "*.txt",
+                ],
+            },
+            FileTypeDef {
+                name: "typescript",
+                globs: [
+                    "*.cts",
+                    "*.mts",
+                    "*.ts",
+                    "*.tsx",
+                ],
+            },
+            FileTypeDef {
+                name: "typoscript",
+                globs: [
+                    "*.ts",
+                    "*.typoscript",
+                ],
+            },
+            FileTypeDef {
+                name: "usd",
+                globs: [
+                    "*.usd",
+                    "*.usda",
+                    "*.usdc",
+                ],
+            },
+            FileTypeDef {
+                name: "v",
+                globs: [
+                    "*.v",
+                    "*.vsh",
+                ],
+            },
+            FileTypeDef {
+                name: "vala",
+                globs: [
+                    "*.vala",
+                ],
+            },
+            FileTypeDef {
+                name: "vb",
+                globs: [
+                    "*.vb",
+                ],
+            },
+            FileTypeDef {
+                name: "vcl",
+                globs: [
+                    "*.vcl",
+                ],
+            },
+            FileTypeDef {
+                name: "verilog",
+                globs: [
+                    "*.sv",
+                    "*.svh",
+                    "*.v",
+                    "*.vh",
+                ],
+            },
+            FileTypeDef {
+                name: "vhdl",
+                globs: [
+                    "*.vhd",
+                    "*.vhdl",
+                ],
+            },
+            FileTypeDef {
+                name: "vim",
+                globs: [
+                    "*.vim",
+                    ".gvimrc",
+                    ".vimrc",
+                    "_gvimrc",
+                    "_vimrc",
+                    "gvimrc",
+                    "vimrc",
+                ],
+            },
+            FileTypeDef {
+                name: "vimscript",
+                globs: [
+                    "*.vim",
+                    ".gvimrc",
+                    ".vimrc",
+                    "_gvimrc",
+                    "_vimrc",
+                    "gvimrc",
+                    "vimrc",
+                ],
+            },
+            FileTypeDef {
+                name: "vue",
+                globs: [
+                    "*.vue",
+                ],
+            },
+            FileTypeDef {
+                name: "webidl",
+                globs: [
+                    "*.idl",
+                    "*.webidl",
+                    "*.widl",
+                ],
+            },
+            FileTypeDef {
+                name: "wgsl",
+                globs: [
+                    "*.wgsl",
+                ],
+            },
+            FileTypeDef {
+                name: "wiki",
+                globs: [
+                    "*.mediawiki",
+                    "*.wiki",
+                ],
+            },
+            FileTypeDef {
+                name: "xml",
+                globs: [
+                    "*.dtd",
+                    "*.rng",
+                    "*.sch",
+                    "*.xhtml",
+                    "*.xjb",
+                    "*.xml",
+                    "*.xml.dist",
+                    "*.xsd",
+                    "*.xsl",
+                    "*.xslt",
+                ],
+            },
+            FileTypeDef {
+                name: "xz",
+                globs: [
+                    "*.txz",
+                    "*.xz",
+                ],
+            },
+            FileTypeDef {
+                name: "yacc",
+                globs: [
+                    "*.y",
+                ],
+            },
+            FileTypeDef {
+                name: "yaml",
+                globs: [
+                    "*.yaml",
+                    "*.yml",
+                ],
+            },
+            FileTypeDef {
+                name: "yang",
+                globs: [
+                    "*.yang",
+                ],
+            },
+            FileTypeDef {
+                name: "z",
+                globs: [
+                    "*.Z",
+                ],
+            },
+            FileTypeDef {
+                name: "zig",
+                globs: [
+                    "*.zig",
+                ],
+            },
+            FileTypeDef {
+                name: "zsh",
+                globs: [
+                    "*.zsh",
+                    ".zlogin",
+                    ".zlogout",
+                    ".zprofile",
+                    ".zshenv",
+                    ".zshrc",
+                    "zlogin",
+                    "zlogout",
+                    "zprofile",
+                    "zshenv",
+                    "zshrc",
+                ],
+            },
+            FileTypeDef {
+                name: "zstd",
+                globs: [
+                    "*.zst",
+                    "*.zstd",
+                ],
+            },
+        ],
+        selections: [],
+        has_selected: false,
+        glob_to_selection: [],
+        set: GlobSet {
+            len: 0,
+            strats: [],
+        },
+        matches: Pool(
+            Pool {
+                stacks: [
+                    CacheLine(
+                        Mutex {
+                            data: [],
+                            poisoned: false,
+                            ..
+                        },
+                    ),
+                    CacheLine(
+                        Mutex {
+                            data: [],
+                            poisoned: false,
+                            ..
+                        },
+                    ),
+                    CacheLine(
+                        Mutex {
+                            data: [],
+                            poisoned: false,
+                            ..
+                        },
+                    ),
+                    CacheLine(
+                        Mutex {
+                            data: [],
+                            poisoned: false,
+                            ..
+                        },
+                    ),
+                    CacheLine(
+                        Mutex {
+                            data: [],
+                            poisoned: false,
+                            ..
+                        },
+                    ),
+                    CacheLine(
+                        Mutex {
+                            data: [],
+                            poisoned: false,
+                            ..
+                        },
+                    ),
+                    CacheLine(
+                        Mutex {
+                            data: [],
+                            poisoned: false,
+                            ..
+                        },
+                    ),
+                    CacheLine(
+                        Mutex {
+                            data: [],
+                            poisoned: false,
+                            ..
+                        },
+                    ),
+                ],
+                owner: 0,
+                owner_val: UnsafeCell { .. },
+            },
+        ),
+    },
+    vimgrep: true,
+    with_filename: true,
+}
