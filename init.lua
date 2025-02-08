@@ -25,6 +25,13 @@ require "plugins"
 -- Experiment with dvorak for now --
 --vim.opt.keymap = 'dvorak'
 
+vim.cmd('autocmd BufRead,BufNewFile *.hbs set filetype=javascript')
+vim.cmd('autocmd BufRead,BufNewFile *.html set filetype=javascript')
+
+for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
+  vim.api.nvim_set_hl(0, group, {})
+end
+
 -- Relative Line Number By Default
 vim.opt.relativenumber = true
 
@@ -602,19 +609,19 @@ local rgArgs = {
     "--no-search-zip",
     "--color=never",
     "--max-filesize=295K",
-    "--glob='!*.min.{js,css,js.map,css.map}'",
-    "--glob='!public/js/jquery*'",
-    "--glob='!wordpress/wp-includes/*'",
-    "--glob='!wordpress/wp-admin/*'",
-    "--glob='!wordpress/wp-content/plugins/*'",
-    "--glob='!migrations/*/seeds/*'",
+    "--glob=!*.min.{js,css,js.map,css.map}",
+    "--glob=!public/js/jquery*",
+    "--glob=!wordpress/wp-includes/*",
+    "--glob=!wordpress/wp-admin/*",
+    "--glob=!wordpress/wp-content/plugins/*",
+    "--glob=!migrations/*/seeds/*",
 }
-local searchHistoryJobId = vim.fn.jobstart({ rgExe, unpack(rgArgs) }, {
-    rpc = true,
-    on_exit = debugFn,
-    on_stdout = debugFn,
-    on_stderr = debugFn
-})
+--local searchHistoryJobId = vim.fn.jobstart({ rgExe, unpack(rgArgs) }, {
+--    rpc = true,
+--    on_exit = debugFn,
+--    on_stdout = debugFn,
+--    on_stderr = debugFn
+--})
 
 function rustGrep(search)
     vim.rpcnotify(searchHistoryJobId, 'search', search)

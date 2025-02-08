@@ -11,6 +11,135 @@ use std::{io, path::Path};
 
 use {bstr::ByteVec, grep::matcher::Matcher, termcolor::WriteColor};
 
+//use arrayvec::ArrayVec;
+
+/// The result of executing a search.
+#[derive(Clone, Debug)]
+pub(crate) struct SearchResult {
+    //Fuck this I have a better idea (See main.rs)
+    //Likely rename this to ThreadSearchResult & maybe ThreadSearchResults
+    //These fill with the small easy fill data and they supply the main.rs Results
+    //This eleminates dealing with lifetimes in the thread which leaks into underlying searcher code
+    //
+    //file_name: &str,
+    //file_name: String,
+    file_name: Option<String>,
+    //file_name: Option<&str>,
+    //file_name: Option<&Path>,
+    line_number: u16, //If I could get like a u24 size wise that would make way more sense, maybe 3 u8's?
+    matched_bytes: Vec<u8>,
+    //This is two things I can try
+    //matched_bytes: [u8; 50],
+    //matched_bytes: ArrayVec<u8>,
+}
+impl SearchResult {
+    pub(crate) fn new(file_name: Option<String>, line_number: u16, matched_bytes: Vec<u8>) -> SearchResult {
+        return SearchResult { file_name, line_number, matched_bytes };
+    }
+
+    //pub(crate) fn new(line_number: u16, matched_bytes: Vec<u8>) -> SearchResult {
+    //    return SearchResult { line_number, matched_bytes };
+    //}
+
+    pub(crate) fn get_line_number(&mut self) -> u16 {
+        return self.line_number;
+    }
+
+    pub(crate) fn get_matched_bytes(&mut self) -> &Vec<u8> {
+        return &self.matched_bytes;
+    }
+
+    pub(crate) fn set_file_name(&mut self, file_name: Option<String>) {
+        self.file_name = file_name;
+    }
+}
+
+//This will have to store search results
+#[derive(Debug, Clone)]
+pub(crate) struct SearchResults {
+    results_store: Vec<SearchResult>
+}
+impl SearchResults {
+    pub(crate) fn new() -> SearchResults {
+        return SearchResults { results_store: vec![] };
+    }
+
+    pub(crate) fn store_result(&mut self, search_result: SearchResult) {
+        self.results_store.push(search_result);
+    }
+
+    pub(crate) fn get_mut(&mut self) -> &mut Vec<SearchResult> {
+        return &mut self.results_store;
+    }
+
+    pub(crate) fn has_results(&self) -> bool {
+        return self.results_store.len() > 0;
+    }
+
+    pub(crate) fn consume_results(self) -> Vec<SearchResult> {
+        return self.results_store;
+    }
+}
+
+//Custom sink that doesn't use underlying printer instead keeps the vector of byte or converted string
+#[derive(Clone, Debug)]
+pub struct CustomSink {
+    match_count: u32,
+    results_store: SearchResults,
+}
+
+impl CustomSink {
+    pub(crate) fn new() -> CustomSink {
+        return CustomSink { match_count: 0, results_store: SearchResults::new() };
+    }
+
+    pub(crate) fn get_results(&mut self) -> &mut SearchResults {
+        return &mut self.results_store;
+    }
+
+    pub(crate) fn has_match(&self) -> bool {
+        self.match_count > 0
+    }
+
+    pub(crate) fn match_count(&self) -> u32 {
+        self.match_count
+    }
+
+    pub(crate) fn consume_sink_results(self) -> SearchResults {
+        return self.results_store;
+    }
+}
+impl grep::searcher::Sink for CustomSink {
+    type Error = io::Error;
+
+    fn matched(
+        &mut self,
+        searcher: &grep::searcher::Searcher,
+        mat: &grep::searcher::SinkMatch<'_>,
+    ) -> Result<bool, io::Error> {
+        self.match_count += 1;
+
+        let line_number = match mat.line_number() {
+            Some(line_number) => line_number,
+            None => 0, //Safe default
+        };
+
+        self.results_store.store_result(
+            SearchResult::new(
+                None,
+                line_number.try_into().unwrap(), //Going to bank no file being this large in our codebase
+                mat.bytes().to_vec() //Maybe more efficient way to do this?
+            )
+        );
+        return Ok(true);
+    }
+
+    fn begin(&mut self, _searcher: &grep::searcher::Searcher) -> Result<bool, io::Error> {
+        self.match_count = 0;
+        return Ok(true);
+    }
+}
+
 /// The configuration for the search worker.
 ///
 /// Among a few other things, the configuration primarily controls the way we
@@ -128,6 +257,17 @@ impl<W: WriteColor> SearchWorker<W> {
         &mut self,
         haystack: &crate::haystack::Haystack,
     ) -> io::Result<SearchResult> {
+impl SearchWorker {
+    pub(crate) fn get_results(&mut self) -> &mut SearchResults {
+        return self.results_store.get_results();
+    }
+
+    //Fuck I think this pattern would help alot too but the mut is created outside of multithreading
+    pub(crate) fn consume_searcher_results(self) -> SearchResults {
+        return self.results_store.consume_sink_results();
+    }
+
+    pub(crate) fn search(&mut self, haystack: &crate::haystack::Haystack) -> bool {
         self.searcher.set_binary_detection(
             match haystack.is_explicit() {
                 true => self.config.binary_explicit.clone(),
@@ -152,6 +292,13 @@ impl<W: WriteColor> SearchWorker<W> {
             RustRegex(ref m) => search_path(m, searcher, printer, path),
             #[cfg(feature = "pcre2")]
             PCRE2(ref m) => search_path(m, searcher, printer, path),
+                //for result in self.results_store.get_results().get_mut().iter_mut() {
+                //    result.file_name = path.to_string_lossy().to_string();
+                //}
+                return self.results_store.has_match();
+            },
+            //#[cfg(feature = "pcre2")]
+            //PCRE2(ref m) => search_path(m, searcher, results_store, path),
         }
     }
 }

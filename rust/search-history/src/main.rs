@@ -10,8 +10,16 @@
 //#[global_allocator]
 //static ALLOC: jemallocator::Jemalloc = jemallocator::Jemalloc;
 
-use std::{io::Write, process::ExitCode};
-use crate::flags::{HiArgs, LowArgs, SearchMode};
+//From pulled changes
+//use std::{io::Write, process::ExitCode};
+//use crate::flags::{HiArgs, LowArgs, SearchMode};
+
+//From local
+use memory_stats::memory_stats;
+
+use std::{sync::{Arc, Mutex}, collections::HashMap, io::Write, process::ExitCode};
+use crate::{search::{SearchResult, SearchResults}, flags::{HiArgs, LowArgs, SearchMode}};
+// End conflict
 
 use ignore::WalkState;
 use neovim_lib::{Neovim, NeovimApi, Session};
@@ -23,104 +31,9 @@ mod haystack;
 mod logger;
 mod search;
 
-
-//use grep::{cli, matcher, printer, regex, searcher};
-//extern crate ripgrep;
-//use ripgrep;
-
-
-/// This is the big test can I write my own Buffer
-/// I'm not sure how this will work surely the color information comes from checking the enum from
-/// term color (Probably need to modify more rg modules)
-//#[derive(Clone, Debug)]
-//pub struct NoColor<W>(W);
-//
-//impl<W: Write> NoColor<W> {
-//    //Note the wtr here is the Vec<u8> (That's the buffer)
-//    pub fn new(wtr: W) -> NoColor<W> {
-//        NoColor(wtr)
-//    }
-//
-//    /// Consume this `NoColor` value and return the inner writer.
-//    pub fn into_inner(self) -> W {
-//        self.0
-//    }
-//
-//    /// Return a reference to the inner writer.
-//    pub fn get_ref(&self) -> &W {
-//        &self.0
-//    }
-//
-//    /// Return a mutable reference to the inner writer.
-//    pub fn get_mut(&mut self) -> &mut W {
-//        &mut self.0
-//    }
-//}
-//
-//impl<W: Write> Write for NoColor<W> {
-//    #[inline]
-//    fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
-//        self.0.write(buf)
-//    }
-//
-//    #[inline]
-//    fn flush(&mut self) -> std::io::Result<()> {
-//        self.0.flush()
-//    }
-//}
-//
-//impl<W: Write> termcolor::WriteColor for NoColor<W> {
-//    #[inline]
-//    fn supports_color(&self) -> bool {
-//        false
-//    }
-//
-//    #[inline]
-//    fn supports_hyperlinks(&self) -> bool {
-//        false
-//    }
-//
-//    #[inline]
-//    fn set_color(&mut self, _: &termcolor::ColorSpec) -> std::io::Result<()> {
-//        Ok(())
-//    }
-//
-//    #[inline]
-//    fn set_hyperlink(&mut self, _: &termcolor::HyperlinkSpec) -> std::io::Result<()> {
-//        Ok(())
-//    }
-//
-//    #[inline]
-//    fn reset(&mut self) -> std::io::Result<()> {
-//        Ok(())
-//    }
-//
-//    #[inline]
-//    fn is_synchronous(&self) -> bool {
-//        false
-//    }
-//}
-
-
-struct GrepProccess {
-    //I'm not sure this will need any properties
-}
-impl GrepProccess {
-
-}
-
-struct RawResult {
-    grep_result: String,
-}
-impl RawResult {
-    //Create a processed result
-}
-
-struct ProccessedResult {
-    file_name: String,
-    line_num: u16,
-    column_num: u16,
-    preview_text: String,
+#[derive(Debug)]
+struct SearchStore {
+    search_store: HashMap<String, SearchResults>,
 }
 
 struct EventHandler {
@@ -128,6 +41,7 @@ struct EventHandler {
 }
 enum RpcMessages {
     Search,
+    Query,
     Unknown(String),
 }
 impl From<String> for RpcMessages {
@@ -147,6 +61,10 @@ impl EventHandler {
 
     //For now I'm not sure how better to handle unhappy path except return and end
     fn recv(&mut self) -> anyhow::Result<bool> {
+        let mut search_store = SearchStore {
+            search_store: HashMap::new()
+        };
+
         //Get the initial low args (Inject search-positional in search call)
         let initial_args = match flags::parse_low(){
             crate::flags::ParseResult::Ok(low) => low,
@@ -173,16 +91,17 @@ impl EventHandler {
                         _ => return Ok(false),
                     };
 
-                    //Will have to send the search
-                    //self.nvim.command("echo \"test\"").unwrap();
-                    //self.nvim.command(&format!("echo \"{:?}\"", receiver)).unwrap();
-                    self.nvim.command("echo 'Starting Test'").unwrap();
-                    self.nvim.command("echo 'Run:'").unwrap();
-                    let result = match rg_search(&args) {
-                        Ok(res) => true,
-                        Err(err) => return Err(err), 
+                    match rg_search(&args) {
+                        Ok(search_results) => {
+                            search_store.search_store.insert(String::from("Test-Search"), search_results);
+                        },
+                        Err(err) => eprintln_locked!("{:#}", err), 
                     };
-                    self.nvim.command("echo '-Finish'").unwrap();
+                    //let mut file = std::fs::File::create("testargs.txt")?; //writeln!(&mut file, "{:#?}", args)?;
+                    //eprintln_locked!("{:#?}", std::env::current_dir()); //Better way of print debugging - stderr
+                }
+                RpcMessages::Query => {
+                    let search_string: u64 = values.iter().next().unwrap().as_u64().unwrap();
                 }
                 RpcMessages::Unknown(event) => {
                     self.nvim.command("echo \"test\"").unwrap();
@@ -202,8 +121,11 @@ fn main() -> ExitCode {
             debug_mode = true;
         }
     }
-
     if debug_mode {
+        let mut search_store = SearchStore {
+            search_store: HashMap::new()
+        };
+
         //Get the initial low args (Inject search-positional in search call)
         let initial_args = match flags::parse_low(){
             crate::flags::ParseResult::Ok(low) => low,
@@ -213,10 +135,10 @@ fn main() -> ExitCode {
 
         let mut cloned_args = initial_args.clone();
         cloned_args.positional.pop(); //Pop off the debug (Should be first)
-        //cloned_args.positional.push(std::ffi::OsString::from("test.*t")); //Term
         //Tests implicit
-        cloned_args.positional.push(std::ffi::OsString::from("l.l")); //Term
-        cloned_args.positional.push(std::ffi::OsString::from("./src/")); //Dir
+        cloned_args.positional.push(std::ffi::OsString::from("a")); //Term
+        //cloned_args.positional.push(std::ffi::OsString::from("test.*t")); //Term
+        cloned_args.positional.push(std::ffi::OsString::from("./")); //Dir
         //Tests eplicit
         //cloned_args.positional.push(std::ffi::OsString::from("alphanu")); //Term
         //cloned_args.positional.push(std::ffi::OsString::from("./src/flags/defs.rs")); //Dir
@@ -229,13 +151,24 @@ fn main() -> ExitCode {
             crate::flags::ParseResult::Err(err) => return ExitCode::FAILURE,
             _ => return ExitCode::FAILURE,
         };
-        let result = match rg_search(&args) {
-            Ok(res) => true,
+                    //let mut file = std::fs::File::create("testargs2.txt").unwrap();
+                    //writeln!(&mut file, "{:#?}", args).unwrap();
+        let search_results = match rg_search(&args) {
+            Ok(search_results) => search_results,
             Err(err) => {
                 eprintln_locked!("{:#}", err);
                 return ExitCode::FAILURE;
             }, 
         };
+        //search_store.search_store.insert(String::from("Test-Search"), search_results);
+        //println!("{:#?}", search_store);
+
+        if let Some(usage) = memory_stats() {
+            println!("Current physical memory usage: {}", usage.physical_mem);
+            println!("Current virtual memory usage: {}", usage.virtual_mem);
+        } else {
+            println!("Couldn't get the current memory usage :(");
+        }
         return ExitCode::SUCCESS;
     }
 
@@ -311,19 +244,23 @@ fn main() -> ExitCode {
     //match run_search(flags::parse()) {
 }
 
-fn rg_search(args: &crate::flags::HiArgs) -> anyhow::Result<bool> {
-    let matched = match args.mode() {
-        crate::flags::Mode::Search(_) if !args.matches_possible() => false,
-        crate::flags::Mode::Search(mode) => search_parallel(&args, mode)?,
-        _ => return Ok(false),
+fn rg_search(args: &crate::flags::HiArgs) -> anyhow::Result<SearchResults> {
+    let search_results = match args.matches_possible() {
+        true => search_parallel(&args),
+        _ => return Err(anyhow::anyhow!("No results found")),
     };
-    if matched && (args.quiet() || !messages::errored()) {
-        return Ok(true);
+    let search_results = match search_results {
+        Ok(search_results) => search_results,
+        Err(err) => return Err(err),
+    };
+
+    if search_results.has_results() {
+        return Ok(search_results);
     }
-    return Ok(false);
+    return Err(anyhow::anyhow!("No results found"));
 }
 
-fn search_parallel(args: &crate::flags::HiArgs, mode: SearchMode) -> anyhow::Result<bool> {
+fn search_parallel(args: &crate::flags::HiArgs) -> anyhow::Result<SearchResults> {
     let haystack_builder = args.haystack_builder();
     let bufwtr = args.buffer_writer();
 
@@ -346,18 +283,41 @@ fn search_parallel(args: &crate::flags::HiArgs, mode: SearchMode) -> anyhow::Res
     //SearchWorker likely need to store buffer of buffers & create  single use buffer for each thread
     //This custom sink will implement the ability to Vec<u8> buffers.push() it's buffer of matched bytes
     //Custom sink will also need to get that line number and store it somehow
+    // (This is likely way beyond my skillset to do efficiently I'd have to rewrite all the search algorithms)
+    //I might have to start with an Arc<Mutex<SearchResults>> and try to rewrite multi-threading to return values
+    //let search_results = Arc<Mutex<SearchResults::new()>>;
+    let mut threaded_search_results = Arc::new(Mutex::new(SearchResults::new()));
+
     let mut searcher = args.search_worker(
         args.matcher()?,
         args.searcher()?,
         args.printer(bufwtr.buffer()), //test_vec_as_buf, //args.printer(mode, test_buffer), //This is doable
     )?;
+
             //println!("{:#?}", "After Create Search Worker");
+=======
+
+>>>>>>> Stashed changes
     args.walk_builder()?.build_parallel().run(|| {
         let bufwtr = &bufwtr;
         let haystack_builder = &haystack_builder;
-        let mut searcher = searcher.clone();
 
-        Box::new(move |result| {
+        /*
+        * I'm working on a few things at once
+        * One Id like to consume_results to remove .clone() & return ownership then compare performance
+        * Also trying use fixed length buffer matched bytes, see if time save with paging, compare performance
+        * Lastly I'm separating thread search result structs from regular one to separate storing
+        * the &str from path using haystack.path() -> Path then Path.to_str() -> Option<&str>
+        */
+
+
+        //let mut searcher = &searcher; //Can I use a refence does this need to clone?
+        let mut searcher = searcher.clone(); //Can I use a refence does this need to clone?
+        let mut threaded_search_results = &threaded_search_results;
+
+        return Box::new(move |result| {
+            let mut threaded_search_results = threaded_search_results.lock().unwrap();
+
             let haystack = match haystack_builder.build_from_result(result) {
                 Some(haystack) => haystack,
                 None => return WalkState::Continue,
@@ -406,12 +366,30 @@ fn search_parallel(args: &crate::flags::HiArgs, mode: SearchMode) -> anyhow::Res
                     return WalkState::Quit; //Broken pipe means graceful termination.
                 }
                 err_message!("{}: {}", haystack.path().display(), err);
+            //Push to outer search results vector
+            //let path = Some(haystack.path().to_string_lossy().to_string());
+            let path = haystack.path().as_os_str();
+            if searcher.search(&haystack) {
+                //for search_result in searcher.consume_searcher_results().consume_results().iter_mut() {
+                for search_result in searcher.get_results().get_mut().iter_mut() {
+                    search_result.set_file_name(Some(path.to_str().clone()));
+                    //search_result.set_file_name(Some(haystack.path().to_str()));
+                    threaded_search_results.store_result(search_result.clone());
+                }
             }
             //return WalkState::Quit;
             return WalkState::Continue;
-        })
+        });
     });
-    return Ok(true);
+
+    let mutex_search_results = match Arc::into_inner(threaded_search_results) {
+        Some(mutex_results) => mutex_results,
+        None => return Err(anyhow::anyhow!("Could not unwrap Mutex from Arc")),
+    };
+    return match mutex_search_results.into_inner() {
+        Ok(search_results) => Ok(search_results),
+        Err(err) => Err(err.into()),
+    };
 }
 
 //Might want to see this syntax later

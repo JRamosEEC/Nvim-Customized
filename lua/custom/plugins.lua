@@ -123,12 +123,12 @@ local plugins = {
                 vim.cmd("NvimTreeClose")
                 require("dapui").open()
                 vim.cmd("wincmd h")
-                vim.cmd("vertical resize 60")
+                vim.cmd("vertical resize 35")
                 vim.cmd("wincmd j")
                 vim.cmd("wincmd j")
-                vim.cmd("horizontal resize 10")
+                vim.cmd("horizontal resize 7")
                 vim.cmd("wincmd l")
-                vim.cmd("horizontal resize 10")
+                vim.cmd("horizontal resize 7")
             end,
             desc = "Dap UI Normalize Sizing"
           },
@@ -148,10 +148,10 @@ local plugins = {
             {
               elements = {
                 { id = "scopes", size = 0.65 },
-                { id = "breakpoints", size = 0.15 },
-                { id = "stacks", size = 0.20 },
+                { id = "breakpoints", size = 0.13 },
+                { id = "stacks", size = 0.22 },
               },
-              size = 60,
+              size = 35,
               position = "left",
             },
             {
@@ -160,9 +160,8 @@ local plugins = {
                 "repl",
                 --"console", --Remove the console for now I'm really not sure what it's use cases are
               },
-              size = 10,
+              size = 7,
               position = "bottom",
-
             },
           },
           floating = {
