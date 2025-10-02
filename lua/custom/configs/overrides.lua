@@ -61,10 +61,10 @@ M.mason = {
 
 -- git support in nvimtree
 M.nvimtree = {
+  sync_root_with_cwd = true,
   git = {
     enable = true,
   },
-
   renderer = {
     highlight_git = true,
     icons = {
@@ -73,7 +73,6 @@ M.nvimtree = {
       },
     },
   },
-
   view = {
     adaptive_size = true,
   },

@@ -417,7 +417,7 @@ vim.keymap.set('n', ';', vim.diagnostic.open_float, { desc = "Open Diagnostic Fl
 vim.keymap.set('n', '<leader>lp', vim.diagnostic.goto_prev, { desc = "Go To Previous Diagnostic", noremap = true })
 vim.keymap.set('n', '<leader>ln', vim.diagnostic.goto_next, { desc = "Go To Next Diagnostic", noremap = true })
 vim.keymap.set('n', '<leader>ll', '<cmd>Telescope diagnositcs<cr>', { desc = "Open Diagnostic List", noremap = true })
-vim.keymap.set('n', '<leader>ld', vim.lsp.buf.definition, { desc = "Go To Definition", noremap = true })
+vim.keymap.set('n', '<leader>ld', function() vim.lsp.buf.definition({ reuse_win = false, loclist = true }) end, { desc = "Go To Definition", noremap = true })
 vim.keymap.set('n', '<leader>lD', vim.lsp.buf.declaration, { desc = "Go To Declaration (The interface)", noremap = true })
 vim.keymap.set('n', '<leader>lr', vim.lsp.buf.references, { desc = "Display References", noremap = true })
 vim.keymap.set('n', '<leader>lh', vim.lsp.buf.hover, { desc = "Show Var Information", noremap = true })
@@ -611,11 +611,11 @@ require("nvim-dap-virtual-text").setup({
   clear_on_continue = false,
 
   display_callback = function (variable, buf, stackframe, node, options)
-    if options.virt_text_post == 'inline' then
-      return ' = ' .. variable.value
-    else
-      return variable.name .. ' = ' .. variable.value
+    local varVal = variable.name .. ' = ' .. variable.value
+    if #varVal > 75 then
+        varVal = varVal:sub(1, 74) .. '...'
     end
+    return varVal
   end,
   virt_text_pos = vim.fn.has 'nvim-0.10' == 1 and 'inline' or 'eol',
   -- Experimental features:
