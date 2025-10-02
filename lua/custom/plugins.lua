@@ -129,12 +129,12 @@ local plugins = {
                 vim.cmd("NvimTreeClose")
                 require("dapui").open()
                 vim.cmd("wincmd h")
-                vim.cmd("vertical resize 35")
+                vim.cmd("vertical resize 60")
                 vim.cmd("wincmd j")
                 vim.cmd("wincmd j")
-                vim.cmd("horizontal resize 7")
+                vim.cmd("horizontal resize 10")
                 vim.cmd("wincmd l")
-                vim.cmd("horizontal resize 7")
+                vim.cmd("horizontal resize 10")
             end,
             desc = "Dap UI Normalize Sizing"
           },
@@ -154,10 +154,10 @@ local plugins = {
             {
               elements = {
                 { id = "scopes", size = 0.65 },
-                { id = "breakpoints", size = 0.13 },
-                { id = "stacks", size = 0.22 },
+                { id = "breakpoints", size = 0.15 },
+                { id = "stacks", size = 0.20 },
               },
-              size = 35,
+              size = 60,
               position = "left",
             },
             {
@@ -166,7 +166,7 @@ local plugins = {
                 "repl",
                 --"console", --Remove the console for now I'm really not sure what it's use cases are
               },
-              size = 7,
+              size = 10,
               position = "bottom",
             },
           },
@@ -215,7 +215,18 @@ local plugins = {
           end
         end,
       },
-      { "theHamsta/nvim-dap-virtual-text", "nvim-telescope/telescope-dap.nvim" },
+      {
+        "theHamsta/nvim-dap-virtual-text"
+      },
+      {
+        "nvim-telescope/telescope-dap.nvim",
+        keys = {
+          { "<leader>dc", function() require("telescope").extensions.dap.commands({}) end, desc = "Dap Commands" },
+          { "<leader>dl", function() require("telescope").extensions.dap.list_breakpoints({}) end, desc = "Dap Breakpoints" },
+          { "<leader>dv", function() require("telescope").extensions.dap.variables({}) end, desc = "Dap Variables" },
+          { "<leader>ds", function() require("telescope").extensions.dap.frames({}) end, desc = "Dap Stack Frames" },
+        }
+      },
     },
   },
 
@@ -242,11 +253,11 @@ local plugins = {
 
   -- DadBod Database Tool 
   {
-    "tpope/vim-dadbod-ui",
+    "kristijanhusak/vim-dadbod-ui",
     lazy = false,
     dependencies = {
         {
-            "kristijanhusak/vim-dadbod",
+            "tpope/vim-dadbod",
             lazy = true,
             config = function()
                 require("custom.config.dadbod").setup()
