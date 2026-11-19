@@ -9,22 +9,22 @@ local plugins = {
 
   -- Override plugin definition options
 
-  {
-    "neovim/nvim-lspconfig",
-    dependencies = {
-      -- format & linting
-      {
-        "jose-elias-alvarez/null-ls.nvim",
-        config = function()
-          require "custom.configs.null-ls"
-        end,
-      },
-    },
-    config = function()
-      require "plugins.configs.lspconfig"
-      require "custom.configs.lspconfig"
-    end, -- Override to setup mason-lspconfig
-  },
+  --{
+  --  "neovim/nvim-lspconfig",
+  --  dependencies = {
+  --    -- format & linting
+  --    {
+  --      "jose-elias-alvarez/null-ls.nvim",
+  --      config = function()
+  --        require "custom.configs.null-ls"
+  --      end,
+  --    },
+  --  },
+  --  config = function()
+  --    require "plugins.configs.lspconfig"
+  --    require "custom.configs.lspconfig"
+  --  end, -- Override to setup mason-lspconfig
+  --},
 
   -- override plugin configs
   {
@@ -34,7 +34,7 @@ local plugins = {
 
   {
     "nvim-treesitter/nvim-treesitter",
-    commit = 'c579d18',
+    branch = "main",
     opts = overrides.treesitter,
     run = ":TSUpdate",
   },
@@ -282,6 +282,7 @@ local plugins = {
   -- Scroll Bar With Git Sign & Search Indicators
   {
     "petertriho/nvim-scrollbar",
+    branch = "v1",
     lazy = false,
     dependencies = {"kevinhwang91/nvim-hlslens"},
     config = function()

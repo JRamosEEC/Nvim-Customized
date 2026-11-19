@@ -24,12 +24,184 @@ require "plugins"
 -- Experiment with dvorak for now --
 -- vim.opt.keymap = 'dvorak'
 
+-- Custom File Types
+vim.filetype.add({
+    extension = {
+        fgf = 'fgf'
+    }
+})
+
 vim.cmd('autocmd BufRead,BufNewFile *.hbs set filetype=javascript')
 vim.cmd('autocmd BufRead,BufNewFile *.html set filetype=javascript')
+vim.cmd('autocmd BufRead,BufNewFile *.fgf set filetype=python')
 
 for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
   vim.api.nvim_set_hl(0, group, {})
 end
+vim.api.nvim_set_hl(0, "@include", {
+    fg = "#f07174",
+})
+vim.api.nvim_set_hl(0, "@type.qualifier.php", {
+    fg = "#ff892f",
+})
+vim.api.nvim_set_hl(0, "@method.php", {
+    fg = "#f4b23b",
+})
+
+--
+-- ## LSP - (Two PHP LSP's for combined features e.g. completion snippets and deprecation messages)
+--
+local cmp_lsp = require('cmp_nvim_lsp')
+local capabilities = cmp_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
+
+vim.keymap.set('n', '<leader>lo', vim.diagnostic.open_float, { desc = "Open Diagnostic Floating Window", noremap = true })
+vim.keymap.set('n', ';', vim.diagnostic.open_float, { desc = "Open Diagnostic Floating Window", noremap = true }) --Giving this one an easy access keybind but keep both
+vim.keymap.set('n', '<leader>lp', vim.diagnostic.goto_prev, { desc = "Go To Previous Diagnostic", noremap = true })
+vim.keymap.set('n', '<leader>ln', vim.diagnostic.goto_next, { desc = "Go To Next Diagnostic", noremap = true })
+vim.keymap.set('n', '<leader>ll', '<cmd>Telescope diagnositcs<cr>', { desc = "Open Diagnostic List", noremap = true })
+vim.keymap.set('n', '<leader>ld', function() vim.lsp.buf.definition({ reuse_win = false, loclist = true }) end, { desc = "Go To Definition", noremap = true })
+vim.keymap.set('n', '<leader>lD', vim.lsp.buf.declaration, { desc = "Go To Declaration (The interface)", noremap = true })
+vim.keymap.set('n', '<leader>lr', vim.lsp.buf.references, { desc = "Display References", noremap = true })
+vim.keymap.set('n', '<leader>lh', vim.lsp.buf.hover, { desc = "Show Var Information", noremap = true })
+
+vim.api.nvim_create_user_command("LspStart", function(opts)
+  vim.lsp.enable(opts.args)
+end, {
+  nargs = 1,
+})
+vim.api.nvim_create_user_command("LspStop", function()
+  vim.lsp.stop_client(vim.lsp.get_clients())
+end, {})
+
+vim.api.nvim_create_user_command("LspRestart", function()
+  vim.cmd("lsp restart")
+end, {})
+vim.api.nvim_create_user_command("LspStatus", function()
+  local clients = vim.lsp.get_clients({ bufnr = 0 })
+
+  if #clients == 0 then
+    print("No LSP clients attached to current buffer")
+    return
+  end
+
+  for _, client in ipairs(clients) do
+    print(string.format(
+      "%s (ID: %d) - %s",
+      client.name,
+      client.id,
+      client:is_stopped() and "Stopped" or "Running"
+    ))
+  end
+end, {})
+
+-- Removes the virtual text in-favor for opening the diagnostic floating window (Applies to all lsp's that attach unless overridden) -Note:I'm feeling out if I enjoy this
+vim.o.winborder = 'single'
+vim.diagnostic.config {
+    virtual_text = false,
+    float = {
+        border = 'single'
+    }
+}
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+    vim.lsp.handlers.hover, { border = "single", focusable = false, title = "Details" }
+)
+
+local lspNotif = false
+function NotifyDiagnostic() -- Need to be able to adjust width with replace or prematurely close then open another notif but neither is a feature yet
+    local lineDiagnostic = vim.lsp.diagnostic.get_line_diagnostics()
+    if (lineDiagnostic[1] ~= nil and lineDiagnostic[1] ~= '') then
+        local dMsg = lineDiagnostic[1].message
+        local notif_opts = { title = "Diagnostics", timeout = 2500, render = "wrapped-compact", hide_from_history = true, on_close = function() lspNotif = false end }
+        if lspNotif ~= false then
+            notif_opts["replace"] = lspNotif
+        end
+        lspNotif = require('notify')(dMsg, "info", notif_opts)
+    end
+end
+--vim.o.updatetime = 250 --Wondering if maybe I can make a corner window or something that's out of the way but will open seperately
+--vim.api.nvim_command('autocmd CursorHold * :lua NotifyDiagnostic()')--lua vim.diagnostic.open_float()') --It messes up the vim.lsp.buf.hover (Also Idk it might get in the way auto popping up)
+
+-- LSP PHP Actor (Primary LSP)
+vim.lsp.config("phpactor", {
+  filetypes = { "php", "phtml" }, --Removing phtml here doesn't work (Actually none of these work when debugging lspconfig there are two after with php patterns that might be the clue)
+  init_options = {
+    --["language_server_completion.trim_leading_dollar"] = true,
+    ["completion_worse.completor.constant.enabled"] = true, --Default is false I don't see why
+    ["completion_worse.experimantal"] = true, --Default is false
+    ["language_server_configuration.auto_config"] = false,
+    ["language_server_worse_reflection.diagnostics.enable"] = true, --This stop all the error logging only when the language servers are also disabled
+    ["language_server_worse_reflection.inlay_hints.enable"] = true, --Default false
+    ["language_server_worse_reflection.inlay_hints.types"] = true, --Default false
+    --Right now I'm utilizing diagnostics without a specified Language Server - Try determining if phpactor or psalm is worth it
+    --Extra Extensions Added Below
+    --["language_server_php_cs_fixer.enabled"] = true, --PSR standards -- Package doesn't exist need to install
+    --["php_code_sniffer.enabled"] = true, --Code standards -- Package doesn't exist need to install
+    ["prophecy.enabled"] = true, --Propechy is a mocking extension
+    ["symfony.enabled"] = true,
+    ["phpunit.enabled"] = true,
+    --Errors --["blackfire.enabled"] = true, --Blackfire is performance monitoring
+    --["behat.enabled"] = false, --Goto definition and completion support in fiels
+    ["language_server.diagnostic_ignore_codes"] = {
+        "worse.docblock_missing_param",
+        "worse.docblock_missing_return_type",
+        "worse.docblock_missing_extends_tag",
+        "worse.docblock_missing_implements_tag",
+    },
+  },
+  handlers = {
+    ["textDocument/hover"] = function() end, -- Override the vim.lsp.handler to remove the hover information from phpActor
+  },
+  capabilities = capabilities,
+})
+vim.lsp.enable("phpactor")
+
+-- LSP Intelephense (Alternative LSP)
+vim.lsp.config("intelephense", {
+  filetypes = { "php", "phtml" },
+  settings = {
+    intelephense = {
+      diagnostics = {
+        deprecated = false,
+        undefinedVariables = false,
+        undefinedMethods = false,
+        duplicateSymbols = false,
+      },
+      files = {
+        maxSize = 10000000,
+      },
+    },
+  },
+  debounce_text_changes = 150,
+  capabilities = capabilities,
+})
+vim.lsp.enable("intelephense")
+
+--Set Clang LSP
+local cmp_nvim_lsp = require "cmp_nvim_lsp"
+vim.lsp.config("clangd", {
+    filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
+    capabilities = cmp_nvim_lsp.default_capabilities(),
+    cmd = {
+        "clangd",
+        "--offset-encoding=utf-16"
+    },
+})
+vim.lsp.enable("clangd")
+
+--Set Rust Analyze
+vim.lsp.config("rust_analyzer", {
+  filetypes = { "rs" },
+})
+vim.lsp.enable("rust_analyzer")
+
+--Set Up Python LSP
+vim.lsp.config("jedi_language_server", {
+    filetypes = { 'python', 'fgf' },
+    cmd = { 'jedi-language-server' },
+})
+vim.lsp.enable("jedi_language_server")
+
+
 
 -- Relative Line Number By Default
 vim.opt.relativenumber = true
@@ -238,13 +410,13 @@ end
 vim.keymap.set('n', '<leader>fd', ts_select_dir_for_grep, { desc = "Find Directories", noremap = true })
 vim.keymap.set('n', '<leader>fw', function() builtin.live_grep({
     additional_args = function(opts)
-        return { { "-o", "--no-binary", "--max-filesize=295K" } }
+        return { "-o", "--no-binary", "--max-filesize=295K" }
     end,
     glob_pattern = { "!*.min.{js,css,js.map,css.map}", "!public/js/jquery*", "!wordpress/wp-includes/*", "!wordpress/wp-admin/*", "!wordpress/wp-content/plugins/*", "!migrations/*/seeds/*" },
 }) end, { desc = "Live Grep", noremap = true })
 vim.keymap.set('n', '<leader>fW', function() builtin.live_grep({
     additional_args = function(opts)
-        return { { "-uu", "-o", "--no-binary", "--max-filesize=295K" } }
+        return { "-uu", "-o", "--no-binary", "--max-filesize=295K" }
     end,
     glob_pattern = { "!*.min.{js,css,js.map,css.map}", "!public/js/jquery*", "!wordpress/wp-includes/*", "!wordpress/wp-admin/*", "!wordpress/wp-content/plugins/*", "!migrations/*/seeds/*" },
 }) end, { desc = "Live Grep All", noremap = true }) -- Live Grep Everything Included
@@ -403,108 +575,6 @@ local open_results = function()
     --local entry_maker = make_entry.gen_from_string({}) local wrap_entry_maker = function(line) return entry_maker(line) end -- I don't need the entry maker wrapper right now but keep this incase I might later
 end
 vim.keymap.set('n', '<leader>fr', open_results, { desc = "Grep Background", noremap = true, silent = true })
-
---
--- ## LSP - (Two PHP LSP's for combined features e.g. completion snippets and deprecation messages)
---
-local lspconfig = require('lspconfig')
-local cmp_lsp = require('cmp_nvim_lsp')
-local capabilities = cmp_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
-local window = require('lspconfig.ui.windows')
-
-vim.keymap.set('n', '<leader>lo', vim.diagnostic.open_float, { desc = "Open Diagnostic Floating Window", noremap = true })
-vim.keymap.set('n', ';', vim.diagnostic.open_float, { desc = "Open Diagnostic Floating Window", noremap = true }) --Giving this one an easy access keybind but keep both
-vim.keymap.set('n', '<leader>lp', vim.diagnostic.goto_prev, { desc = "Go To Previous Diagnostic", noremap = true })
-vim.keymap.set('n', '<leader>ln', vim.diagnostic.goto_next, { desc = "Go To Next Diagnostic", noremap = true })
-vim.keymap.set('n', '<leader>ll', '<cmd>Telescope diagnositcs<cr>', { desc = "Open Diagnostic List", noremap = true })
-vim.keymap.set('n', '<leader>ld', function() vim.lsp.buf.definition({ reuse_win = false, loclist = true }) end, { desc = "Go To Definition", noremap = true })
-vim.keymap.set('n', '<leader>lD', vim.lsp.buf.declaration, { desc = "Go To Declaration (The interface)", noremap = true })
-vim.keymap.set('n', '<leader>lr', vim.lsp.buf.references, { desc = "Display References", noremap = true })
-vim.keymap.set('n', '<leader>lh', vim.lsp.buf.hover, { desc = "Show Var Information", noremap = true })
-
--- Removes the virtual text in-favor for opening the diagnostic floating window (Applies to all lsp's that attach unless overridden) -Note:I'm feeling out if I enjoy this
-window.default_options.border = 'single'
-vim.diagnostic.config {float = {border = 'single'}}
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-    vim.lsp.handlers.hover, { border = "single", focusable = false, title = "Details" }
-)
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false, underline = true, float = {border = 'single'} }
-)
-
-local lspNotif = false
-function NotifyDiagnostic() -- Need to be able to adjust width with replace or prematurely close then open another notif but neither is a feature yet
-    local lineDiagnostic = vim.lsp.diagnostic.get_line_diagnostics()
-    if (lineDiagnostic[1] ~= nil and lineDiagnostic[1] ~= '') then
-        local dMsg = lineDiagnostic[1].message
-        local notif_opts = { title = "Diagnostics", timeout = 2500, render = "wrapped-compact", hide_from_history = true, on_close = function() lspNotif = false end }
-        if lspNotif ~= false then
-            notif_opts["replace"] = lspNotif
-        end
-        lspNotif = require('notify')(dMsg, "info", notif_opts)
-    end
-end
---vim.o.updatetime = 250 --Wondering if maybe I can make a corner window or something that's out of the way but will open seperately
---vim.api.nvim_command('autocmd CursorHold * :lua NotifyDiagnostic()')--lua vim.diagnostic.open_float()') --It messes up the vim.lsp.buf.hover (Also Idk it might get in the way auto popping up)
-
--- LSP PHP Actor (Primary LSP)
-lspconfig.phpactor.setup({
-  filetypes = { "php", "phtml" }, --Removing phtml here doesn't work (Actually none of these work when debugging lspconfig there are two after with php patterns that might be the clue)
-  init_options = {
-    --["language_server_completion.trim_leading_dollar"] = true,
-    ["completion_worse.completor.constant.enabled"] = true, --Default is false I don't see why
-    ["completion_worse.experimantal"] = true, --Default is false
-    ["language_server_configuration.auto_config"] = false,
-    ["language_server_worse_reflection.diagnostics.enable"] = true, --This stop all the error logging only when the language servers are also disabled
-    ["language_server_worse_reflection.inlay_hints.enable"] = true, --Default false
-    ["language_server_worse_reflection.inlay_hints.types"] = true, --Default false
-    --Right now I'm utilizing diagnostics without a specified Language Server - Try determining if phpactor or psalm is worth it
-    --Extra Extensions Added Below
-    --["language_server_php_cs_fixer.enabled"] = true, --PSR standards -- Package doesn't exist need to install
-    --["php_code_sniffer.enabled"] = true, --Code standards -- Package doesn't exist need to install
-    ["prophecy.enabled"] = true, --Propechy is a mocking extension
-    ["symfony.enabled"] = true,
-    ["phpunit.enabled"] = true,
-    --Errors --["blackfire.enabled"] = true, --Blackfire is performance monitoring
-    --["behat.enabled"] = false, --Goto definition and completion support in fiels
-  },
-  handlers = {
-    ["textDocument/hover"] = function() end, -- Override the vim.lsp.handler to remove the hover information from phpActor
-  },
-  capabilities = capabilities,
-})
--- LSP Intelephense (Alternative LSP)
-lspconfig.intelephense.setup({
-  settings = {
-    intelephense = {
-      diagnostics = {
-        deprecated = false,
-        undefinedVariables = false,
-        undefinedMethods = false,
-        duplicateSymbols = false,
-      },
-      files = {
-        maxSize = 10000000,
-      },
-    },
-  },
-  debounce_text_changes = 150,
-  capabilities = capabilities,
-})
-
---Set Clang LSP
-local cmp_nvim_lsp = require "cmp_nvim_lsp"
-lspconfig.clangd.setup({
-    on_attach = on_attach,
-    capabilities = cmp_nvim_lsp.default_capabilities(),
-    cmd = {
-        "clangd",
-        "--offset-encoding=utf-16"
-    },
-})
-
---Set Rust Analyze
-lspconfig.rust_analyzer.setup({})
 
 --
 -- ## Dap (Setup in Plugins & Loaded With PHP Debugger Adapter Here)

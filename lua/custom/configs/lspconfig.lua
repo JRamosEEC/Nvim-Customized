@@ -1,17 +1,13 @@
 local on_attach = require("plugins.configs.lspconfig").on_attach
 local capabilities = require("plugins.configs.lspconfig").capabilities
 
-local lspconfig = require "lspconfig"
-
--- if you just want default config for the servers then put them in a table
 local servers = { "html", "cssls", "ts_ls", "clangd" }
 
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
+for _, server in ipairs(servers) do
+  vim.lsp.config(server, {
     on_attach = on_attach,
     capabilities = capabilities,
-  }
+  })
 end
 
--- 
--- lspconfig.pyright.setup { blabla}
+vim.lsp.enable(servers)
