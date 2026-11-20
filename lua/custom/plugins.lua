@@ -35,8 +35,45 @@ local plugins = {
   {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
+    lazy = false,
     opts = overrides.treesitter,
     run = ":TSUpdate",
+    config = function()
+        local treesitter = require("nvim-treesitter")
+
+        treesitter.setup({})
+
+        treesitter.install({
+          "php",
+          "php_only",
+          "html",
+          "javascript",
+          "typescript",
+          "css",
+          "vue",
+          "lua",
+          "json",
+          "bash",
+        })
+
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = {
+            "php",
+            "html",
+            "javascript",
+            "typescript",
+            "css",
+            "vue",
+            "lua",
+            "json",
+            "sh",
+          },
+
+          callback = function(args)
+            pcall(vim.treesitter.start, args.buf)
+          end,
+        })
+    end
   },
 
   {

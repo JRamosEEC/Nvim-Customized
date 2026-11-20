@@ -1,3 +1,4 @@
+vim.opt.modeline = false
 require "core"
 
 local custom_init_path = vim.api.nvim_get_runtime_file("lua/custom/init.lua", false)[1]
@@ -19,6 +20,14 @@ end
 dofile(vim.g.base46_cache .. "defaults")
 vim.opt.rtp:prepend(lazypath)
 require "plugins"
+
+-- Quick Patch To Syntax Highlighting --
+vim.api.nvim_create_autocmd("VimEnter", {
+  once = true,
+  callback = function()
+    require("base46").load_all_highlights()
+  end,
+})
 
 -- ### Custom Config - Mappings Done In Custom Mappings ### ---
 -- Experiment with dvorak for now --
@@ -123,6 +132,7 @@ end
 
 -- LSP PHP Actor (Primary LSP)
 vim.lsp.config("phpactor", {
+  cmd = { "phpactor", "language-server"},
   filetypes = { "php", "phtml" }, --Removing phtml here doesn't work (Actually none of these work when debugging lspconfig there are two after with php patterns that might be the clue)
   init_options = {
     --["language_server_completion.trim_leading_dollar"] = true,
@@ -148,6 +158,15 @@ vim.lsp.config("phpactor", {
         "worse.docblock_missing_implements_tag",
     },
   },
+  root_dir = function(bufnr, on_dir) 
+      local root = vim.fs.root(bufnr, {
+          "composer.json",
+          ".git",
+          ".phpactor.yml",
+          ".phpactor.yaml"
+      })
+      on_dir(root or vim.fn.getcwd())
+  end,
   handlers = {
     ["textDocument/hover"] = function() end, -- Override the vim.lsp.handler to remove the hover information from phpActor
   },
@@ -156,25 +175,26 @@ vim.lsp.config("phpactor", {
 vim.lsp.enable("phpactor")
 
 -- LSP Intelephense (Alternative LSP)
-vim.lsp.config("intelephense", {
-  filetypes = { "php", "phtml" },
-  settings = {
-    intelephense = {
-      diagnostics = {
-        deprecated = false,
-        undefinedVariables = false,
-        undefinedMethods = false,
-        duplicateSymbols = false,
-      },
-      files = {
-        maxSize = 10000000,
-      },
-    },
-  },
-  debounce_text_changes = 150,
-  capabilities = capabilities,
-})
-vim.lsp.enable("intelephense")
+--vim.lsp.config("intelephense", {
+--  cmd = { "intelephense", "--stdio"},
+--  filetypes = { "php", "phtml" },
+--  settings = {
+--    intelephense = {
+--      diagnostics = {
+--        deprecated = false,
+--        undefinedVariables = false,
+--        undefinedMethods = false,
+--        duplicateSymbols = false,
+--      },
+--      files = {
+--        maxSize = 10000000,
+--      },
+--    },
+--  },
+--  debounce_text_changes = 150,
+--  capabilities = capabilities,
+--})
+--vim.lsp.enable("intelephense")
 
 --Set Clang LSP
 local cmp_nvim_lsp = require "cmp_nvim_lsp"

@@ -395,14 +395,15 @@ M.blankline = {
   n = {
     ["<leader>cc"] = {
       function()
-        local ok, start = require("indent_blankline.utils").get_current_context(
-          vim.g.indent_blankline_context_patterns,
-          vim.g.indent_blankline_use_treesitter_scope
-        )
+        local scope = require("ibl.scope")
+        local config = require("ibl.config").get_config(0)
+        local node = scope.get(vim.api.nvim_get_current_buf(), config)
 
-        if ok then
-          vim.api.nvim_win_set_cursor(vim.api.nvim_get_current_win(), { start, 0 })
-          vim.cmd [[normal! _]]
+        if node then
+          local start_row = node:range()
+
+          vim.api.nvim_win_set_cursor(0, { start_row + 1, 0 })
+          vim.cmd("normal! _")
         end
       end,
 
