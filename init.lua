@@ -107,13 +107,19 @@ end, {})
 vim.o.winborder = 'single'
 vim.diagnostic.config {
     virtual_text = false,
+    virtual_lines = false,
     float = {
         border = 'single'
     }
 }
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-    vim.lsp.handlers.hover, { border = "single", focusable = false, title = "Details" }
-)
+vim.lsp.handlers["textDocument/hover"] = function(err, result, ctx, config)
+  config = vim.tbl_deep_extend("force", config or {}, {
+    border = "single",
+    focusable = false,
+    title = "Details",
+  })
+  return vim.lsp.handlers.hover(err, result, ctx, config)
+end
 
 local lspNotif = false
 function NotifyDiagnostic() -- Need to be able to adjust width with replace or prematurely close then open another notif but neither is a feature yet
